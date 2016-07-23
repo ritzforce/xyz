@@ -1,0 +1,72 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-university" aria-hidden="true"></i> {{vm.exam.name}}</h3>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'detail'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('detail')" aria-controls="detail" role="tab">Detail</a>
+                        </li>
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'question'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('question')" aria-controls="question" role="tab">Questions</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" ng-show="vm.saveError">
+                    <uib-alert type="danger" class="text-center">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                        <span>{{vm.saveError}}</span>
+                    </uib-alert>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Tab panes -->
+                <div class="tab-content col-xs-12" style="margin-top:10px">
+                    <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'detail'}" id="detail">
+
+                        <div class="panel panel-default text-center">
+                            <div class="panel-heading">
+                                <button ng-click="vm.edit()" type="submit" class="btn btn-warning">Edit</button> &nbsp;
+                                <button ng-click="vm.launch(vm.exam.id)" class="btn btn-warning">Launch</button>&nbsp;
+                                <button ng-click="vm.delete(vm.exam.name,vm.exam)" class="btn btn-default">Delete</button>
+                            </div>
+                            <div class="panel-body">
+                                <exam-detail exam="vm.exam"></exam-detail>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'question'}" id="question">
+                        <div class="panel panel-default text-center">
+                            <div class="panel-heading">
+                                
+                                <button ng-click="vm.addQuestion()" type="submit" class="btn btn-warning">Add Question</button>
+                            </div>
+                            <question-list questions="vm.questions"></question-list>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>

@@ -1,0 +1,88 @@
+<div class="form-horizontal">
+
+<table class="table table-condensed">
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Name</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.name}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Code</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.code}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Active</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">
+                <span ng-show="vm.exam.active" class="text-success">Active</span>
+                <span ng-hide="vm.exam.active" class="text-danger">Inactive</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Category</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.category}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Description</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.description}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Maximum Marks</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.maxMarks}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Pass Percentage</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.maxMarks}}</p>
+        </td>
+    </tr>   
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Time Allowed</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.timeAllowed}}</p>
+        </td>
+    </tr>   
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Created Date</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.createdDate | date}}</p>
+        </td>
+    </tr>   
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Last Modified Date</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.exam.lastModifiedDate | date}}</p>
+        </td>
+    </tr>   
+</table>
+</div>

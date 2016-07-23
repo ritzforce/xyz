@@ -1,0 +1,23 @@
+ <script type="text/ng-template" id="selectImage.html">
+    <div class="modal-header">
+        <button ng-if="modal.dismissable" type="button" ng-click="$dismiss()" class="close">&times;</button>
+        <h4 class="modal-title">Please select a display Image</h4>
+    </div>
+    <div class="modal-body">
+       <div class="row">
+           <div class="col-xs-2" ng-repeat="img in vm.images">
+               <div class="spacer">
+                    <a href="javascript:void(0)" ng-click="vm.selectImage(img)">
+                        <img class="img-responsive" ng-src="assets/images/{{img}}.png" />
+                    </a>
+               </div>
+           </div>
+       </div>
+    </div>
+    <div class="modal-footer">
+        <input type="button" value="OK" class="btn btn-warning" ng-click="$close()" />
+        <input type="button" value="Cancel" class="btn btn-default" ng-click="$dismiss()" />
+    </div>
+ </script>
+
+ <input type="button" value="Select" class="btn btn-default" ng-click="vm.launchModal()" />

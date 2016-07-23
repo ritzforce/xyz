@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-users"></i> All Users</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" ng-show="vm.saveError">
+                    <uib-alert type="danger" class="text-center">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                        <span>{{vm.saveError}}</span>
+                    </uib-alert>
+                </div>
+            </div>
+
+            <div class="row">
+               <div class="col-xs-12">
+                     <div class="panel panel-default text-center">
+                         <div class="panel-heading">
+                            <button class="btn btn-warning">New User</button>
+                         </div>
+                         <userlist></userlist>
+                     </div>
+               </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>

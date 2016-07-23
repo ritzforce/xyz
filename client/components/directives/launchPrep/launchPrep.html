@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-step-forward" aria-hidden="true"></i> <b>Step 1.</b> Ready for Launch
+    </div>
+    <div class="panel-body">
+        <div class="media">
+            <h4 class="media-heading title-heading">
+                <a href="javascript:void(0)">{{vm.exam.name}}</a>
+            </h4>
+            <div class="row">
+                &nbsp;
+            </div>
+            <h5><i><b class="text-warning">Pass Percent</b>: {{vm.exam.passPercent}}  <b class="text-warning">Total Marks</b>: {{vm.exam.maxMarks}} </i></h5>
+            <div>
+                <span class="glyphicon glyphicon-tags"> </span>&nbsp; {{vm.exam.category}}
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div style="margin-top:10px;margin-right:20px;">
+                {{vm.exam.description}}
+            </div>
+            <hr/>
+         
+        </div>
+        <div class="text-center">
+            <div>Clicking on Start will start the timer and the exam. All the best !!</div>
+            <br/>
+            <button class="btn btn-warning btn-lg" ng-click="vm.moveLaunchStep()"><i class="fa fa-play" aria-hidden="true"></i> Start Exam</button>
+        </div>
+
+    </div>
+</div>

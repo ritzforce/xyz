@@ -1,0 +1,18 @@
+<table class="table table-condensed table-responsive">
+    
+    <thead>
+        <th>Action</th>
+        <th>Name</th>
+        <th>Question Text</th>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="question in vm.questions">
+            <td>Edit | Delete</td>
+            <td>{{question.name}}</td>
+            <td>{{question.questionText}}</td>
+        </tr>
+    </tbody>
+
+</table>
+

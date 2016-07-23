@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-xs-12">
+        <label class="control-label">Question {{vm.currentQuestionIndex + 1}}.</label>
+    </div>
+    
+    <div class="col-xs-12">
+        &nbsp;
+    </div>
+    
+    <div class="col-xs-12">
+        {{vm.currentQuestion.questionText}}
+    </div>
+
+    <div class="col-xs-12">
+        &nbsp;
+    </div>
+ 
+    <div class="col-xs-12">
+        <span class="small">Please select <b>{{vm.currentQuestion.answerLength}}</b> answer(s)</span>
+    </div>
+
+    <div class="col-xs-12 checkbox">
+        <label>
+            <input type="checkbox"> Mark for Review
+        </label>
+    </div>
+
+    <div class="col-xs-12">
+        &nbsp;
+    </div>
+   
+    <div class="col-xs-12">
+        <label class="control-label">Answers</label>
+    </div>
+ 
+    <div class="col-xs-12" ng-hide="vm.isRadio()">
+        <div style="margin-left:10px">
+            <div class="checkbox" ng-repeat="answer in vm.answerOptions">
+                <label>
+                    <input type="checkbox"
+                        name = "answer"
+                        ng-model="vm.currentAnswer.selectedAnswer[answer.key]"> 
+                            {{answer.value}}
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xs-12" ng-show="vm.isRadio()">
+        <div style="margin-left:10px">
+            <div class="radio" ng-repeat="answer in vm.answerOptions">
+                <label>
+                    <input type="radio"
+                        name = "answer"
+                        ng-model="vm.currentAnswer.selectedAnswer[answer.key]"> 
+                            {{answer.value}}
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        &nbsp;
+    </div>
+
+    <div class="col-xs-2">
+        <button ng-show="vm.isPrevious()" ng-click="vm.movePrevious()" class="btn btn-warning">Previous</button>
+    </div>
+    <div class="col-xs-2 col-xs-offset-8">
+        <button ng-show="vm.isNext()" ng-click="vm.moveNext()" class="btn btn-warning">Next</button>
+    </div>
+</div>

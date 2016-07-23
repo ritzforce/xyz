@@ -1,0 +1,64 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-bolt" aria-hidden="true"></i> <b>Results</b>
+    </div>
+
+    <div class="panel-body" ng-cloak>
+        <div class="row">
+            &nbsp;
+        </div>
+
+        <div class="row" ng-show="vm.result.result">
+            <div class="col-xs-8 col-xs-offset-2 text-center text-success">
+
+                <div class="alert alert-success" role="alert">
+                    <i class="fa fa-plane" aria-hidden="true"></i> <b>Congratulations </b> !! you have passed the exam
+                </div>
+                <img class="img" style="padding:10px;" src="assets/images/success.png" />
+
+
+            </div>
+        </div>
+
+        <div class="row" ng-hide="vm.result.result">
+            <div class="col-xs-8 col-xs-offset-2 text-center text-danger">
+
+                <div class="alert alert-danger" role="alert">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i> <b>Sorry ! </b> you did not score the minimum required
+                    to pass the exam. Please try again, after some time
+                </div>
+
+                <img class="img" style="padding:10px;" src="assets/images/failure.png" />
+
+            </div>
+        </div>
+
+        <div class="row">
+            &nbsp;
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <table class="table table-condensed">
+                    <tr>
+                        <td><b>Score</b></td>
+                        <td>50% </td>
+                    </tr>
+                    <tr>
+                        <td><b>Time Taken</b></td>
+                        <td>30 minutes</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="text-center">
+            <br/>
+            <button class="btn btn-warning btn-lg" ng-click="vm.exit()"><i class="fa fa-external-link" aria-hidden="true"></i> Exit Exam</button>
+        </div>
+
+    </div>
+
+</div>

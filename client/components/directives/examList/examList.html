@@ -1,0 +1,33 @@
+
+	<div class="media" ng-repeat="exam in vm.lstExam" ng-cloak>
+		<div class="media-left media-top">
+			<a href="javascript:void(0)" ui-sref="exam({examId: exam.id})">
+				<img class="media-object img-thumbnail" style="padding:30px;" ng-src="assets/images/{{exam.imageId}}.png" />
+			</a>
+
+		</div>
+		<div class="media-body" style="padding-left:20px;">
+		
+			<h4 class="media-heading title-heading">
+				<a href="javascript:void(0)" ng-show="vm.isAdmin()" ui-sref="exam({examId: exam.id})">{{exam.name}}</a>
+				<a href="javascript:void(0)" ng-hide="vm.isAdmin()">{{exam.name}}</a>
+				<h4 class="text-danger" ng-hide="exam.active">Inactive</h4>
+				
+			</h4>
+			<h5><i><b class="text-warning">Pass Percent</b>: {{exam.passPercent}}  <b class="text-warning">Total Marks</b>: {{exam.maxMarks}} </i>  </h5>
+			<div>
+				<span class="glyphicon glyphicon-tags"> </span>&nbsp; {{exam.category}}
+			</div>
+			
+			<div style="margin-top:10px;margin-right:20px;">
+				{{exam.description}}
+			</div>
+
+			<div style="margin-top:10px;">
+				<button class="btn btn-warning" ng-click="vm.launchExam(exam.id)">Launch</button>
+				&nbsp;			
+				<button ng-show="vm.isAdmin" type="button" ng-click="vm.editExam(exam.id)" class="btn btn-default">Edit</button>
+			</div>
+			<hr/>
+		</div>
+	</div>

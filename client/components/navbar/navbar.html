@@ -1,0 +1,28 @@
+<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl as vm">
+	<div class="container">
+		
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+      		</button>
+			<a href="/" class="navbar-brand">XYZ Exam Center</a>
+		</div>
+		
+		<div collapse="vm.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+			<ul class="nav navbar-nav navbar-right" ng-show="vm.isLoggedIn()">
+				<li>
+					<p class="navbar-text pull-left"><span class="glyphicon glyphicon-user"></span> Logged in as {{vm.getCurrentUser().name}} </p>
+				</li>
+				<li>
+					<a ui-sref="profile" ><i class="glyphicon glyphicon-folder-close"></i> My Profile</a>
+				</li>
+				<li>
+					<a href="" ng-click="vm.logout()"><span class="glyphicon glyphicon-erase"></span> Logout</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

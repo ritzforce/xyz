@@ -1,0 +1,38 @@
+<div class="panel-body">
+    <div class="pull-right">
+        <input type="text" ng-model="vm.search"
+         placeholder="Filter By User Name or Email" class="form-control" />
+    </div>
+
+    <table class="table table-condensed" style="text-align:left;">
+        <thead>
+            <tr>
+                <th width="10%">Action</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="user in vm.allUsers | filter: vm.search">
+                <td width="10%">
+                    <a ui-sref="questionEdit({questionId : question.id})">Edit</a> |
+                    <a href="javascript:void(0)" ng-click="vm.deleteQuestion(question.name,question)">Delete</a>
+                </td>
+                <td>
+                    <a ui-sref="profile({userId : user.id})">{{user.name}}</a>
+                </td>
+                <td>
+                    {{user.email}}
+                </td>
+                <td>
+                    <span ng-show="user.active" class="text-success">Active</span>
+                    <span ng-hide="user.active" class="text-danger">Inactive</span>
+                </td>
+                <td>{{user.role}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

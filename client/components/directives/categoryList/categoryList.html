@@ -1,0 +1,16 @@
+<div class="panel panel-warning">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <i class="glyphicon glyphicon-th-list"></i> Categories
+    </div>
+
+    <!-- List group -->
+    <ul class="list-group data-category">
+        <li class="list-group-item">
+            <a href="javascript:void(0)" ng-click="vm.filterByCategory('')">All</a>
+        </li>
+        <li class="list-group-item" ng-repeat="category in vm.categories">
+            <a href="javascript:void(0)" ng-click="vm.filterByCategory(category)">{{category}}</a>
+        </li>
+    </ul>
+</div>

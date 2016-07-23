@@ -1,0 +1,133 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10">
+            <!----------------------Exam List----------------->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-university" aria-hidden="true"></i> {{vm.headerText()}}</h3>
+                </div>
+                
+                <div class="col-xs-12" ng-show="vm.saveError">
+                    <uib-alert type="danger" class="text-center">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span> 
+                        <span>{{vm.saveError}}</span>
+                    </uib-alert>
+                </div> 
+               
+                <form class="form-horizontal" name="vm.frm" novalidate>
+                    <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
+                        <label for="txtExamName" class="col-sm-2 control-label control-required">Name</label>
+                        <div class="col-sm-4">                
+                            <input type="text" name="name" required ng-model="vm.exam.name" class="form-control" id="txtExamName"
+                             placeholder="Name" />
+                            <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.name.$error.required">Exam Name is required</span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error': vm.frm.code.$invalid && (vm.frm.code.$dirty || vm.frm.$submitted )}">
+                        <label for="txtExamCode" class="col-sm-2 control-label control-required"
+                        ng-class="{'has-error': vm.frm.code.$invalid && (vm.frm.code.$dirty || vm.frm.$submitted )}"
+                        >Code</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="code" required class="form-control" ng-model="vm.exam.code" id="txtExamCode" placeholder="Exam Code for Identification">
+                             <span class="help-block" ng-show="vm.frm.code.$invalid && (vm.frm.code.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.code.$error.required">Exam Code is required</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chkActive" class="col-sm-2 control-label">Active</label>
+                        <div class="col-sm-4 checkbox">
+                            <label>
+                            <input type="checkbox" ng-model="vm.exam.active" ng-true-value="1" ng-false-value="0" />
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="selExamCategory" class="col-sm-2 control-label">Category</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" ng-model="vm.exam.category">
+                                 <option value="">--None--</option>
+                                 <option ng-repeat="option in vm.category" value="{{option}}">{{option}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="txtExamDescription" class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-4">
+                            <textarea rows="6" class="form-control" ng-model="vm.exam.description" id="txtExamCode" placeholder="Description of the Exam"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error': vm.frm.maxMarks.$invalid && (vm.frm.maxMarks.$dirty || vm.frm.$submitted )}">
+                        <label for="maxMarks" class="col-sm-2 control-label control-required">Maximum Marks</label>
+                        <div class="col-sm-4">
+                            <input  type="number" name="maxMarks" required class="form-control" ng-model="vm.exam.maxMarks" 
+                              id="txtMaxMarks" 
+                            placeholder="Maximum marks a user can obtain">
+
+                            <span class="help-block" ng-show="vm.frm.maxMarks.$invalid && (vm.frm.maxMarks.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.maxMarks.$error.required">Maximum Marks is required</span>
+                                <span ng-show="vm.frm.maxMarks.$error.number">Invalid Number</span>
+                            </span>   
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error': vm.frm.passPercent.$invalid && (vm.frm.passPercent.$dirty || vm.frm.$submitted )}">
+                        <label for="passPercent" class="col-sm-2 control-label control-required">Pass Percentage</label>
+                        <div class="col-sm-4">
+                            <input type="number" min="1" max="100" name="passPercent" required class="form-control" ng-model="vm.exam.passPercent" id="txtPassPercent" 
+                            placeholder="Minimum passing marks for passing the exam">
+                              <span class="help-block" ng-show="vm.frm.passPercent.$invalid && (vm.frm.passPercent.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.passPercent.$error.required">Pass Percentage is required</span>
+                                <span ng-show="vm.frm.passPercent.$error.number">Invalid Number</span>
+                            </span>  
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error': vm.frm.examTime.$invalid && (vm.frm.examTime.$dirty || vm.frm.$submitted )}">
+                        <label for="examTime" class="col-sm-2 control-label control-required">Time in Minutes</label>
+                        <div class="col-sm-4">
+                            <input type="number" name="examTime" required class="form-control" ng-model="vm.exam.timeAllowed" id="txtExamTime" 
+                            placeholder="Total time allowed to complete the exam">
+                            <span class="help-block" ng-show="vm.frm.examTime.$invalid && (vm.frm.examTime.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.examTime.$error.required">Time in Minutes is required</span>
+                                <span ng-show="vm.frm.examTime.$error.number">Invalid Number</span>
+                            </span> 
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="btnDisplayImage" class="col-sm-2 control-label">Display Image</label>
+                        <div class="col-sm-4">
+                           <img class="img-thumbnail" style="padding:30px;" ng-src="assets/images/{{vm.exam.imageId}}.png" />
+                           <span>&nbsp;</span>
+                           <select-image selected-image="vm.exam.imageId" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">    
+                            <button ng-click="vm.save()" ng-disabled="vm.isLoading" type="submit" class="btn btn-warning">Save</button>
+                            &nbsp;
+                             <button ng-click="vm.cancel()" ng-disabled="vm.isLoading" class="btn btn-default">Cancel</button>
+                        </div>
+                        
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>

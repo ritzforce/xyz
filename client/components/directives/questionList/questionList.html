@@ -1,0 +1,32 @@
+<div class="panel-body">
+    <div class="pull-right">
+        <input type="text" ng-model="vm.search"
+         placeholder="Filter By Question Name or Description" class="form-control" />
+    </div>
+
+    <table class="table table-condensed" style="text-align:left;">
+        <thead>
+            <tr>
+                <th width="10%">Action</th>
+                <th width="10%">Active</th>
+                <th width="10%">Name</th>
+                <th>Question Text</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="question in vm.questions | filter: vm.search">
+                <td width="10%">
+                    <a ui-sref="questionEdit({questionId : question.id})">Edit</a> |
+                    <a href="javascript:void(0)" ng-click="vm.deleteQuestion(question.name,question)">Delete</a>
+                </td>
+                <td>
+                    <span ng-show="question.active" class="text-success">Active</span>
+                    <span ng-hide="question.active" class="text-danger">Inactive</span>
+                </td>
+                <td>{{question.name}}</td>
+                <td>{{question.questionText}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
