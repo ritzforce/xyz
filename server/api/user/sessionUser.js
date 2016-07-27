@@ -32,8 +32,15 @@ User.prototype.findById = function(userId,callback){
     var that = this;
     userController.findById(userId, function(err, result){
        if(err){
-           callback(err,null);
+           return callback(err,null);
        }
+       if(!result){
+           return callback(null,null);
+       }
+       if(result.length === 0){
+           return callback(null,null);
+       }
+
        var currentUser = objectAssign(that,result[0]);
        callback(null,currentUser);
    });
@@ -44,6 +51,9 @@ User.prototype.findOne = function(user, callback){
    userController.findByEmail(user.email, function(err, result){
        if(err){
            callback(err,null);
+       }
+       if(result.length === 0){
+           return callback(null,null);
        }
        var currentUser = objectAssign(that,result[0]);
        callback(null,currentUser);

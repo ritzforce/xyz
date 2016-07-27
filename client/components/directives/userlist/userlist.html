@@ -18,8 +18,8 @@
         <tbody>
             <tr ng-repeat="user in vm.allUsers | filter: vm.search">
                 <td width="10%">
-                    <a ui-sref="questionEdit({questionId : question.id})">Edit</a> |
-                    <a href="javascript:void(0)" ng-click="vm.deleteQuestion(question.name,question)">Delete</a>
+                    <a ui-sref="userEdit({userId: user.id})">Edit</a> |
+                    <a href="javascript:void(0)" ng-click="vm.delete(user.name, user)">Delete</a>
                 </td>
                 <td>
                     <a ui-sref="profile({userId : user.id})">{{user.name}}</a>

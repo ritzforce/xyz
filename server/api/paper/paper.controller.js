@@ -2,6 +2,8 @@ var sqlHelper = require('./../../config/sqlHelper');
 var SqlUtils = require('./../sqlUtils');
 var apiUtils = require('./../apiUtils');
 
+var logger = require('./../../logger/logger');
+
 /***********************************************/
 /* Get list of Questions, show All Questions to Admin
 /***********************************************/
@@ -9,6 +11,32 @@ var apiUtils = require('./../apiUtils');
 var selectFields = ['id', 'examId', 'result', 'percent', 'status', 'userId', 'createdDate', 'lastModifiedDate'];
 
 var TBL_NAME = 'paper';
+
+
+exports.correctAnswersForReview = function(req, res){
+	logger.debug('Entering correct Answers For Review');
+	var query = generateQueryForCorrectAnswerReview(req.params.paperId);
+
+	apiUtils.select(req, res, query, function(result){
+		logger.debug('Exit correct Answers For Review', result);
+		res.json(200,result);
+	});
+}
+
+function generateQueryForCorrectAnswerReview(paperId){
+	var queryArr = [];
+	queryArr.push('select paperAnswer.id, question.questionText ,');
+	queryArr.push(' question.a, question.b, question.c, question.d, question.e,');
+	queryArr.push('question.aCorrect, question.bCorrect, question.cCorrect, question.dCorrect, question.eCorrect,');
+	queryArr.push(' paperAnswer.answer, paperAnswer.correct , ');
+	queryArr.push(' aCorrect + bCorrect + cCorrect + dCorrect + eCorrect + fCorrect As length ')
+	queryArr.push(' from question, paperAnswer')
+	queryArr.push(' WHERE paperAnswer.paperId = ' + sqlHelper.escape(paperId));
+	queryArr.push(' AND paperAnswer.questionId = question.id ');
+
+	return queryArr.join(' ');
+}
+
 
 exports.result = function (req, res) {
 	console.log('INSIDE RESULT');

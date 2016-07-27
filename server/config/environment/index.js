@@ -40,6 +40,9 @@ var all = {
     database: 'examination'
   },
   
+  log: {
+    logLevel : 'debug' 
+  },
   /*
   sql: {
     maxLimit: 100,

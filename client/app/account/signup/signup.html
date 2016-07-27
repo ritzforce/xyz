@@ -1,12 +1,28 @@
 <div class="container">
 	<div class="row">
-		<div class="col-xs-6 col-xs-offset-3">
+		<div class="col-xs-6 col-xs-offset-3" ng-cloak="true">
+			<uib-alert type="danger" class="text-center" ng-show="vm.error">
+            	<span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                <span>{{vm.error}}</span>
+            </uib-alert>
+
+			<uib-alert type="success" class="text-center" ng-show="vm.success">
+            	<span class="glyphicon glyphicon glyphicon glyphicon-ok"></span>
+                <span>Your user has been created. Please click on <a href="/login">Login</a> to login</span>
+            </uib-alert>
+
+			
 			<div class="panel panel-warning">
-				<div class="panel-heading">
+
+				<div class="panel-heading" ng-cloak="true">
 					<i class="fa fa-user-plus" aria-hidden="true"></i> Sign up
 				</div>
 				<div class="panel-body">
-					<form class="form" name="vm.frm"  novalidate>
+					<div class="col-xs-12 text-center" ng-show="vm.success">
+						<a href="/login" class="btn btn-warning">Login</a>
+					</div>
+
+					<form class="form" name="vm.frm"  novalidate ng-hide="vm.success">
 
 						<div class="form-group" ng-class="{ 'has-success': vm.frm.name.$valid &&  vm.frm.$submitted,
                                             'has-error': vm.frm.name.$invalid && vm.frm.$submitted }">
@@ -35,7 +51,8 @@
                                             'has-error': vm.frm.password.$invalid && vm.frm.$submitted }">
 							<label>Password</label>
 
-							<input type="password" required name="password" class="form-control" ng-model="vm.user.password" ng-minlength="3"/>
+							<input type="password" required name="password" class="form-control" 
+							ng-model="vm.user.password" ng-minlength="3"/>
 							<p class="help-block" ng-show="(vm.frm.password.$error.minlength || vm.frm.password.$error.required) && vm.frm.$submitted">
 								Password must be at least 3 characters.
 							</p>
@@ -52,23 +69,14 @@
 							</p>
 						</div>
 
-						<div class="pull-left">
-							<button class="btn btn-warning" ng-click="vm.register()" type="submit">Sign up</button>
+						<div class="text-center">
+							<button class="btn btn-warning btn-register btn-lg" ng-click="vm.register()" type="submit">Sign up</button>
 						</div>
-
-						<div class="pull-right">
-							<a class="btn btn-default btn-register" href="/login">Login</a>
-						</div>
-
-
 
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-
 
 </div>

@@ -6,11 +6,13 @@ var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var objectAssign = require('object-assign');
 
+var logger = require('./../../logger/logger');
+
 var sqlHelper = require('./../../config/sqlHelper');
 var SqlUtils = require('./../sqlUtils');
 var apiUtils = require('./../apiUtils');
 var paperController = require('./../paper/paper.controller');
-var CodeUser = require('./sessionUser')
+
 
 /***********************************************/
 /* Get list of users, show All users to Admin
@@ -43,6 +45,14 @@ exports.index = function (req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
+	logger.debug('Entering create user');
+
+	var CodeUser = require('./sessionUser')
+
+	console.log('****CODEUSER*****');
+	console.log(CodeUser);
+	console.log('********************');
+
 	var user = new CodeUser();
 	objectAssign(user, req.body);
 	user.role = 'user';
@@ -50,11 +60,33 @@ exports.create = function (req, res, next) {
 	user.salt = makeSalt();
 	user.password = user.encryptPassword(req.body.password);
 
-	//Creation Complete
-	apiUtils.create(req, res, TBL_NAME, user, selectFields, function (user) {
-		var token = jwt.sign({ id: user.id }, config.secrets.session, { expiresInMinutes: 60 * 5 });
-		res.json({ token: token });
-	});
+	logger.debug('Check if the user with email already exists', user.email);
+
+	//Check if the user 
+	user.findOne(user, function (err, result) {
+		if(err){
+			apiUtils.handleError(res, err);
+			logger.debug('Exit an error occurred');
+			return;
+		}
+
+
+		//If a user already exists, throw a validation error
+		if (result) {
+			logger.error('An existing user', result);
+			res.json(422, 'A user with the email id already exists');
+			logger.debug('Exit an existing user found');
+			return;
+		}
+		//Creation Complete
+		apiUtils.create(req, res, TBL_NAME, user, selectFields, function (user) {
+			logger.info('User created with the following details ', user)
+			logger.debug('Exit create user');
+			res.json({ id: user.id });
+		});
+
+	})
+
 
 	/*
 	newUser.save(function(err, user) {
@@ -88,52 +120,44 @@ exports.destroy = function (req, res) {
 };
 
 exports.myprofile = function (req, res) {
-	console.log('*****My Profile *****');
-	console.log(req.user);
+
+	logger.debug('Entering user.controller.myProfile with user', req.user);
 	var userId = req.user.id;
-
-	console.log('&&&&&&&&&&&&&&&&&&')
-	console.log(CodeUser);
-	console.log('&&&&&&&&&&&&&&&&&');
-
-	console.log("***SERVER***" + userId);
 	var user = new CodeUser();
 
 	req.params.id = userId;
-	return retrieveUserProfileById(req, res);
+	return exports.profile(req, res);
 }
 
 
 //Query Data for a profile user from the database
-function retrieveUserProfileById (req, res){
-	console.log('****Profile Function*****');
+function retrieveUserProfileById(req, res) {
+	logger.debug('Entering user.controller.retrieveUserProfileById with user id',  req.params.id);
 	var userId = req.params.id;
-	console.log('***USER PARAMS*****' + userId);
-	var user = new CodeUser();
+	
+	exports.findById(userId, function (err, result) {
 
-	exports.findById(userId, function(err, result){
-		
-		if(err){
-			return res.send(500,err);
+		if (err) {
+			logger.error(err);
+			return res.send(500, err);
 		}
-		user = objectAssign(user,result[0]);
-		console.log('*****user****', user);
-
-		paperController.getPapersForUser(userId, function(err, result){
-			//console.log('****exam results***');
-			//console.log(result)
-			if(err){
-				handleError(err,null);
+		var user = {};
+		user = objectAssign(user, result[0]);
+	
+		paperController.getPapersForUser(userId, function (err, result) {
+			if (err) {
+				handleError(err, null);
 				return;
 			}
 
 			user.exams = result;
 			return res.json(user);
-		});		
+		});
 	});
 }
 
 exports.profile = retrieveUserProfileById;
+
 
 
 /**
@@ -168,16 +192,16 @@ exports.me = function (req, res, next) {
 	console.log('**req.user**');
 	console.log(req.user);
 	console.log('***userId****' + userId);
-	exports.findById(userId, function(err, result){
-		if(err){
-			return res.send(500,err);
+	exports.findById(userId, function (err, result) {
+		if (err) {
+			return res.send(500, err);
 		}
-		
+
 		return res.json(result[0]);
 	});
 };
 
-exports.findById = function(id, callback){
+exports.findById = function (id, callback) {
 	var sqlUtils = new SqlUtils(TBL_NAME);
 	sqlUtils.appendSelectFields(selectFields);
 	sqlUtils.appendWhereClauses("id = " + sqlHelper.escape(id));
@@ -189,7 +213,7 @@ exports.findById = function(id, callback){
 exports.findByEmail = function (email, callback) {
 	var sqlUtils = new SqlUtils(TBL_NAME);
 	sqlUtils.appendSelectFields(selectFields);
-	sqlUtils.appendSelectFields(['password','salt']);
+	sqlUtils.appendSelectFields(['password', 'salt']);
 	sqlUtils.appendWhereClauses("email = " + sqlHelper.escape(email));
 
 	console.log('***find By Email Query***');

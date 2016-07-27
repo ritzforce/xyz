@@ -1,0 +1,125 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-graduation-cap" aria-hidden="true"></i> <b>Correct Answers</b>
+    </div>
+
+    <div class="panel-body" ng-cloak>
+        <div class="row">
+            <div class="form-inline col-xs-12">
+                <div class="form-group col-xs-4">
+                    <label for="selAnswerType">Show&nbsp;</label>
+                    <select name="selAnswerType" ng-model="vm.selAnswerType" class="form-control">
+                        <option value="">All</option>
+                        <option value="1">Correct</option>
+                        <option value="0">Incorrect</option>
+                </select>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label for="txtFilter">Filter</label>
+                    <input type="text" class="form-control" size="40" name="txtFilter" id="txtFilter" placeholder="Filter By Question Description or Answer"
+                    />
+                </div>
+                <div class="form-group col-xs-2">
+                    <label for="selPageSize">Page Size&nbsp;</label>
+                    <select name="selPageSize" class="form-control">
+                    <option>All</option>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>40</option>
+                </select>
+                </div>
+
+                <div class="col-xs-12">
+                    <hr/>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row" ng-repeat="question in vm.allCorrectAnswer">
+            <div class="col-xs-12">
+                <label class="control-label text-primary"> 
+                    Question {{$index + 1}}. 
+                    <i style="font-size:2em;" class="text-success fa fa-check fa-4" ng-show="question.correct"></i>
+                    <i style="font-size:2em;" class="text-danger fa fa-times fa-4" ng-hide="question.correct"></i>
+                </label>
+            </div>
+
+            <div class="col-xs-12">
+                <span>{{question.questionText}}</span>
+            </div>
+
+            <div class="col-xs-12">
+                &nbsp;
+            </div>
+
+            <div class="col-xs-12">
+                <label class="control-label text-primary">Answers</label>
+            </div>
+
+            <div class="col-xs-12" ng-hide="question.length === 1">
+                <div style="margin-left:10px">
+                    <div class="checkbox" ng-repeat="answer in question.answerOptions">
+                        <label>
+                            <input type="checkbox" name="{{$parent.index}}" disabled
+                                ng-model="question.selectedAnswer[answer.key]"> 
+                            <span><b>{{ answer.key | uppercase }}. </b></span> {{answer.value}}
+
+                            &nbsp; <span class="btn btn-success btn-xs" ng-show="answer.isCorrect"><b><i  class="fa fa-check"></i> Correct</b></span>
+                            &nbsp; <span class="btn btn-danger btn-xs" ng-show="answer.isIncorrect"><b><i  class="fa fa-times"></i> Wrong</b></span>
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xs-12" ng-show="question.length === 1">
+                <div style="margin-left:10px">
+                    <div class="radio" ng-repeat="answer in question.answerOptions">
+                        <label>
+                            <input type="radio" ng-model="question.selectedAnswer" value="{{answer.key}}" name="{{$parent.index}}" disabled> 
+                            <span><b>{{ answer.key | uppercase }}. </b></span>  {{answer.value}}
+                            
+                            &nbsp; <span class="btn btn-success btn-xs" ng-show="answer.isCorrect"><b><i  class="fa fa-check"></i> Correct</b></span>
+                            &nbsp; <span class="btn btn-danger btn-xs" ng-show="answer.isIncorrect"><b><i  class="fa fa-times"></i> Wrong</b></span>
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <hr/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 text-center" >
+                <uib-pagination boundary-links="true" force-ellipses="true" max-size="5" rotate="true"  previous-text="&lsaquo;" next-text="&rsaquo;" total-items="vm.total" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>	
+            </div>           
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="text-center">
+                    <br/>
+                    <button class="btn btn-warning btn-lg" ng-click="vm.exit()"><i class="fa fa-external-link" aria-hidden="true"></i> Exit Exam</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+</div>

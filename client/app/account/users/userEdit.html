@@ -1,0 +1,98 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10" ng-cloak="true">
+
+            <! -- Edit / Create Mode -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-user" aria-hidden="true"></i> {{vm.headerText}}</h3>
+                </div>
+
+                <div class="col-xs-12">
+
+                    <uib-alert type="danger" class="text-center" ng-show="vm.error">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                        <span>{{vm.error}}</span>
+                    </uib-alert>
+
+
+                    <form class="form-horizontal" name="vm.frm" novalidate>
+                        <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
+                            <label for="name" class="col-sm-2 control-label control-required">Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="name" required ng-model="vm.user.name" class="form-control" id="txtUserName" placeholder="Name"
+                                />
+                                <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.name.$error.required">User Name is required</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error': vm.frm.email.$invalid && (vm.frm.email.$dirty || vm.frm.$submitted )}">
+                            <label for="email" class="col-sm-2 control-label control-required">Email</label>
+                            <div class="col-sm-4">
+                                <input type="email" name="email" required ng-model="vm.user.email" class="form-control" id="txtEmail" placeholder="Email"
+                                />
+                                <span class="help-block" ng-show="vm.frm.email.$invalid && (vm.frm.email.$dirty || vm.frm.$submitted)">
+                                    <span ng-show="vm.frm.email.$error.required">Email is required</span>
+                                    <span ng-show="vm.frm.email.$error.email">Invalid Email</span>
+                                </span>
+                            </div>
+                        </div>
+
+                    
+                        <div class="form-group" ng-if="!vm.editMode" ng-class="{'has-error': vm.frm.password.$invalid && (vm.frm.password.$dirty || vm.frm.$submitted )}">
+                            <label for="password" class="col-sm-2 control-label control-required">Password</label>
+                            <div class="col-sm-4">
+                                <input type="password" name="password" ng-minlength="3" required ng-model="vm.user.password" class="form-control" id="txtPassword" placeholder="Password"
+                                />
+                                <span class="help-block" ng-show="vm.frm.email.$invalid && (vm.frm.email.$dirty || vm.frm.$submitted)">
+                                    <span ng-show="vm.frm.password.$error.required">Password is required</span>
+                                    <span ng-show="vm.frm.password.$minlength.required">Password must be at least 3 characters.</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group"  ng-if="!vm.editMode" ng-class="{'has-error': (vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)}">
+                            <label for="confirmPassword" class="col-sm-2 control-label control-required">Confirm Password</label>
+                            <div class="col-sm-4">
+                                <input  type="password" required  name="confirmPassword" ng-model="vm.confirmPassword" class="form-control" id="txtConfirmPassword" 
+                                  placeholder="Confirm Password"
+                                />
+                                <span class="help-block" ng-show="(vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)">
+								    <span ng-hide="vm.isConfirmPassword">Passwords do not match</span>
+								    <span ng-show="vm.frm.confirmPassword.$error.required">Please confirm the password again</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="chkActive" class="col-sm-2 control-label">Active</label>
+                            <div class="col-sm-4 checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.user.active" ng-true-value="1" ng-false-value="0" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button ng-click="vm.save()" ng-disabled="vm.isLoading" type="submit" class="btn btn-warning">Save</button>                                &nbsp;
+                                <button ng-click="vm.cancel()" ng-disabled="vm.isLoading" class="btn btn-default">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+</div>

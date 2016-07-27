@@ -1,13 +1,57 @@
 'use strict';
 
 angular.module('examApp')
-	.factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+	.factory('Auth', function Auth($log, $window, $location, $rootScope, $http, User, api, $cookieStore, $q) {
 		var currentUser = {};
+		
+		function loadCurrentUserFromDatabase() {			
+			return api.getMe().then(function(user){
+				$log.log(user);
+				if(user === null){
+					throw Error('User not found in the database');
+				}
+				currentUser = user;
+				return user;
+			})
+			.catch(function(err){
+				$log.error(err);
+				$window.alert('Error in getting current user');
+			});
+		}
+
 		if ($cookieStore.get('token')) {
-			currentUser = User.get();
+			loadCurrentUserFromDatabase();
 		}
 
 		return {
+			login: function(user){
+				var deferred = $q.defer();
+				var that = this;
+
+				$http.post('/auth/local',{
+					email: user.email,
+					password: user.password
+				})
+				.then(function(response){
+
+					var data = response.data;
+					$cookieStore.put('token', data.token);
+					
+				})
+				.then(function(){
+					return loadCurrentUserFromDatabase();
+				})
+				.then(function(dbUser){
+					deferred.resolve(dbUser);
+				})
+				.catch(function (err) {
+					$log.error(err);
+					that.logout();
+					deferred.reject(err);
+				});
+
+				return deferred.promise;
+			},
 
 			/**
 			 * Authenticate user and save token
@@ -16,7 +60,7 @@ angular.module('examApp')
 			 * @param  {Function} callback - optional
 			 * @return {Promise}
 			 */
-			login: function (user, callback) {
+			login1: function (user, callback) {
 				var cb = callback || angular.noop;
 				var deferred = $q.defer();
 
@@ -29,14 +73,18 @@ angular.module('examApp')
 					console.log(data);
 
 					$cookieStore.put('token', data.token);
-					currentUser = User.get();
-					console.log('***currentUser****' );
-					console.log(currentUser);
+					return User.get();
+					//console.log('***currentUser****' );
+					//console.log(currentUser);
 
-					deferred.resolve(data);
-					return cb();
 				}).
-				error(function (err) {
+				then(function(dbUser){
+					currentUser = dbUser;
+					deferred.resolve(currentUser);
+					return cb();
+				})
+				.error(function (err) {
+					$log.error(err);
 					this.logout();
 					deferred.reject(err);
 					return cb(err);
@@ -55,6 +103,16 @@ angular.module('examApp')
 				currentUser = {};
 			},
 
+			
+
+			/**
+			 * 
+			 */
+			saveToken: function(data, cb){
+				$cookieStore.put('token', data.token);
+				loadCurrentUserFromDatabase();
+			},
+
 			/**
 			 * Create a new user
 			 *
@@ -62,7 +120,7 @@ angular.module('examApp')
 			 * @param  {Function} callback - optional
 			 * @return {Promise}
 			 */
-			createUser: function (user, callback) {
+			createUser1: function (user, callback) {
 				var cb = callback || angular.noop;
 				this.logout();
 				

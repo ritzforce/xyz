@@ -31,6 +31,20 @@ angular.module('examApp')
 				controllerAs: 'vm',
 				authenticate: true
 			})
+			.state('userNew', {
+				url: '/users/e',
+				templateUrl: 'app/account/users/userEdit.html',
+				controller: 'UserEditCtrl',
+				controllerAs: 'vm',
+				authenticate: true
+			})
+			.state('userEdit', {
+				url: '/users/e/:userId',
+				templateUrl: 'app/account/users/userEdit.html',
+				controller: 'UserEditCtrl',
+				controllerAs: 'vm',
+			})
+			
 			.state('profile', {
 				url: '/profile/:userId',
 				templateUrl: 'app/account/users/userProfile.html',

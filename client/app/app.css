@@ -42,3 +42,7 @@
 .spacer {
     margin:5px;
 }
+
+.toast-info {
+    background-color: #337ab7;
+}

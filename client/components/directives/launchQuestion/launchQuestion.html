@@ -45,7 +45,7 @@
                     <input type="checkbox"
                         name = "answer"
                         ng-model="vm.currentAnswer.selectedAnswer[answer.key]"> 
-                            {{answer.value}}
+                         <span><b>{{ $index | prepend }}</b></span>    {{answer.value}}
                 </label>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                         name = "answer"
                         value = "{{answer.key}}"
                         ng-model="vm.currentAnswer.radioAnswer"> 
-                            {{answer.value}}
+                          <span><b>{{ $index | prepend }}</b></span>  {{answer.value}}
                 </label>
                     </div>
                 </div>

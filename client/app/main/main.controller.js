@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('MainCtrl', function ($scope, $http, $log, $filter, api, Auth) {
-		$scope.awesomeThings = [];
-
+	.controller('MainCtrl', function ($state, $http, $log, $filter, api, Auth) {
+	
 		var vm = this;
 		var PAGE_SIZE = 10;
 
@@ -26,6 +25,11 @@ angular.module('examApp')
 
 		//--Initialize 
 		function init() {
+			if(!Auth.isLoggedIn()){
+				$state.go('login');
+				return;
+			}
+
 			loadAllExam();
 			getCategories();
 			vm.isAdmin = Auth.isAdmin;

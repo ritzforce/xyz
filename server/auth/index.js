@@ -3,7 +3,7 @@
 var express = require('express');
 var passport = require('passport');
 var config = require('../config/environment');
-var User = require('../api/user/user');
+var User = require('../api/user/sessionUser');
 
 // Passport Configuration
 var user = new User();

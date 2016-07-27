@@ -4,10 +4,17 @@ var _ = require('lodash');
 var sqlHelper = require('./../config/sqlHelper');
 var SqlUtils = require('./sqlUtils');
 
+var logger = require('./../logger/logger');
+
 /***********************************************/
 /* Get list of records, show All Records based to Admin
 /***********************************************/
 exports.index = function (req, res, tblName, selectFields, orderByFields, whereByClause) {
+
+	logger.debug('Entering apiUtils.index with parameters with ', "table", tblName, "for select fields ", selectFields,
+	            "orderBy clause", orderByFields, 
+	            "where Clause", whereByClause);
+
 	var sqlUtils = new SqlUtils(tblName, 1000);
 
 	//Get the sql connection, and fire query
@@ -38,19 +45,20 @@ exports.index = function (req, res, tblName, selectFields, orderByFields, whereB
 /* Get One Single Database record, based on Id field
 /***********************************************/
 exports.show = function (req, res, tblName, selectFields) {
-	
+	logger.debug('Entering apiUtils.show with parameters with ', "table", tblName, "for select fields ", selectFields);
+
 	//Get the sql connection, and fire query
 	getConnection(req, res, function (connection) {	
 		var selectQuery = getRecordByIdQuery(tblName, selectFields, connection.escape(req.params.id));
-		console.log('***************SELECT QUERY************');
-		console.log(selectQuery);
-		console.log('*************************');
+
+		logger.info('Select Query fired', selectQuery);
 
 		connection.query(selectQuery, function(err, rows){
 			connection.release();
 
 			if(err) return handleError(res, err);
-			console.log(rows);
+			logger.debug('Exit apiUtils.show with result', rows);
+
 			return res.json(200, rows);
 		});
 	});
@@ -60,7 +68,8 @@ exports.show = function (req, res, tblName, selectFields) {
 /* Create one tbl record, based on input
 /***********************************************/
 exports.create = function (req, res, tblName, requestBody, selectFields, callback) {
-	
+	logger.debug('Entering apiUtils.create with parameters with ', "table", tblName, "for select fields ", selectFields);
+
     getConnection(req, res, function (connection) {
 		connection.query('INSERT INTO ' + tblName + ' SET ?', requestBody, function(err,result){
 			console.log(err);
@@ -69,13 +78,11 @@ exports.create = function (req, res, tblName, requestBody, selectFields, callbac
 				handleError(res,err);
 				return;
 			}
-			console.log('*****RESULT*******');
-			console.log(result);
+			logger.info('Record Created ', result);
 
 			var singleRecordQuery = getRecordByIdQuery(tblName, selectFields, result.insertId);
-			console.log('****************singleRecord Query********');
-			console.log(singleRecordQuery);
-			
+			logger.info("Query the recently created record with query ", singleRecordQuery);	
+
 			connection.query(singleRecordQuery,function(err,result){
 				connection.release();
 				console.log(err);
@@ -90,6 +97,7 @@ exports.create = function (req, res, tblName, requestBody, selectFields, callbac
 					return callback(result);
 				}
 
+				logger.debug('Exit apiUtils.create with result', result);
 				return res.json(201,result);
 			});
 		});
@@ -100,12 +108,13 @@ exports.create = function (req, res, tblName, requestBody, selectFields, callbac
 /* Update one tbl record, based on input
 /***********************************************/
 exports.update = function (req, res, tblName, requestBody, selectFields) {
+	logger.debug('Entering apiUtils.update with parameters for ', "table", tblName,
+	              "for select fields ", selectFields,
+				  "with request body", requestBody);
+
 	if (requestBody.id) { delete requestBody.id; }
 
-	console.log('***REQUEST BODY******');
-	console.log(requestBody);
-	console.log('*****req.params.id***' + req.params.id);
-
+	
 	getConnection(req, res, function (connection) {
         var recordId = connection.escape(req.params.id);
         
@@ -133,6 +142,7 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 					handleError(res,err);
 					return;
 				}
+				logger.debug('Exit apiUtils.update with result', result);
 				return res.json(200,result);
 			});
 		});
@@ -143,6 +153,8 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 /* Deletes a exam from the DB.
 /*******************************************/
 exports.destroy = function (req, res, tblName, requestBody) {
+	logger.debug('Entering apiUtils.destroy with tblName', tblName, ' & request body', requestBody);
+
 	if (requestBody.id) { delete requestBody.id; }
 	
 	getConnection(req, res, function (connection) {
@@ -154,8 +166,10 @@ exports.destroy = function (req, res, tblName, requestBody) {
 				return;
 			}
 			if(result.affectedRows === 0) {
+				logger.debug('Exit apiUtils.destroy with not found result', result);
 				return res.send(404);
 			}
+			logger.debug('Exit apiUtils.destroy with with success', result);
 			return res.send(204);
 		});
 	});
@@ -165,16 +179,18 @@ exports.destroy = function (req, res, tblName, requestBody) {
 /*Fire Adhoc Select query
 /*************************************************/
 exports.select = function(req, res, query, callback){
+	logger.debug('Entering apiUtils.select with query', query);
+
 	getConnection(req, res, function (connection) {
 		connection.query(query, function(err, result){
 			connection.release();
 
 			if(err){
-				console.log('***ERROR OCCURRED****');
-				console.log(err);
+				logger.error(err);
 				handleError(res, err);
 				return;
 			}
+			logger.debug('Exit apiUtils.select with result', result);
 			callback(result);
 		});
 	});
@@ -197,6 +213,10 @@ exports.fireRawQuery = function(query,callback) {
 	});
 }
 
+exports.handleError = function(res, err){
+	handleError(res, err);
+}
+
 /******************************Private Functions************************************/
 
 function getRecordByIdQuery(tblName,selectFields,id){
@@ -208,6 +228,8 @@ function getRecordByIdQuery(tblName,selectFields,id){
 }
 
 function handleError(res, err) {
+	logger.error(err);
+
 	return res.send(500, err);
 }
 

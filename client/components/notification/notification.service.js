@@ -2,17 +2,31 @@
 
 angular.module('examApp')
 	.factory('notification', function () {
-		toastr.options = { "closeButton": true};
-
+		
+		var saveMessageOption = { 'closeButton': true, 
+		                          'positionClass': 'toast-top-right'};
+		var displayProgress = {'closeButton': false, 'extendedTimeOut': 0, tapToDismiss : false, 
+		                       'positionClass': 'toast-top-center', 'timeOut': 0,'preventDuplicates': true};
+		var lastToastr = null;					   
+		
 		return {
 			success: function (title, message) {
-				toastr.success(message, title);
+				return toastr.success(message, title, saveMessageOption);
 			},
 			error: function (title, message) {
-				toastr.error(message, title);
+				return toastr.error(message, title, saveMessageOption);
 			},
 			info: function (title, message) {
-				toastr.info(message, title);
+				return toastr.info(message, title, saveMessageOption);
+			},
+			notify: function(message){
+				lastToastr = toastr.info('<i class="fa fa-refresh fa-spin fa-fw"></i>  ' + message, null, displayProgress);
+			},
+			hide: function(){
+				if(lastToastr){
+					lastToastr.hide();
+				}
 			}
+
 		};
 	});

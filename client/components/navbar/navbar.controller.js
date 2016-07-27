@@ -10,15 +10,7 @@ angular.module('examApp')
       vm.isCollapsed = true;
       vm.isLoggedIn = Auth.isLoggedIn;
       vm.isAdmin = Auth.isAdmin;
-
-      console.log('**is Logged In***');
-      console.log(vm.isLoggedIn());
-      
-      console.log('***vm.isAdmin***');
-      console.log(vm.isAdmin());
-      
-      //console.log(value.isAdmin());
-
+	  
       vm.getCurrentUser = Auth.getCurrentUser;
     }
 

@@ -23,11 +23,24 @@ angular.module('examApp').filter('formatAnswer',function(){
 	};
 });
 
+//=============================================================//
+//Format Answer for the Review Screen
+//=============================================================//
+angular.module('examApp').filter('prepend',function(){
+	return function(index){
+		console.log(index);
+		if(index === undefined){
+			return;
+		}
+		return String.fromCharCode(65 + index) + '.  ';
+	};
+});
+
 //=================================================================//
 //Main Controller for the Logic
 //=================================================================//
 angular.module('examApp')
-	.controller('LaunchCtrl', function ($state, $stateParams, $filter, api, Auth) {
+	.controller('LaunchCtrl', function ($log, $state, $stateParams, $filter, api, Auth) {
 		var vm = this;
 		var questionOptions = ['a','b','c','d','e','f'];
 		
@@ -36,6 +49,7 @@ angular.module('examApp')
 		vm.allQuestions = [];
 		vm.paper = null;
 		vm.result = null;
+		vm.allCorrectAnswer = [];
 
 		vm.launchStep = 0;
 
@@ -52,7 +66,8 @@ angular.module('examApp')
 		function init(){
 			var examId = $stateParams.examId;
 			loadExam(examId);
-			vm.launchStep = 0;
+			vm.launchStep = 4;
+			loadCorrectAnswers();
 			vm.isAdmin = Auth.isAdmin();
 		}
 
@@ -65,26 +80,27 @@ angular.module('examApp')
 		};
 
 
-		function loadOptions(){
-			vm.answerOptions = [];
+		function loadOptions(currentQuestion){
+			var answerOptions = [];
 			for(var i = 0; i < questionOptions.length;i++){
 				var currentKey = questionOptions[i];
-				var answerValue = vm.currentQuestion[currentKey];
+				var answerValue = currentQuestion[currentKey];
 				if(!answerValue) {
 					continue;
 				}
 
-				vm.answerOptions.push({
+				answerOptions.push({
 					key: currentKey,
 					value: answerValue
 				});
 			}
+			return answerOptions;
 		}
 
 		function loadCurrentQuestion(){
 			vm.currentQuestion = vm.allQuestions[vm.currentQuestionIndex];
 			vm.currentAnswer = vm.allAnswers[vm.currentQuestionIndex]; 
-			loadOptions();
+			vm.answerOptions = loadOptions(vm.currentQuestion);
 		}
 
 		vm.isPrevious = function(){	
@@ -148,6 +164,76 @@ angular.module('examApp')
 			
 			return;
 		};
+
+		vm.moveToCorrectAnswer = function(){
+			vm.launchStep = 4;
+			loadCorrectAnswers();
+			return;
+		};
+
+		function loadCorrectAnswers () {
+			var paperId = 17;
+			api.connectApi(vm,'Loading...',api.correctAnswersForPaper.bind(api, paperId), function(result){
+				vm.allCorrectAnswer = processCorrectAnswers(result);
+			});
+		}
+
+		function processCorrectAnswers(result){
+			for(var i = 0; i < result.length;i++){
+				var currentQuestion = result[i];
+				currentQuestion.answerOptions = loadOptions(currentQuestion);
+				if(currentQuestion.length === 1) { //Radio
+					currentQuestion.selectedAnswer = currentQuestion.answer;
+				}
+				else {
+					var selAnswer = {};
+					if(currentQuestion.answer){
+						var arr = currentQuestion.answer.split('');
+						_.forEach(arr,function(value){
+							selAnswer[value] = true;
+						});
+						currentQuestion.selectedAnswer = selAnswer;
+					}
+				}
+				isCorrect(currentQuestion);
+			}
+			return result;
+		}
+		function isCorrect(currentQuestion){
+			
+			_.forEach(currentQuestion.answerOptions, function(answer){
+			
+				if(currentQuestion[answer.key + 'Correct'] === 1) {
+					answer.isCorrect = true;
+				}
+
+				if(currentQuestion.length === 1){
+					if(currentQuestion.selectedAnswer == answer.key && currentQuestion[answer.key + 'Correct'] == 0){
+						answer.isIncorrect = true;
+					}
+				}
+				else {
+					if(answer.key == currentQuestion.selectedAnswer[answer.key] && currentQuestion[answer.key + 'Correct'] == 0){
+						answer.isIncorrect = true;
+					}
+				}
+			});
+		}
+
+		function generateOptions(currentQuestion){
+			for(var i = 0; i < questionOptions.length;i++){
+				var currentKey = questionOptions[i];
+				var answerValue = currentQuestion[currentKey];
+				if(!answerValue) {
+					continue;
+				}
+
+				vm.answerOptions.push({
+					key: currentKey,
+					value: answerValue
+				});
+			}	
+		}
 
 		function prepForLaunch(){
 			if(vm.paper === null) {

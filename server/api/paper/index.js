@@ -7,6 +7,7 @@ var controller = require('./paper.controller');
 var router = express.Router();
 
 router.get('/result/:paperId', auth.isAuthenticated(), controller.result);
+router.get('/review/:paperId', auth.isAuthenticated(), controller.correctAnswersForReview);
 router.get('/', auth.isAuthenticated(), controller.index);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.isAuthenticated(), controller.create);

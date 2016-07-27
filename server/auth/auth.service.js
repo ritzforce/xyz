@@ -6,7 +6,7 @@ var config = require('../config/environment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
-var User = require('../api/user/user');
+var User = require('../api/user/sessionUser');
 var validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
@@ -34,6 +34,7 @@ function isAuthenticated() {
       user.findById(req.user.id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
+        
 
         req.user = user;
         next();
