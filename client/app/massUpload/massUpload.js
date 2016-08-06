@@ -6,6 +6,9 @@ angular.module('examApp')
       .state('massUpload', {
         url: '/massUpload',
         templateUrl: 'app/massUpload/massUpload.html',
-        controller: 'MassUploadCtrl'
+        controller: 'MassUploadCtrl',
+        controllerAs: 'vm',
+        authenticate: true,
+        admin: true,
       });
   });

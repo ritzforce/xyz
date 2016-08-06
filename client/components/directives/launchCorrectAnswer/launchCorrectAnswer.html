@@ -5,50 +5,70 @@
 
     <div class="panel-body" ng-cloak>
         <div class="row">
+            <div class="col-xs-12 text-center">
+                <b>Score</b>: {{vm.result.percent}} % &nbsp;<b>Result</b>: <span ng-if="vm.result.result">PASS</span> <span ng-hide="vm.result.result">FAIL</span>
+            </div>
+            
+            <div class="col-xs-12">
+                <hr/>
+            </div>
+            
             <div class="form-inline col-xs-12">
                 <div class="form-group col-xs-4">
                     <label for="selAnswerType">Show&nbsp;</label>
-                    <select name="selAnswerType" ng-model="vm.selAnswerType" class="form-control">
-                        <option value="">All</option>
+                    <select name="selAnswerType" ng-model="vm.filterType" ng-change="vm.filterByAnswerType()" 
+                        class="form-control">
+                        <option value="-1">All</option>
                         <option value="1">Correct</option>
                         <option value="0">Incorrect</option>
                 </select>
                 </div>
                 <div class="form-group col-xs-6">
                     <label for="txtFilter">Filter</label>
-                    <input type="text" class="form-control" size="40" name="txtFilter" id="txtFilter" placeholder="Filter By Question Description or Answer"
+                    <input type="text" class="form-control" size="40" ng-model="vm.filterText" name="txtFilter" id="txtFilter"
+                     placeholder="Filter By Question Description or Answer" ng-change="vm.filterAnswersByText()"
                     />
                 </div>
                 <div class="form-group col-xs-2">
                     <label for="selPageSize">Page Size&nbsp;</label>
-                    <select name="selPageSize" class="form-control">
-                    <option>All</option>
-                    <option>10</option>
-                    <option>20</option>
-                    <option>30</option>
-                    <option>40</option>
+                    <select name="selPageSize" ng-model="vm.pageSize" ng-change="vm.pageSizeChanged()"
+                         class="form-control">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
                 </select>
                 </div>
 
                 <div class="col-xs-12">
-                    <hr/>
+                    <hr/>      
                 </div>
+
+				<div class="col-xs-12 text-center" ng-hide="vm.hidePager()">
+					<uib-pagination boundary-links="true" force-ellipses="true" max-size="5" rotate="true" 
+                     previous-text="&lsaquo;" next-text="&rsaquo;" total-items="vm.total" 
+                     items-per-page="vm.pageSize"
+                     ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>	
+				</div>
             </div>
 
         </div>
 
 
-        <div class="row" ng-repeat="question in vm.allCorrectAnswer">
+        <div class="row" ng-repeat="question in vm.correctAnswerPage">
             <div class="col-xs-12">
                 <label class="control-label text-primary"> 
-                    Question {{$index + 1}}. 
+                    Question {{(vm.pageSize * (vm.currentPage - 1)) + $index + 1}}. 
                     <i style="font-size:2em;" class="text-success fa fa-check fa-4" ng-show="question.correct"></i>
                     <i style="font-size:2em;" class="text-danger fa fa-times fa-4" ng-hide="question.correct"></i>
                 </label>
             </div>
 
+            
+
             <div class="col-xs-12">
-                <span>{{question.questionText}}</span>
+                <span ng-bind-html="question.questionText | formatQuestion"></span>
             </div>
 
             <div class="col-xs-12">
@@ -98,7 +118,11 @@
 
         <div class="row">
             <div class="col-xs-12 text-center" >
-                <uib-pagination boundary-links="true" force-ellipses="true" max-size="5" rotate="true"  previous-text="&lsaquo;" next-text="&rsaquo;" total-items="vm.total" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>	
+                <uib-pagination boundary-links="true" force-ellipses="true" max-size="5" rotate="true"  
+                previous-text="&lsaquo;" next-text="&rsaquo;" ng-hide="vm.hidePager()"
+                items-per-page="vm.pageSize"
+                total-items="vm.total" ng-model="vm.currentPage" 
+                ng-change="vm.pageChanged()"></uib-pagination>	
             </div>           
         </div>
 
@@ -113,13 +137,4 @@
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
 </div>

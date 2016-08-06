@@ -64,11 +64,44 @@ exports.show = function (req, res, tblName, selectFields) {
 	});
 };
 
+
+exports.createBulkLoad = function(tblName, record, callback){
+	logger.debug('Entering apiUtils.create with bulk load option', record);
+	
+	sqlHelper.getConnection(function (err, connection) {
+
+		if(err){
+			callback(err,null);
+			return;
+		}
+		connection.query('INSERT INTO ' + tblName + ' SET ?', record, function(err, result){
+			record.Complete = true;
+
+			if(err){
+				logger.error('Error occurred', err);
+				record.error = JSON.stringify(err);
+				record.success = false;
+				callback(null,record);
+				return;
+			}
+
+			record.id = result.insertId;
+			record.success = true;
+			callback(null, record);
+		});
+	});
+	logger.debug('Exiting apiUtils.create with bulk load option');
+}
+
+
 /***********************************************/
 /* Create one tbl record, based on input
 /***********************************************/
 exports.create = function (req, res, tblName, requestBody, selectFields, callback) {
 	logger.debug('Entering apiUtils.create with parameters with ', "table", tblName, "for select fields ", selectFields);
+
+	if (requestBody.createdDate) { delete requestBody.createdDate;} 
+	if (requestBody.lastModifiedDate) {delete requestBody.lastModifiedDate; }
 
     getConnection(req, res, function (connection) {
 		connection.query('INSERT INTO ' + tblName + ' SET ?', requestBody, function(err,result){
@@ -113,10 +146,13 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 				  "with request body", requestBody);
 
 	if (requestBody.id) { delete requestBody.id; }
+	if (requestBody.createdDate) { delete requestBody.createdDate;} 
+	if (requestBody.lastModifiedDate) {delete requestBody.lastModifiedDate; }
 
 	
 	getConnection(req, res, function (connection) {
         var recordId = connection.escape(req.params.id);
+		logger.info('Updating record with id ', req.params.id);
         
         var updateQuery = 'UPDATE ' + tblName + ' SET ? WHERE ?';
 
@@ -148,6 +184,27 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 		});
 	});
 };
+
+exports.destroyBulk = function(req, res, tblName, requestBody){
+	logger.debug('Entering apiUtils.destroyBulk with tblName', tblName, ' & request body', requestBody);
+	
+	getConnection(req, res, function (connection) {
+        var deleteQuery = 'DELETE FROM ' + tblName + ' WHERE ?'; 
+		connection.query(deleteQuery, requestBody, function(err, result){
+			connection.release();
+			if(err) {
+				handleError(res,err);
+				return;
+			}
+			if(result.affectedRows === 0) {
+				logger.debug('Exit apiUtils.destroyBulk with not found result', result);
+				return res.send(404);
+			}
+			logger.debug('Exit apiUtils.destroyBulk with with success', result);
+			return res.send(204);
+		});
+	});
+}
 
 /********************************************/
 /* Deletes a exam from the DB.

@@ -5,15 +5,16 @@
             <h3 class="sub-header"><i class="fa fa-university" aria-hidden="true"></i> {{vm.exam.name}}</h3>
         </div>
 
-        <div class="col-xs-10 col-xs-offset-1" ng-show="vm.saveError">
+        <div class="col-xs-10 col-xs-offset-1" ng-show="vm.error">
             <uib-alert type="danger" class="text-center">
                 <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
-                <span>{{vm.saveError}}</span>
+                <span>{{vm.error}}</span>
             </uib-alert>
         </div>
 
         <!--Main Panel--->
-        <div class="col-xs-10 col-xs-offset-1">
+        <div class="col-xs-10 col-xs-offset-1" ng-cloak>
+            
             <!--- Step 0 Prep Launch --->
             <launch-prep ng-show="(vm.launchStep == 0)"></launch-prep>
 
@@ -26,7 +27,13 @@
             <!--- Step 3 Show Results --->
             <launch-result ng-show="(vm.launchStep == 3)"></launch-result>
 
+            <!-- Step 4 Show Review Page --->
             <launch-correct-answer ng-show="(vm.launchStep == 4)"></launch-correct-answer>
+
+            <!-- Step 5 Invalid Page -->
+            <div ng-if="(vm.launchStep == -1)" class="text-center">
+                <button class="btn btn-warning btn-lg" ng-click="vm.exit()"><i class="fa fa-external-link" aria-hidden="true"></i> Exit Exam</button>
+            </div>
 
         </div>
         <!--End of Main Panel-->

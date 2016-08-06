@@ -56,7 +56,6 @@ angular.module('examApp')
 			return vm.isNew ? 'New Exam' : 'Edit Exam - ' + vm.exam.name;
 		};
 
-
 		/*************************************Buttons****************************************/
 		vm.edit = function () {
 			$state.go('examEdit', { examId: vm.exam.id });
@@ -66,15 +65,12 @@ angular.module('examApp')
 			$state.go('launch', { examId: recordId });
 		};
 
-
 		vm.delete = Modal.confirm.delete(function (record) {
-			$log.log(record);
 			deleteExam(record.id);
 		});
 
 		vm.deleteQuestion = Modal.confirm.delete(function (record) {
-			$log.log(record);
-			deleteQuestion(record.id);
+			deleteQuestion(record.id, record);
 		});
 
 		vm.cancel = function () {
@@ -85,30 +81,11 @@ angular.module('examApp')
 			if (vm.frm.$invalid) {
 				return;
 			}
-			vm.isLoading = true;
-			api.saveExam(vm.exam, vm.isNew)
-				.then(function (result) {
-					notification.info('Exam', vm.exam.name + ' saved successfully');
-					$state.go('exam', { examId: result[0].id });
-				})
-				.catch(function (err) {
-					notification.error('Exam', vm.exam.name + ' an error has occurred');
-					handleError(err);
-				})
-				.finally(function () {
-					vm.isLoading = false;
-				});
-		};
 
-		function handleError(err) {
-			if (err.status === 500) {
-				vm.saveError = 'A server side error has occurred. Please try again or contact the administrator';
-			}
-			else {
-				vm.saveError = err;
-			}
-			$log.error(err);
-		}
+			api.connectApi(vm, 'Saving...', api.saveExam.bind(api, vm.exam, vm.isNew), function (result) {
+				$state.go('exam', { examId: result[0].id });
+			});
+		};
 
 		/*********************************************AJAX CALLS********************************/
 		function getCategories() {
@@ -126,69 +103,28 @@ angular.module('examApp')
 				});
 		}
 		function loadQuestionsFromApi(examId) {
-			vm.isLoading = true;
-
-			api.getAllQuestionsForExamDisplay(examId)
-				.then(function (result) {
-					vm.questions = result;
-				})
-				.catch(function (err) {
-					console.log(err);
-				})
-				.finally(function () {
-					vm.isLoading = false;
-				});
+			api.connectApi(vm, 'Loading...', api.getAllQuestionsForExamDisplay.bind(api, examId), function (result) {
+				vm.questions = result;
+			});
 		}
 
-		function deleteQuestion(questionId) {
-			vm.isLoading = true;
-
-			api.deleteQuestion(questionId)
-				.then(function (result) {
-					$log.log('***Delete Question***');
-					$log.log(result);
-					loadQuestionsFromApi($stateParams.examId);
-					notification.info('Question', result.name + ' deleted successfully');
-				})
-				.catch(function (err) {
-					notification.error('Question','An error has occurred during deletion');
-					handleError(err);
-				})
-				.finally(function () {
-					vm.isLoading = false;
-				});
+		function deleteQuestion(questionId, question) {
+			api.connectApi(vm, 'Deleting...', api.deleteQuestion.bind(api, questionId), function (result) {
+				loadQuestionsFromApi($stateParams.examId);
+				notification.info('Delete', question.name + ' deleted successfully');
+			});
 		}
 
 		function deleteExam(examId) {
-			vm.isLoading = true;
-
-			api.deleteExam(examId)
-				.then(function (result) {
-					vm.exam = result[0];
-					$state.go('main');
-				})
-				.catch(function (err) {
-					handleError(err);
-				})
-				.finally(function () {
-					vm.isLoading = false;
-				});
+			api.connectApi(vm, 'Deleting...', api.deleteExam.bind(api, examId), function (result) {
+				notification.info('Exam', vm.exam.name + ' deleted successfully');
+				$state.go('main');
+			});
 		}
 
 		function loadExam(examId) {
-			vm.isLoading = true;
-
-			api.getExam(examId)
-				.then(function (result) {
-					console.log(result[0]);
-					vm.exam = result[0];
-				})
-				.catch(function (err) {
-					console.log(err);
-				})
-				.finally(function () {
-					vm.isLoading = false;
-				});
+			api.connectApi(vm, 'Loading...', api.getExam.bind(api, examId), function (result) {
+				vm.exam = result;
+			});
 		}
-
 	});

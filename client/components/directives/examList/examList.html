@@ -1,7 +1,7 @@
 
 	<div class="media" ng-repeat="exam in vm.lstExam" ng-cloak>
 		<div class="media-left media-top">
-			<a href="javascript:void(0)" ui-sref="exam({examId: exam.id})">
+			<a href="javascript:void(0)" ng-click="vm.goToExamDetail(exam.id)">
 				<img class="media-object img-thumbnail" style="padding:30px;" ng-src="assets/images/{{exam.imageId}}.png" />
 			</a>
 
@@ -9,8 +9,7 @@
 		<div class="media-body" style="padding-left:20px;">
 		
 			<h4 class="media-heading title-heading">
-				<a href="javascript:void(0)" ng-show="vm.isAdmin()" ui-sref="exam({examId: exam.id})">{{exam.name}}</a>
-				<a href="javascript:void(0)" ng-hide="vm.isAdmin()">{{exam.name}}</a>
+				<a href="javascript:void(0)" ng-click="vm.goToExamDetail(exam.id)">{{exam.name}}</a>
 				<h4 class="text-danger" ng-hide="exam.active">Inactive</h4>
 				
 			</h4>

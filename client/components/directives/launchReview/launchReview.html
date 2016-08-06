@@ -8,14 +8,19 @@
                 Review your answers (Answers marked with * are the ones marked for review)
             </div>
             <div class="col-xs-12">
-                &nbsp;
+                 <div class="text-success pull-right">
+                    Time Remaining <b>{{vm.timer.formattedTime}}</b>
+                </div> 
+            </div>
+            <div class="col-xs-12">
+               &nbsp;
             </div>
         </div>
 
         <div class="row">
             <div class="col-xs-2" ng-repeat="answer in vm.allAnswers">
-                <b>{{$index + 1}}.</b> 
-                <a href="javascript:void(0)">{{answer | formatAnswer}}</a> <span ng-show="answer.markForReview">*</span>
+                <b> <a href="javascript:void(0)" ng-click="vm.jumpToQuestion($index)">{{$index + 1}}.</a> </b> 
+                <a href="javascript:void(0)" ng-click="vm.jumpToQuestion($index)">{{answer | formatAnswer}}</a> <span ng-show="answer.markForReview">*</span>
             </div>
         </div>
 

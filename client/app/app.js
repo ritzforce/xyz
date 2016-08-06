@@ -5,7 +5,8 @@ angular.module('examApp', [
 	'ngResource',
 	'ngSanitize',
 	'ui.router',
-	'ui.bootstrap'
+	'ui.bootstrap',
+	'ngFileUpload'
 ])
 	.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 		$urlRouterProvider
@@ -45,13 +46,19 @@ angular.module('examApp', [
 		// Redirect to login if route requires auth and you're not logged in
 		$rootScope.$on('$stateChangeStart', function (event, next) {
 			
+			if(next.admin && !Auth.isAdmin()){
+				$location.path('/');
+			}
+
 			Auth.isLoggedIn(function (loggedIn) {
-				$log.log('**loggedIn***',loggedIn);
 				if (next.anonymous) {
 					return;
 				}
 				if (!loggedIn) {
 					$location.path('/login');
+				}
+				if(next.admin && !Auth.isAdmin()){
+					$location.path('/');
 				}
 			});
 		});

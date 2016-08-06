@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('UserProfileCtrl', function ($stateParams, $log, api) {
+	.controller('UserProfileCtrl', function ($stateParams, $state, $log, Auth, api) {
 		
 		var vm = this;
 		vm.isLoading = true;
-
-		console.log('HHHH');
 
 		init();
 
@@ -14,22 +12,30 @@ angular.module('examApp')
 			getProfile();
 		}
 
+		vm.resetPassword = function(){
+			var currentUser = Auth.getCurrentUser();
+		
+			if(vm.user.id === currentUser.id) {
+				$state.go('resetPassword');
+				return;
+			}
+
+			if(Auth.isAdmin()){
+				$state.go('settings', {userId: $stateParams.userId});
+			}
+			else {
+				$state.go('resetPassword');
+			}
+		};
+
 		/**********************************AJAX CALLS****************************/
 		function getProfile() {
-			vm.isLoading = true;
+	
+			api.connectApi(vm,'Loading...',api.getProfile.bind(api, $stateParams.userId), function(result){
+				vm.user = result;
+				processScore();
+			});
 
-			api.getProfile($stateParams.userId)
-				.then(function (result) {
-					console.log(result);
-					vm.user = result;
-					processScore();
-				})
-				.catch(function (err) {
-					$log.error(err);
-				})
-				.finally(function () {
-					vm.isLoading = false;
-				});
 		}
 
 		function processScore(){
@@ -39,7 +45,6 @@ angular.module('examApp')
 			for(var i = 0; i < vm.user.exams.length;i++){
 				var currentExam = vm.user.exams[i];
 				currentExam.computedScore = Math.round((currentExam.maxMarks * currentExam.percent) / 100);
-				//currentExam
 			}
 		}
 

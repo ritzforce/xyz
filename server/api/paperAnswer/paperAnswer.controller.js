@@ -2,6 +2,8 @@ var sqlHelper = require('./../../config/sqlHelper');
 var SqlUtils = require('./../sqlUtils');
 var apiUtils = require('./../apiUtils');
 
+var logger = require('./../../logger/logger');
+
 /***********************************************/
 /* Get list of Questions, show All Questions to Admin
 /***********************************************/
@@ -12,8 +14,8 @@ var TBL_NAME = 'paperanswer';
 
 
 exports.index = function (req, res) {
+	logger.debug('Entering paperAnswer.index with exam Id', req.params.examId);
 	var examId = sqlHelper.escape(req.params.examId);
-
 	apiUtils.index(req, res, TBL_NAME, selectFields, 'name ASC', ['examId = ' + examId]);
 };
 
@@ -88,6 +90,15 @@ function queryQuestion(req, res, result, requestBody){
 exports.update = function (req, res) {
 	apiUtils.update(req, res, TBL_NAME, req.body, selectFields);
 };
+
+exports.purgePaper = function(req, res){
+	logger.debug('Entering paperAnswer.purgePaper with paperId', req.params.paperId);
+
+	var destroyBody = {
+		paperId: req.params.paperId,
+	};
+	apiUtils.destroyBulk(req, res, TBL_NAME, destroyBody);
+}
 
 /********************************************/
 /* Deletes a Paper from the DB.

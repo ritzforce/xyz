@@ -1,39 +1,69 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-3 col-md-2 sidebar">
+			<admin-side-menu></admin-side-menu>
+		</div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>Change Password</h1>
-    </div>
-    <div class="col-sm-12">
-      <form class="form" name="form" ng-submit="changePassword(form)" novalidate>
+		<div class="col-sm-9 col-md-10" ng-cloak="true">
+			<div class="row">
+				<div class="col-xs-12">
+					<h3 class="sub-header"><i class="fa fa-user" aria-hidden="true"></i> Reset Password {{vm.headerText}}</h3>
+				</div>
 
-        <div class="form-group">
-          <label>Current Password</label>
+				<div class="col-xs-12">
+					<uib-alert type="danger" class="text-center" ng-show="vm.error">
+						<span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+						<span>{{vm.error}}</span>
+					</uib-alert>
+				</div>
 
-          <input type="password" name="password" class="form-control" ng-model="user.oldPassword"
-                 mongoose-error/>
-          <p class="help-block" ng-show="form.password.$error.mongoose">
-              {{ errors.other }}
-          </p>
-        </div>
+				<form class="form-horizontal" name="vm.frm" novalidate>
+					
+					<div class="form-group" ng-if="vm.isResetPassword" ng-class="{'has-error': vm.frm.oldPassword.$invalid && (vm.frm.oldPassword.$dirty || vm.frm.$submitted )}">
+						<label for="oldPassword" class="col-sm-2 control-label control-required">Current Password</label>
+						<div class="col-sm-4">
+							<input type="password" name="oldPassword" ng-minlength="3" required ng-model="vm.oldPassword" class="form-control" id="txtOldPassword"
+								placeholder="Password" />
+							<span class="help-block" ng-show="vm.frm.oldPassword.$invalid && (vm.frm.oldPassword.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.oldPassword.$error.required">Current Password is required</span>
+							</span>
+						</div>
+					</div>
 
-        <div class="form-group">
-          <label>New Password</label>
+					<div class="form-group" ng-class="{'has-error': vm.frm.password.$invalid && (vm.frm.password.$dirty || vm.frm.$submitted )}">
+						<label for="password" class="col-sm-2 control-label control-required">Password</label>
+						<div class="col-sm-4">
+							<input type="password" name="password" ng-minlength="3" required ng-model="vm.password" class="form-control" id="txtPassword"
+								placeholder="Password" />
+							<span class="help-block" ng-show="vm.frm.password.$invalid && (vm.frm.password.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.password.$error.required">Password is required</span>
+								<span ng-show="vm.frm.password.$minlength.required">Password must be at least 3 characters.</span>
+							</span>
+						</div>
+					</div>
 
-          <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword"
-                 ng-minlength="3"
-                 required/>
-          <p class="help-block"
-             ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
-            Password must be at least 3 characters.
-          </p>
-        </div>
+					<div class="form-group" ng-class="{'has-error': (vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)}">
+						<label for="confirmPassword" class="col-sm-2 control-label control-required">Confirm Password</label>
+						<div class="col-sm-4">
+							<input type="password" required name="confirmPassword" ng-model="vm.confirmPassword" class="form-control" id="txtConfirmPassword"
+								placeholder="Confirm Password" />
+							<span class="help-block" ng-show="(vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)">
+								    <span ng-hide="vm.isConfirmPassword">Passwords do not match</span>
+							<span ng-show="vm.frm.confirmPassword.$error.required">Please confirm the password again</span>
+							</span>
+						</div>
+					</div>
 
-        <p class="help-block"> {{ message }} </p>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button ng-click="vm.change()" ng-disabled="vm.isLoading" type="submit" class="btn btn-warning">Save</button>							&nbsp;
+							<button ng-click="vm.cancel()" ng-disabled="vm.isLoading" class="btn btn-default">Cancel</button>
+						</div>
+					</div>
 
-        <button class="btn btn-lg btn-primary" type="submit">Save changes</button>
-      </form>
-    </div>
-  </div>
+				</form>
+			</div>
+		</div>
+
+	</div>
 </div>

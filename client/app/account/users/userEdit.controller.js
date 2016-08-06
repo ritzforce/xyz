@@ -32,19 +32,16 @@ angular.module('examApp')
 
 		/***********************************************************************************/
 		vm.save = function () {
-			$log.log('**save***');
+			
 			if(vm.frm.$invalid){
 				return;
 			}
 
-			$log.log('**save2***');
 			validatePassword();
 
 			if(!vm.editMode && !vm.isConfirmPassword){
 				return;
 			}
-
-			$log.log('**save4***');
 			api.connectApi(vm, 'Saving..', api.saveUser.bind(api, vm.user), function (result) {
 				var message = vm.editMode ? ' saved' : 'created';
 				notification.success('User','User ' + message + ' successfully');

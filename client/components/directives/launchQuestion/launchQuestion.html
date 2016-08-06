@@ -7,12 +7,21 @@
            <div class="col-xs-12">
                <uib-progressbar  type="warning" value="vm.currentQuestionIndex + 1" title="Progress" max="vm.allQuestions.length" />
            </div>
+           <div class="col-xs-12">
+                <div class="text-success pull-right">
+                    Time Remaining <b>{{vm.timer.formattedTime}}</b>
+                </div> 
+           </div>
+           <div class="col-xs-12">
+               &nbsp;
+           </div>
+           
             <div class="col-xs-12">
                 <label class="control-label text-primary"> Question {{vm.currentQuestionIndex + 1}}.</label>
             </div>
 
             <div class="col-xs-12">
-                {{vm.currentQuestion.questionText}}
+                <span ng-bind-html="vm.currentQuestion.questionText | formatQuestion"></span>
             </div>
 
             <div class="col-xs-12">

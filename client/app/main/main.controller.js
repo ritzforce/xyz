@@ -29,14 +29,12 @@ angular.module('examApp')
 				$state.go('login');
 				return;
 			}
-
-			loadAllExam();
 			getCategories();
+			loadAllExam();
 			vm.isAdmin = Auth.isAdmin;
 		}
 
-		
-
+	
 		vm.hidePager = function(){
 			if(vm.total < PAGE_SIZE){
 				return true;
@@ -75,21 +73,10 @@ angular.module('examApp')
 
 		/******************************************AJAX **************************************/
 		function loadAllExam(){
-			vm.isLoading = true;
-
-			api.getAllExams()
-			.then(function(result){
-				//Contains all data in chunked format
+			api.connectApi(vm,'Loading Exams...',api.getAllExams.bind(api), function(result){
 				vm.masterListExam = result;
 				reGenerateChunks(result);
-				
-			})
-			.catch(function(err){
-				console.log(err);
-			})
-			.finally(function(){
-				vm.isLoading = false;
-			});			
+			});	
 		}
 
 		function getCategories() {

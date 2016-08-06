@@ -11,10 +11,10 @@
                     <h3 class="sub-header"><i class="fa fa-question-circle-o" aria-hidden="true"></i> {{vm.headerText()}}</h3>
                 </div>
 
-                <div class="col-xs-12" ng-show="vm.saveError">
+                <div class="col-xs-12" ng-show="vm.error">
                     <uib-alert type="danger" class="text-center">
                         <span class="glyphicon glyphicon glyphicon-remove-sign"></span> 
-                        <span>{{vm.saveError}}</span>
+                        <span>{{vm.error}}</span>
                     </uib-alert>
                 </div> 
 
@@ -63,7 +63,7 @@
                         <div class="col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.aCorrect"> <i> Check If the A anwer is a correct answer </i>
+                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.aCorrect"> <i class="small"> Check If the A anwer is a correct answer </i>
                                 </label>
                             </div>
                         </div>
@@ -77,11 +77,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="chkACorrect" class="col-sm-2 control-label">B Correct</label>
+                        <label for="chkBCorrect" class="col-sm-2 control-label">B Correct</label>
                         <div class="col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.bCorrect"> <i> Check If the B anwer is a correct answer </i>
+                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.bCorrect">  <i class="small"> Check If the B anwer is a correct answer </i>
                                 </label>
                             </div>
                         </div>
@@ -95,11 +95,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="chkACorrect" class="col-sm-2 control-label">C Correct</label>
+                        <label for="chkCCorrect" class="col-sm-2 control-label">C Correct</label>
                         <div class="col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.cCorrect"> <i> Check If the C anwer is a correct answer </i>
+                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.cCorrect">  <i class="small"> Check If the C anwer is a correct answer </i>
                                 </label>
                             </div>
                         </div>
@@ -113,11 +113,29 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="chkACorrect" class="col-sm-2 control-label">D Correct</label>
+                        <label for="chkDCorrect" class="col-sm-2 control-label">D Correct</label>
                         <div class="col-sm-10">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.dCorrect"> <i> Check If the D anwer is a correct answer </i>
+                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.dCorrect">  <i class="small"> Check If the D anwer is a correct answer </i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtOptionE" class="col-sm-2 control-label">E.</label>
+                        <div class="col-sm-4">
+                            <textarea rows="3" class="form-control" ng-model="vm.question.e" id="txtOptionE" placeholder="Answer Choice Text for Option E"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chkECorrect" class="col-sm-2 control-label">E Correct</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-true-value="1" ng-false-value="0" ng-model="vm.question.eCorrect"> <i class="small"> Check If the E anwer is a correct answer </i>
                                 </label>
                             </div>
                         </div>

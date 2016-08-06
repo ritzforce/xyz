@@ -1,0 +1,41 @@
+<div>
+
+    <div>
+        <button type="file" ngf-select="uploadFiles($file, $invalidFiles)" accept=".csv" ngf-max-height="1000" 
+            ngf-max-size="5MB">Select File</button>
+    </div>   
+
+    <div style="margin-top:15px" ng-show="f.name">
+        <b>Selected File </b>  {{f.name}}  (Uploaded {{f.progress}}% )
+    </div>
+    <div class="text-danger" ng-show="errFile.name || errorMsg"> 
+        <b>Error: </b> {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}  {{errorMsg}}
+    </div>
+
+    <div>
+        &nbsp;
+    </div>
+
+    <div class="col-xs-6" ng-show="complete">
+        <table class="table table-condensed">
+            <tr>
+                <th>Status</th><th>Count</th>
+            </tr>
+            <tr>
+                <td>Success</td>
+                <td>{{uploadResult.success}}</td>
+            </tr>
+            <tr>
+                <td>Failure</td>
+                <td>{{uploadResult.failure}}</td>
+            </tr>
+            <tr>
+                <td>File</td>
+                <td><a href="javascript:void(0)" ng-click="downloadFile()">Result</a></td>
+            </tr>
+        
+        
+        </table>
+    </div>
+
+</div>

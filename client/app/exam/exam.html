@@ -11,10 +11,10 @@
                     <h3 class="sub-header"><i class="fa fa-university" aria-hidden="true"></i> {{vm.headerText()}}</h3>
                 </div>
                 
-                <div class="col-xs-12" ng-show="vm.saveError">
+                <div class="col-xs-12" ng-if="vm.error">
                     <uib-alert type="danger" class="text-center">
                         <span class="glyphicon glyphicon glyphicon-remove-sign"></span> 
-                        <span>{{vm.saveError}}</span>
+                        <span>{{vm.error}}</span>
                     </uib-alert>
                 </div> 
                

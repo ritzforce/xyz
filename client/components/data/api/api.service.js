@@ -48,7 +48,7 @@ angular.module('examApp')
 				e: '',
 				f: '',
 				active: true,
-				aCorrect: true,
+				aCorrect: false,
 				bCorrect: false,
 				cCorrect: false,
 				dCorrect: false,
@@ -76,8 +76,10 @@ angular.module('examApp')
 			vm.isLoading = true;
 			vm.error = null;
 
-			notification.notify(inProgressText);
-
+			if(inProgressText){
+				notification.notify(inProgressText);
+			}
+			
 			sourceFunction()
 			.then(function(result){
 				return success(result);
@@ -172,16 +174,13 @@ angular.module('examApp')
 		};
 
 		this.getProfile = function(userId) {
-			console.log(userId);
-
+			
 			if(userId) {
-				console.log("Generic profile");
 				return $http.get('/api/users/profile/' + userId).then(function(response){
 					return response.data;
 				});
 			}
 			else {
-				$log.log(" Specific My Profile");
 				return $http.get('/api/users/myprofile').then(function(response){
 					return response.data;
 				});
@@ -199,22 +198,16 @@ angular.module('examApp')
 			});
 		};
 
-		this.getResult = function (paperId) {
-			return $http.get('/api/papers/result/' + paperId).then(function (response) {
-				return response.data;
-			});
+		this.getResult = function (paperId, timeTaken) {
+			return this.getAll('/api/papers/result/' + paperId + '/' + timeTaken);
 		};
 
 		this.savePaper = function (paper, isNew) {
 			if (isNew) {
-				return $http.post('/api/papers', paper).then(function (response) {
-					return response.data;
-				});
+				return this.post('/api/papers', paper);
 			}
 			else {
-				return $http.put('/api/papers/' + paper.id, paper).then(function (response) {
-					return response.data;
-				});
+				return this.put('/api/papers/' + paper.id, paper);
 			}
 		};
 
@@ -222,6 +215,10 @@ angular.module('examApp')
 			return $http.post('/api/paperAnswers', paperAnswer).then(function (response) {
 				return response.data;
 			});
+		};
+
+		this.purgePaper = function(paperId){
+			return this.delete('/api/paperAnswers/paper/' + paperId);
 		};
 
 		/***********************************Category****************************************************/
@@ -273,77 +270,61 @@ angular.module('examApp')
 
 		/*******************************************QUESTION*******************************************/
 		this.saveQuestion = function (question, isNew) {
-			if (isNew) {
-				return $http.post('/api/questions', question).then(function (response) {
-					return response.data;
-				});
+			if(isNew){
+				return this.post('/api/questions', question);
 			}
 			else {
-				return $http.put('/api/questions/' + question.id, question).then(function (response) {
-					return response.data;
-				});
+				return this.put('/api/questions/' + question.id, question);
 			}
 		};
 
 		this.getAllQuestionsForExamDisplay = function (examId) {
-			console.log(examId);
-
-			return $http.get('/api/questions/exam/' + examId).then(function (response) {
-				return response.data;
-			});
+			return this.getAll('/api/questions/exam/' + examId);
 		};
 
 		this.getAllQuestionsForLaunch = function (examId) {
-			return $http.get('/api/questions/exam/launch/' + examId).then(function (response) {
-				return response.data;
-			});
+			return this.getAll('/api/questions/exam/launch/' + examId);
 		};
 
 		this.deleteQuestion = function (questionId) {
-			return $http.delete('/api/questions/' + questionId).then(function (response) {
-				return response.data;
-			});
+			return this.delete('/api/questions/' + questionId);
 		};
 
 		this.getQuestion = function (questionId) {
-			return $http.get('/api/questions/' + questionId).then(function (response) {
-				return response.data;
-			});
+			return this.get('/api/questions/' + questionId);
 		};
 
 
 		/*******************************************EXAM*******************************************/
 		this.saveExam = function (exam, isNew) {
-			if (isNew) {
-				return $http.post('/api/exams', exam).then(function (response) {
-					return response.data;
-				});
+			if(isNew){
+				return this.post('/api/exams', exam);
 			}
 			else {
-				return $http.put('/api/exams/' + exam.id, exam).then(function (response) {
-					return response.data;
-				});
+				return this.put('/api/exams/' + exam.id, exam);
 			}
 		};
 
 		this.getExam = function (examId) {
-			console.log(examId);
-			return $http.get('/api/exams/' + examId).then(function (response) {
-				return response.data;
-			});
+			return this.get('/api/exams/' + examId);			
 		};
 
 
 		this.getAllExams = function () {
-			return $http.get('/api/exams').then(function (response) {
-				return response.data;
-			});
+			return this.getAll('/api/exams');
 		};
 
 		this.deleteExam = function (examId) {
-			return $http.delete('/api/exams/' + examId).then(function (response) {
-				return response.data;
-			});
+			return this.delete('/api/exams/' + examId);
+		};
+
+		/***************************************USER Id***********************************/
+		this.resetPassword = function(userId, password){
+			return this.post('/api/users/' + userId + '/resetPassword', {password: password});
+		};
+
+		this.resetPasswordSelf = function(oldPassword, newPassword){
+			return this.post('/api/users/resetPasswordSelf', {oldPassword: oldPassword, password: newPassword});
 		};
 
 	});

@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('LoginCtrl', function ($state, $log, Auth, $location, $window) {
+	.controller('LoginCtrl', function ($state, $log, Auth, $location, notification) {
 
 		var vm = this;
 
-		vm.user = {email:'a@a.com',password: 'abc'};
+		vm.user = { email: '', password: '' };
 		vm.error = null;
+		vm.isLoading = false;
 
 		init();
 
@@ -20,20 +21,23 @@ angular.module('examApp')
 			if (!vm.frm.$valid) {
 				return;
 			}
-
+			notification.notify('Logging in...');
+			vm.isLoading = true;
 			Auth.login({
 				email: vm.user.email,
 				password: vm.user.password
 			}).then(function (response) {
-					console.log('******Login response In controller***');
-					$log.log(response);
-					$location.path('/');
+				$location.path('/');
 			})
 			.catch(function (err) {
-				$log.log(err);
-				vm.error = err.message;
+				$log.error(err);
+				if (err.status == 401) {
+					vm.error = 'Invalid Login.The username or password is incorrect';
+				}
+			})
+			.finally(function () {
+				notification.hide();
+				vm.isLoading = false;
 			});
-
-
 		};
 	});

@@ -1,7 +1,8 @@
 <div class="container">
 
 	<div class="row">
- 		<div class="col-xs-12" ng-show="vm.error">
+	
+ 		<div class="col-xs-6 col-xs-offset-3" ng-if="vm.error">
                 <uib-alert type="danger" class="text-center">
                     <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
                     <span>{{vm.error}}</span>
@@ -36,8 +37,8 @@
 						</div>
 
 						<div>
-							<button class="btn btn-warning btn-login" type="submit">Login</button>
-							<a class="btn btn-default  btn-register" href="/signup">Register</a>
+							<button ng-disabled="vm.isLoading" class="btn btn-warning btn-login" type="submit">Login</button>
+							<a ng-disabled="vm.isLoading" class="btn btn-default  btn-register" href="/signup">Register</a>
 						</div>
 
 					</form>

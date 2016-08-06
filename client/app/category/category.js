@@ -7,12 +7,16 @@ angular.module('examApp')
         url: '/category',
         templateUrl: 'app/category/category.html',
         controller: 'CategoryCtrl',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        admin: true,
+        authenticate: true,
       })
 	  .state('categoryEdit', {
         url: '/category/e/:categoryId',
         templateUrl: 'app/category/category.html',
         controller: 'CategoryCtrl',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        admin: true,
+        authenticate: true,
       });
   });

@@ -15,7 +15,7 @@ angular.module('examApp')
 			})
 			.catch(function(err){
 				$log.error(err);
-				$window.alert('Error in getting current user');
+				//$window.alert('Error in getting current user');
 			});
 		}
 
@@ -69,13 +69,9 @@ angular.module('examApp')
 					password: user.password
 				}).
 				success(function (data) {
-					console.log('****Login Successful***');
-					console.log(data);
-
+					
 					$cookieStore.put('token', data.token);
 					return User.get();
-					//console.log('***currentUser****' );
-					//console.log(currentUser);
 
 				}).
 				then(function(dbUser){
@@ -103,7 +99,6 @@ angular.module('examApp')
 				currentUser = {};
 			},
 
-			
 
 			/**
 			 * 

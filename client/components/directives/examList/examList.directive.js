@@ -10,11 +10,18 @@ angular.module('examApp')
 				lstExam: '='
 			},
 			controllerAs: 'vm',
-			controller: function ($scope,$state,Modal) {
+			controller: function ($scope,$state,Modal, Auth) {
 				var vm = this;
 				
 				vm.launchExam = function(recordId){
 					$state.go('launch', {examId: recordId});
+				};
+
+				vm.goToExamDetail = function(recordId){
+					if(Auth.isAdmin()){
+						$state.go('exam',{examId: recordId});
+					}
+					return;
 				};
 
 				vm.editExam = function (recordId) {

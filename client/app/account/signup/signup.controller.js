@@ -22,7 +22,7 @@ angular.module('examApp')
 				password: vm.user.password
 			};
 
-			api.connectApi(vm, 'Creating User...', api.createUser.bind(api, newUser),function(response){
+			api.connectApi(vm, 'Creating User...', api.saveUser.bind(api, newUser),function(response){
 				vm.success = true;
 				vm.user = {};
 			});

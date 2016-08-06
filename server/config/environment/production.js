@@ -13,14 +13,12 @@ module.exports = {
             process.env.PORT ||
             8080,
 
-  // MongoDB connection options
-  mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://admin:admin@ds011482.mlab.com:11482/examstore'
+  sql: {
+    maxLimit: 100,
+    host: '192.186.135.87',
+    user : 'alpha101',
+    password: 'ciitdc#123',
+    database: 'sharma_infotech'
   },
-
- 
 
 };
