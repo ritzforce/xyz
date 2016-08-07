@@ -25,17 +25,7 @@ exports.correctAnswersForReview = function(req, res){
 
 function generateQueryForCorrectAnswerReview(paperId){
 	var queryArr = [];
-	/*
-	queryArr.push('select paperAnswer.id, question.questionText ,');
-	queryArr.push(' question.a, question.b, question.c, question.d, question.e,');
-	queryArr.push('question.aCorrect, question.bCorrect, question.cCorrect, question.dCorrect, question.eCorrect,');
-	queryArr.push(' paperAnswer.answer, paperAnswer.correct , ');
-	queryArr.push(' aCorrect + bCorrect + cCorrect + dCorrect + eCorrect + fCorrect As length ')
-	queryArr.push(' from question, paperAnswer')
-	queryArr.push(' WHERE paperAnswer.paperId = ' + sqlHelper.escape(paperId));
-	queryArr.push(' AND paperAnswer.questionId = question.id ');
-	*/
-
+	
 	queryArr.push(' SELECT * FROM ' );
 	queryArr.push(' (select  paper.Id as pId, question.id As qId, question.questionText, ');
 	queryArr.push(' question.a, question.b, question.c, question.d, question.e, ');
@@ -68,8 +58,6 @@ exports.getPapersForUser = function(userId,callback){
 	apiUtils.fireRawQuery(queryArr.join(' ') ,callback);
 };
 
-
-
 function getPaperDetails(req, res, paperId) {
 	logger.debug('Entering paperController.getPaperDetails with paperId ', paperId);
 	var queryArr = [];
@@ -79,7 +67,6 @@ function getPaperDetails(req, res, paperId) {
 	queryArr.push(' AND correct = true ');
 	queryArr.push(' AND paperId = ' + paperId);
 	queryArr.push(' GROUP BY examId, paperId ');
-	
 	
 	var query = queryArr.join(' ');	
 	logger.info('Query for Paper Result', query);

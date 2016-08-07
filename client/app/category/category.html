@@ -24,7 +24,7 @@
                         <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
                             <label for="name" class="col-sm-2 control-label control-required">Name</label>
                             <div class="col-sm-4">
-                                <input type="text" name="name" required ng-model="vm.category.name" class="form-control" id="txtCategoryName" placeholder="Name"
+                                <input type="text" maxlength="80" name="name" required ng-model="vm.category.name" class="form-control" id="txtCategoryName" placeholder="Name"
                                 />
                                 <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
                                 <span ng-show="vm.frm.name.$error.required">Category Name is required</span>

@@ -22,7 +22,7 @@
                     <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
                         <label for="name" class="col-sm-2 control-label control-required">Name</label>
                         <div class="col-sm-4">
-                            <input type="text" required name="name" ng-model="vm.question.name" class="form-control" id="txtQuestionName" placeholder="Name">
+                            <input type="text" maxlength="255"  required name="name" ng-model="vm.question.name" class="form-control" id="txtQuestionName" placeholder="Name">
                             <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
                                 <span ng-show="vm.frm.name.$error.required">Question Name is required</span>
                             </span>
@@ -32,7 +32,7 @@
                     <div class="form-group" ng-class="{'has-error': vm.frm.questionText.$invalid && (vm.frm.questionText.$dirty || vm.frm.$submitted )}">
                         <label for="txtQuestionText" class="col-sm-2 control-label control-required">Question Text</label>
                         <div class="col-sm-4">
-                            <textarea rows="6" required name="questionText" class="form-control" ng-model="vm.question.questionText" id="txtQuestionText" placeholder="Question Text"></textarea>
+                            <textarea rows="6" maxlength="5000" required name="questionText" class="form-control" ng-model="vm.question.questionText" id="txtQuestionText" placeholder="Question Text"></textarea>
                             <span class="help-block" ng-show="vm.frm.questionText.$invalid && (vm.frm.questionText.$dirty || vm.frm.$submitted)">
                                 <span ng-show="vm.frm.questionText.$error.required">Question Text is required</span>
                             </span>
@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label for="txtOptionA" class="col-sm-2 control-label">A.</label>
                         <div class="col-sm-4">
-                            <textarea rows="3" class="form-control" ng-model="vm.question.a" id="txtOptionA" placeholder="Answer Choice Text for Option A"></textarea>
+                            <textarea rows="3" maxlength="1024"  class="form-control" ng-model="vm.question.a" id="txtOptionA" placeholder="Answer Choice Text for Option A"></textarea>
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <label for="txtOptionB" class="col-sm-2 control-label">B.</label>
                         <div class="col-sm-4">
-                            <textarea rows="3" class="form-control" ng-model="vm.question.b" id="txtOptionB" placeholder="Answer Choice Text for Option B"></textarea>
+                            <textarea rows="3"  maxlength="1024"   class="form-control" ng-model="vm.question.b" id="txtOptionB" placeholder="Answer Choice Text for Option B"></textarea>
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
                     <div class="form-group">
                         <label for="txtOptionC" class="col-sm-2 control-label">C.</label>
                         <div class="col-sm-4">
-                            <textarea rows="3" class="form-control" ng-model="vm.question.c" id="txtOptionC" placeholder="Answer Choice Text for Option C"></textarea>
+                            <textarea rows="3"  maxlength="1024"  class="form-control" ng-model="vm.question.c" id="txtOptionC" placeholder="Answer Choice Text for Option C"></textarea>
                         </div>
                     </div>
 
@@ -108,7 +108,7 @@
                     <div class="form-group">
                         <label for="txtOptionD" class="col-sm-2 control-label">D.</label>
                         <div class="col-sm-4">
-                            <textarea rows="3" class="form-control" ng-model="vm.question.d" id="txtOptionD" placeholder="Answer Choice Text for Option D"></textarea>
+                            <textarea rows="3"  maxlength="1024"  class="form-control" ng-model="vm.question.d" id="txtOptionD" placeholder="Answer Choice Text for Option D"></textarea>
                         </div>
                     </div>
 
@@ -126,7 +126,7 @@
                     <div class="form-group">
                         <label for="txtOptionE" class="col-sm-2 control-label">E.</label>
                         <div class="col-sm-4">
-                            <textarea rows="3" class="form-control" ng-model="vm.question.e" id="txtOptionE" placeholder="Answer Choice Text for Option E"></textarea>
+                            <textarea rows="3"  maxlength="1024"   class="form-control" ng-model="vm.question.e" id="txtOptionE" placeholder="Answer Choice Text for Option E"></textarea>
                         </div>
                     </div>
 

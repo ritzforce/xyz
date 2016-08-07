@@ -8,7 +8,10 @@
 
 			<uib-alert type="success" class="text-center" ng-show="vm.success">
             	<span class="glyphicon glyphicon glyphicon glyphicon-ok"></span>
-                <span>Your user has been created. Please click on <a href="/login">Login</a> to login</span>
+                <span>
+					Your user has been created. <br/>
+					
+				</span>	
             </uib-alert>
 
 			
@@ -19,7 +22,8 @@
 				</div>
 				<div class="panel-body">
 					<div class="col-xs-12 text-center" ng-show="vm.success">
-						<a href="/login" class="btn btn-warning">Login</a>
+						Please contact administrator to activate you as user. <br/>
+						Contact Number: +91-9950072039 
 					</div>
 
 					<form class="form" name="vm.frm"  novalidate ng-hide="vm.success">
@@ -28,7 +32,7 @@
                                             'has-error': vm.frm.name.$invalid && vm.frm.$submitted }">
 							<label>Name</label>
 
-							<input type="text" name="name" class="form-control" ng-model="vm.user.name" required/>
+							<input type="text" maxlength="255"  name="name" class="form-control" ng-model="vm.user.name" required/>
 							<p class="help-block" ng-show="vm.frm.name.$error.required && vm.frm.$submitted">
 								A name is required
 							</p>
@@ -38,7 +42,7 @@
                                             'has-error': vm.frm.email.$invalid && vm.frm.$submitted }">
 							<label>Email</label>
 
-							<input type="email" name="email" class="form-control" ng-model="vm.user.email" required />
+							<input type="email" maxlength="255"  name="email" class="form-control" ng-model="vm.user.email" required />
 							<p class="help-block" ng-show="vm.frm.email.$error.email && vm.frm.$submitted">
 								Email address is invalid
 							</p>
@@ -51,7 +55,7 @@
                                             'has-error': vm.frm.password.$invalid && vm.frm.$submitted }">
 							<label>Password</label>
 
-							<input type="password" required name="password" class="form-control" 
+							<input type="password" maxlength="255" required name="password" class="form-control" 
 							ng-model="vm.user.password" ng-minlength="3"/>
 							<p class="help-block" ng-show="(vm.frm.password.$error.minlength || vm.frm.password.$error.required) && vm.frm.$submitted">
 								Password must be at least 3 characters.
@@ -62,7 +66,7 @@
                                             			'has-error': (vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword) }">
 							<label>Confirm Password</label>
 
-							<input type="password" required name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword" />
+							<input type="password" maxlength="255"  required name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword" />
 							<p class="help-block" ng-show="(vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)">
 								<span ng-hide="vm.isConfirmPassword">Passwords do not match</span>
 								<span ng-show="vm.frm.confirmPassword.$error.required">Please confirm the password again</span>

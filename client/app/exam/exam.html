@@ -22,7 +22,7 @@
                     <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
                         <label for="txtExamName" class="col-sm-2 control-label control-required">Name</label>
                         <div class="col-sm-4">                
-                            <input type="text" name="name" required ng-model="vm.exam.name" class="form-control" id="txtExamName"
+                            <input type="text" name="name" maxlength="255"  required ng-model="vm.exam.name" class="form-control" id="txtExamName"
                              placeholder="Name" />
                             <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
                                 <span ng-show="vm.frm.name.$error.required">Exam Name is required</span>
@@ -35,7 +35,7 @@
                         ng-class="{'has-error': vm.frm.code.$invalid && (vm.frm.code.$dirty || vm.frm.$submitted )}"
                         >Code</label>
                         <div class="col-sm-4">
-                            <input type="text" name="code" required class="form-control" ng-model="vm.exam.code" id="txtExamCode" placeholder="Exam Code for Identification">
+                            <input type="text" name="code" maxlength="255" required class="form-control" ng-model="vm.exam.code" id="txtExamCode" placeholder="Exam Code for Identification">
                              <span class="help-block" ng-show="vm.frm.code.$invalid && (vm.frm.code.$dirty || vm.frm.$submitted)">
                                 <span ng-show="vm.frm.code.$error.required">Exam Code is required</span>
                             </span>
@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="txtExamDescription" class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-4">
-                            <textarea rows="6" class="form-control" ng-model="vm.exam.description" id="txtExamCode" placeholder="Description of the Exam"></textarea>
+                            <textarea rows="6" maxlength="1024" class="form-control" ng-model="vm.exam.description" id="txtExamCode" placeholder="Description of the Exam"></textarea>
                         </div>
                     </div>
                     

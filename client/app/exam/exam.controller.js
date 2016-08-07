@@ -96,7 +96,7 @@ angular.module('examApp')
 					vm.category = result;
 				})
 				.catch(function (err) {
-					console.log(err);
+					$log.error(err);
 				})
 				.finally(function () {
 					vm.isLoading = false;

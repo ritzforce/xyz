@@ -25,12 +25,11 @@ angular.module('examApp')
 				};
 
 				vm.editExam = function (recordId) {
-					console.log(recordId);
 					$state.go('examEdit',{examId: recordId});
 				};
 
 				vm.deleteExam = Modal.confirm.delete(function(record){
-					console.log(record);
+					
 				});
 			},
 		};

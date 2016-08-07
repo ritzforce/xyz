@@ -7,7 +7,7 @@
     <table class="table table-condensed" style="text-align:left;">
         <thead>
             <tr>
-                <th width="10%">Action</th>
+                <th width="20%">Action</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Active</th>
@@ -17,9 +17,11 @@
 
         <tbody>
             <tr ng-repeat="user in vm.allUsers | filter: vm.search">
-                <td width="10%">
+                <td width="20%">
                     <a ui-sref="userEdit({userId: user.id})">Edit</a> |
-                    <a href="javascript:void(0)" ng-click="vm.delete(user.name, user)">Delete</a>
+                    <a href="javascript:void(0)" ng-click="vm.delete(user.name, user)">Delete</a> | 
+                    <a href="javascript:void(0)" ng-if="!user.active" ng-click="vm.activate('Activate', user.name,user)">Activate</a>
+                    <a href="javascript:void(0)" ng-if="user.active" ng-click="vm.deActivate('Deactivate', user.name,user)">Deactivate</a>
                 </td>
                 <td>
                     <a ui-sref="profile({userId : user.id})">{{user.name}}</a>

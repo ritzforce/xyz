@@ -74,9 +74,16 @@ angular.module('examApp')
 		/******************************************AJAX **************************************/
 		function loadAllExam(){
 			api.connectApi(vm,'Loading Exams...',api.getAllExams.bind(api), function(result){
-				vm.masterListExam = result;
-				reGenerateChunks(result);
+				vm.masterListExam = filterResults(result);
+				reGenerateChunks(vm.masterListExam);
 			});	
+		}
+
+		function filterResults(results){
+			if(vm.isAdmin()){
+				return results;
+			}
+			return _.filter(results, 'active' );
 		}
 
 		function getCategories() {

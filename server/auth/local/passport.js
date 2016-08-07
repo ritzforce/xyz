@@ -1,26 +1,27 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var logger = require('./../../logger/logger');
+
 exports.setup = function (User, config) {
 
-	console.log(User);
+	logger.debug('Entering passport.setup for local Login');
 
 	passport.use(new LocalStrategy({
 		usernameField: 'email',
 		passwordField: 'password' // this is the virtual field on the model
     },
 		function (email, password, done) {
-			console.log('************email********',email);
-			console.log('**********password*****',password);
+			logger.info('Entering login function with email ', email);
 
 			User.findOne({
 				email: email.toLowerCase()
 			}, function (err, user) {
-
-				console.log('***err*****' + err);
-				console.log('***user***');
-				console.log(user);
-
+				if(err){
+					logger.error(err);
+				}
+				logger.info(user);
+			
 				if (err) return done(err);
 
 				if (!user) {

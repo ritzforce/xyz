@@ -24,7 +24,7 @@
                         <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
                             <label for="name" class="col-sm-2 control-label control-required">Name</label>
                             <div class="col-sm-4">
-                                <input type="text" name="name" required ng-model="vm.user.name" class="form-control" id="txtUserName" placeholder="Name"
+                                <input type="text" maxlength="255" name="name" required ng-model="vm.user.name" class="form-control" id="txtUserName" placeholder="Name"
                                 />
                                 <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
                                 <span ng-show="vm.frm.name.$error.required">User Name is required</span>
@@ -35,7 +35,7 @@
                         <div class="form-group" ng-class="{'has-error': vm.frm.email.$invalid && (vm.frm.email.$dirty || vm.frm.$submitted )}">
                             <label for="email" class="col-sm-2 control-label control-required">Email</label>
                             <div class="col-sm-4">
-                                <input type="email" name="email" required ng-model="vm.user.email" class="form-control" id="txtEmail" placeholder="Email"
+                                <input type="email" maxlength="255" name="email" required ng-model="vm.user.email" class="form-control" id="txtEmail" placeholder="Email"
                                 />
                                 <span class="help-block" ng-show="vm.frm.email.$invalid && (vm.frm.email.$dirty || vm.frm.$submitted)">
                                     <span ng-show="vm.frm.email.$error.required">Email is required</span>
@@ -48,7 +48,7 @@
                         <div class="form-group" ng-if="!vm.editMode" ng-class="{'has-error': vm.frm.password.$invalid && (vm.frm.password.$dirty || vm.frm.$submitted )}">
                             <label for="password" class="col-sm-2 control-label control-required">Password</label>
                             <div class="col-sm-4">
-                                <input type="password" name="password" ng-minlength="3" required ng-model="vm.user.password" class="form-control" id="txtPassword" placeholder="Password"
+                                <input type="password" maxlength="255"  name="password" ng-minlength="3" required ng-model="vm.user.password" class="form-control" id="txtPassword" placeholder="Password"
                                 />
                                 <span class="help-block" ng-show="vm.frm.email.$invalid && (vm.frm.email.$dirty || vm.frm.$submitted)">
                                     <span ng-show="vm.frm.password.$error.required">Password is required</span>
@@ -60,7 +60,7 @@
                         <div class="form-group"  ng-if="!vm.editMode" ng-class="{'has-error': (vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)}">
                             <label for="confirmPassword" class="col-sm-2 control-label control-required">Confirm Password</label>
                             <div class="col-sm-4">
-                                <input  type="password" required  name="confirmPassword" ng-model="vm.confirmPassword" class="form-control" id="txtConfirmPassword" 
+                                <input  type="password" maxlength="255" required  name="confirmPassword" ng-model="vm.confirmPassword" class="form-control" id="txtConfirmPassword" 
                                   placeholder="Confirm Password"
                                 />
                                 <span class="help-block" ng-show="(vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)">

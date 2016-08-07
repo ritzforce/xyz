@@ -30,18 +30,17 @@ var validationError = function (res, err) {
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-	/*
-	User.find({}, '-salt -hashedPassword', function (err, users) {
-		if (err) return res.send(500, err);
-		res.json(200, users);
-	});
-	*/
-	console.log('*****index***');
+	
+	logger.debug('Entering userController.index');
 
 	apiUtils.index(req, res, TBL_NAME, selectFields, 'name ASC');
+	logger.debug('Exit userController.index');
+
 };
 
 exports.update = function(req, res){
+	logger.debug('Entering userController.update with requestBody', req.body);
+
 	var requestBody = req.body;
 
 	if(requestBody.password){
@@ -52,24 +51,23 @@ exports.update = function(req, res){
 	}
 
 	apiUtils.update(req, res, TBL_NAME, req.body, selectFields);
+
+	logger.debug('Exit userController.update');
 }
 
 /**
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-	logger.debug('Entering create user');
+	logger.debug('Entering userController.create user');
 
 	var CodeUser = require('./sessionUser')
-
-	console.log('****CODEUSER*****');
-	console.log(CodeUser);
-	console.log('********************');
 
 	var user = new CodeUser();
 	objectAssign(user, req.body);
 	user.role = 'user';
-	user.active = 1;
+	
+	//user.active = 1;
 	user.salt = makeSalt();
 	user.password = user.encryptPassword(req.body.password);
 
@@ -106,8 +104,9 @@ exports.create = function (req, res, next) {
  * Get a single user
  */
 exports.show = function (req, res, next) {
-	console.log('**single User***');
+	logger.debug('Entering userController.show with user id ', req.params.id);
 	apiUtils.show(req, res, TBL_NAME, selectFields, 'name ASC');
+	logger.debug('Exiting userController.show ');
 };
 
 /**
@@ -247,13 +246,11 @@ exports.changePassword = function (req, res, next) {
  * Get my info
  */
 exports.me = function (req, res, next) {
-
-	console.log('**exports.me****')
+	logger.debug('Entering userController.me method with request', req.user);
 
 	var userId = req.user.id;
-	console.log('**req.user**');
-	console.log(req.user);
-	console.log('***userId****' + userId);
+	logger.info('User attached to request', req.user);
+
 	exports.findById(userId, function (err, result) {
 		if (err) {
 			return res.send(500, err);
@@ -273,13 +270,13 @@ exports.findById = function (id, callback) {
 };
 
 exports.findByEmail = function (email, callback) {
+	logger.debug('Entering userController.findByEmail method with email', email);
+
 	var sqlUtils = new SqlUtils(TBL_NAME);
 	sqlUtils.appendSelectFields(selectFields);
 	sqlUtils.appendSelectFields(['password', 'salt']);
 	sqlUtils.appendWhereClauses("email = " + sqlHelper.escape(email));
-
-	console.log('***find By Email Query***');
-	console.log(sqlUtils.getSelectQuery());
+	sqlUtils.appendWhereClauses("active = 1");
 
 	apiUtils.fireRawQuery(sqlUtils.getSelectQuery(), callback);
 }

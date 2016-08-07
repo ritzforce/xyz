@@ -28,14 +28,15 @@ exports.index = function (req, res, tblName, selectFields, orderByFields, whereB
         if(whereByClause){
             sqlUtils.appendWhereClauses(whereByClause);
         }
-		console.log('************QUERY***************');
-		console.log(sqlUtils.getSelectQuery());
-
-		connection.query(sqlUtils.getSelectQuery(), function(err, rows){
+		var selectQuery = sqlUtils.getSelectQuery();
+		logger.info('*QUERY*', selectQuery);
+	
+		connection.query(selectQuery, function(err, rows){
 			connection.release();
 
 			if(err) return handleError(res, err);
-			console.log(rows);
+			logger.info('Query Result size', rows.length);
+			logger.debug('Query Result', rows);
 			return res.json(200, rows);
 		});
 	});
@@ -105,8 +106,7 @@ exports.create = function (req, res, tblName, requestBody, selectFields, callbac
 
     getConnection(req, res, function (connection) {
 		connection.query('INSERT INTO ' + tblName + ' SET ?', requestBody, function(err,result){
-			console.log(err);
-
+			
 			if(err) {
 				handleError(res,err);
 				return;
@@ -118,8 +118,7 @@ exports.create = function (req, res, tblName, requestBody, selectFields, callbac
 
 			connection.query(singleRecordQuery,function(err,result){
 				connection.release();
-				console.log(err);
-
+				
 				if(err) {
 					handleError(res,err);
 					return;
@@ -159,9 +158,7 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 		connection.query(updateQuery,[requestBody, {id : req.params.id}], function(err, result){
 			
             if(err) {
-				console.log('***ERROR IN UPDATE****');
-				console.log(err);
-
+				logger.error(err);
 				connection.release();
 				handleError(res,err);
 				return;
@@ -254,17 +251,21 @@ exports.select = function(req, res, query, callback){
 }
 
 exports.fireRawQuery = function(query,callback) {
+	logger.debug('Entering apiUtils.fireRawQuery with query', query);
+
 	sqlHelper.getConnection(function (err, connection) {
 		if(err){
 			connection.release();
 			return callback(err,null);
 		}
 
-		console.log('***Raw Query***', query);
+		logger.info('*Raw Query*', query);
 
 		connection.query(query, function(err, result){
 			connection.release();
-			console.log('***Raw Query Result****', result);
+			logger.debug('*Raw Query Result**', result);
+
+			logger.debug('Exit apiUtils.fireRawQuery with result', result);
 			callback(err,result);
 		});
 	});
@@ -286,13 +287,11 @@ function getRecordByIdQuery(tblName,selectFields,id){
 
 function handleError(res, err) {
 	logger.error(err);
-
 	return res.send(500, err);
 }
 
 function getConnection(req, res, callback) {
 	sqlHelper.getConnection(function (err, connection) {
-		console.log(err);
 		if (err) {
 			handleError(res, err);
 			return;
