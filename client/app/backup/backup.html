@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-cloud-download" aria-hidden="true"></i> Backup</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <b><i class="fa fa-university" aria-hidden="true"></i> Backup Database</b>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="text-center">
+
+                                <div class="col-xs-12" ng-show="vm.message">
+                                    <uib-alert type="danger" ng-if="vm.icon == 'danger'" class="text-center">
+                                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                                        <span>{{vm.message}}</span>
+                                    </uib-alert>
+
+                                    <uib-alert type="success" ng-if="vm.icon == 'success'" class="text-center">
+                                        <span class="glyphicon glyphicon glyphicon glyphicon-ok"></span>
+                                        <span>{{vm.message}}</span>
+                                    </uib-alert>
+
+                                </div>
+
+                                <button class="btn btn-warning" ng-click="vm.startBackup()">Start Backup</button>
+                                <br/>
+
+                                <p ng-if="vm.fileName">
+                                    <br/> Backup file is ready <a target="_blank" ng-href="/templates/download/{{vm.fileName}}">Download</a>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

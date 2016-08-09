@@ -10,6 +10,9 @@ var json2csv = require('json2csv');
 var apiUtils = require('./../apiUtils');
 
 var Converter = require("csvtojson").Converter;
+var mysqlDump = require('mysqldump');
+var config = require('../../config/environment');
+
 
 
 exports.download = function(req, res){
@@ -18,9 +21,8 @@ exports.download = function(req, res){
 
 	logger.debug('File Path for download', filePath);
 
-	res.attachment(filePath);
-	res.send();
-
+	res.download(filePath);
+	//res.send();
 }
 
 // Get a single template
@@ -53,6 +55,52 @@ exports.upload = function(req, res){
 
 	parseFile(req, res, file.path);
 }
+
+exports.lastBackup = function(req, res){
+	logger.debug('Entering template.lastBackup');
+	apiUtils.select(req, res, 'SELECT DATEDIFF(CURDATE(),DATE) AS date FROM Backup ORDER BY DATE ASC LIMIT 1', function(result){
+		if(result.length === 0){
+			return res.json({'days': -1});
+		}
+		return res.json({'days': result[0].date});
+	})
+
+	logger.debug('Exit template.lastBackup');
+}
+
+exports.backup = function(req, res){
+	logger.debug('Entering template.backup');
+	
+	var dt = new Date();
+
+	var fileName = 'Backup_' + dt.getFullYear() + '_' + dt.getMonth() + '_' + dt.getDate() + '.sql';
+	var filePath = path.join(__dirname , './../../','downloads', fileName);
+
+	logger.info('File Path for Backup', filePath);
+	
+	mysqlDump({
+		host: config.sql.host,
+		user: config.sql.user,
+		password: config.sql.password,
+		database: config.sql.database,
+		dest: filePath
+	},function(err){
+		// create data.sql file; 
+		if(err){
+			apiUtils.handleError(res, err);
+			return;
+		}
+		
+		apiUtils.create({},{},'backup', {date : new Date()}, ['id','date'],function(){
+		});
+
+		res.json({fileName: fileName});
+	})
+	
+	logger.debug('Exit template.backup');
+}
+
+
 
 function parseFile(req, res, filePath){
 	var converter = new Converter({});

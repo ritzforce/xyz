@@ -6,8 +6,11 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/download/:fileName', auth.hasRole('admin'), controller.download);
+router.get('/backup', controller.backup);
+router.get('/lastBackup', auth.hasRole('admin'), controller.lastBackup);
+router.get('/download/:fileName', controller.download);
 router.get('/:templateType', controller.show);
 router.post('/:templateType', auth.hasRole('admin'), controller.upload);
+
 
 module.exports = router;

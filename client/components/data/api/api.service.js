@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('examApp')
-	.service('api', function ($http, $log, notification ,mockData) {
+	.service('api', function ($http, $log, $q, notification ,mockData) {
 
 		this.getExamModel = function () {
 			var exam = {
@@ -327,4 +327,32 @@ angular.module('examApp')
 			return this.post('/api/users/resetPasswordSelf', {oldPassword: oldPassword, password: newPassword});
 		};
 
+		this.startBackup = function(){
+			return this.getAll('/templates/backup');
+		};
+
+		var lastBackup;
+
+		this.updateBackupDate = function(){
+			lastBackup = 0;
+		};
+
+		this.lastBackup = function(){
+			var deferred = $q.defer();
+
+			if(lastBackup !== undefined) {
+				deferred.resolve(lastBackup);
+			}
+			else {
+				$http.get('/templates/lastBackup').then(function(result){
+					lastBackup = result.data.days;
+					deferred.resolve(lastBackup);
+				});
+			}
+			return deferred.promise;
+		};
+
+
 	});
+
+

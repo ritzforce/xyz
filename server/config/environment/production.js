@@ -15,10 +15,14 @@ module.exports = {
 
   sql: {
     maxLimit: 100,
-    host: '192.186.135.87',
-    user : 'alpha101',
-    password: 'ciitdc#123',
-    database: 'sharma_infotech'
+    host: process.env.SQL_HOST,
+    user : process.env.SQL_USER,
+    password: process.env.SQL_PASSWORD,
+    database: process.env.SQL_DATABASE
+  },
+
+  log: {
+    logLevel : process.env.LOG_LEVEL || 'debug' 
   },
 
 };
