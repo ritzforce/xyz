@@ -1,4 +1,10 @@
 
+	<div class="row" ng-if="!vm.lstExam">
+		<div class="col-xs-12">
+			No records to display
+		</div>
+	</div>	
+
 	<div class="media" ng-repeat="exam in vm.lstExam" ng-cloak>
 		<div class="media-left media-top">
 			<a href="javascript:void(0)" ng-click="vm.goToExamDetail(exam.id)">

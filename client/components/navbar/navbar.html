@@ -1,6 +1,6 @@
 <div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl as vm">
 	<div class="container-fluid">
-		
+
 		<div class="navbar-header">
 			<button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
 				<span class="sr-only">Toggle navigation</span>
@@ -15,18 +15,27 @@
 				<span class="text-primary">Sharma Infotech</span>
 			</a>
 		</div>
-		
+
 		<div collapse="vm.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-			<ul class="nav navbar-nav" ng-show="vm.isLoggedIn()">
-				<li><a href="/">Home</a></li>
+			<ul class="nav navbar-nav">
+
+				<li>
+					<p style="margin-top:10px;font-size:60%;">
+						D-13, Bapu Nagar Senthi, Road No. 8, Chittorgarh(Raj.) <br/> B-13, S.K. Plaza, Maharana Pratap Setu Marg, Near Head
+						Post Office, Chittorgarh (Raj.) <br/> Call Us: 9950072039, 7821932915 | Email To: <a href="mailto:rscitsharma@gmail.com">rscitsharma@gmail.com</a>
+					</p>
+				</li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right" ng-show="vm.isLoggedIn()">
 				<li>
+					<a href="/"><span class="glyphicon glyphicon-home"></span> Home</a>
+				</li>
+				<li>
 					<p class="navbar-text pull-left"><span class="glyphicon glyphicon-user"></span> Logged in as {{vm.getCurrentUser().name}} </p>
 				</li>
 				<li>
-					<a ui-sref="profile" ><i class="glyphicon glyphicon-folder-close"></i> My Profile</a>
+					<a ui-sref="profile"><i class="glyphicon glyphicon-folder-close"></i> My Profile</a>
 				</li>
 				<li>
 					<a href="" ng-click="vm.logout()"><span class="glyphicon glyphicon-erase"></span> Logout</a>

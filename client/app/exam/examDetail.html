@@ -22,6 +22,9 @@
                         <li role="presentation" ng-class="{active: vm.currentTab == 'question'}">
                             <a href="javascript:void(0)" ng-click="vm.setTab('question')" aria-controls="question" role="tab">Questions</a>
                         </li>
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'user'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('user')" aria-controls="user" role="tab">Users</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -38,6 +41,7 @@
             <div class="row">
                 <!-- Tab panes -->
                 <div class="tab-content col-xs-12" style="margin-top:10px">
+                    
                     <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'detail'}" id="detail">
 
                         <div class="panel panel-default text-center">
@@ -52,16 +56,27 @@
                         </div>
 
                     </div>
+
                     <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'question'}" id="question">
                         <div class="panel panel-default text-center">
                             <div class="panel-heading">
-                                
                                 <button ng-click="vm.addQuestion()" type="submit" class="btn btn-warning">Add Question</button>
                             </div>
                             <question-list questions="vm.questions"></question-list>
 
                         </div>
                     </div>
+                    
+                    <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'user'}" id="user">
+                        <div class="panel panel-default text-center">
+                            <div class="panel-heading">
+                                <button ng-click="vm.assignUser()" type="submit" class="btn btn-warning">Add User</button>
+                            </div>
+                            <list title-text="User assigned to the exam" showdelete="true" showcheckbox="false" records="vm.users" del="vm.deleteUser" name-field="name" fields="['name','email']"
+                                 filter-text='Filter By User name or Email' header-fields="['Name','Email']"></list>
+                        </div>
+                    </div>
+                
                 </div>
             </div>
 

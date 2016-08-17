@@ -1,6 +1,7 @@
 var sqlHelper = require('./../../config/sqlHelper');
 var SqlUtils = require('./../sqlUtils');
 var apiUtils = require('./../apiUtils');
+var auth = require('../../auth/auth.service');
 
 /***********************************************/
 /* Get list of Questions, show All Questions to Admin
@@ -27,6 +28,11 @@ exports.launch = function(req,res){
 	var whereClause = [];
 	whereClause.push('examId = ' + examId);
 	whereClause.push('active = true ');
+
+	if(!auth.isAdminRole(req)){
+		whereClause.push(' examId IN (SELECT examId FROM userexam WHERE userId =' + sqlHelper.escape(req.user.id) + 
+		                 ' AND examId =' + examId + ')');
+	}
 
 	apiUtils.index(req, res, TBL_NAME, selectFields,null,whereClause);
 }

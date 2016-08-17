@@ -30,7 +30,7 @@ angular.module('examApp')
 				$location.path('/');
 			})
 			.catch(function (err) {
-				$log.error(err);
+				//$log.error(err);
 				if (err.status == 401) {
 					vm.error = 'Invalid Login.The username or password is incorrect';
 				}

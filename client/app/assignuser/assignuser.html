@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header" ng-if="vm.exam.id">
+                        <i class="fa fa-university" aria-hidden="true"></i> {{vm.exam.name}} - Assign Users
+                    </h3>
+                    <h3 class="sub-header" ng-if="vm.user.id">
+                        <i class="fa fa-user" aria-hidden="true"></i> {{vm.user.name}} - Assign Exams
+                    </h3>
+                
+                </div>
+
+                <div class="col-xs-12" ng-if="vm.error">
+                    <uib-alert type="danger" class="text-center">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span> 
+                        <span>{{vm.error}}</span>
+                    </uib-alert>
+                </div> 
+               
+            </div>
+
+            
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-default text-center" ng-if="vm.exam.id">
+                        <div class="panel-heading">
+                            <button ng-click="vm.saveUsers()" type="submit" class="btn btn-warning">Save Users</button>
+                            <button ng-click="vm.cancel()" class="btn btn-default">Cancel</button>
+                        </div>
+                        <list title-text='Unassigned users for the exam' showdelete="false" showcheckbox="true" records="vm.users" name-field="name" fields="['name','email']" filter-text='Filter By User name or Email'
+                            header-fields="['Name','Email']"></list>
+                    </div>
+
+                    <div class="panel panel-default text-center" ng-if="vm.user.id">
+                        <div class="panel-heading">
+                            <button ng-click="vm.saveExams()" type="submit" class="btn btn-warning">Save Exams</button>
+                            <button ng-click="vm.cancel()" class="btn btn-default">Cancel</button>
+                        </div>
+                        <list title-text='Unassigned exams for the users' showdelete="false" showcheckbox="true" records="vm.exams" name-field="name" fields="['name','code','category']" filter-text='Filter By Exam name or Code'
+                            header-fields="['Name','Code','Category']"></list>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

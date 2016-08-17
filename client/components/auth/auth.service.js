@@ -6,7 +6,6 @@ angular.module('examApp')
 		
 		function loadCurrentUserFromDatabase() {			
 			return api.getMe().then(function(user){
-				$log.log(user);
 				if(user === null){
 					throw Error('User not found in the database');
 				}

@@ -44,6 +44,14 @@ function isAuthenticated() {
 		});
 }
 
+function isAdminRole(req){
+	if(!req.user){
+		return false;
+	}
+	var user = req.user;
+	return (user.role === 'admin');
+}
+
 /**
  * Checks if the user role meets the minimum requirements of the route
  */
@@ -84,3 +92,4 @@ exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;
+exports.isAdminRole = isAdminRole;

@@ -9,6 +9,7 @@ angular.module('examApp')
 		vm.currentTab = 'detail';
 		vm.isNew = true;
 		vm.saveError = null;
+		vm.users = null;
 
 		vm.questions = null;
 		vm.isLoading = false;
@@ -18,7 +19,17 @@ angular.module('examApp')
 			if (vm.currentTab === 'question') {
 				vm.loadQuestions();
 			}
+			if(vm.currentTab === 'user'){
+				vm.loadUsersForExam();
+			}
 			return;
+		};
+
+		vm.loadUsersForExam = function(){
+			if(vm.users !== null){
+				return;
+			}
+			loadUsersForExam();
 		};
 
 		vm.loadQuestions = function () {
@@ -39,7 +50,7 @@ angular.module('examApp')
 			}
 			else {
 				vm.isNew = false;
-				vm.exam = {};
+				vm.exam = {id : $stateParams.examId};
 				loadExam($stateParams.examId);
 			}
 
@@ -61,6 +72,10 @@ angular.module('examApp')
 			$state.go('examEdit', { examId: vm.exam.id });
 		};
 
+		vm.assignUser = function(){
+			$state.go('assignuserExam',{examId : vm.exam.id, examName: vm.exam.name});
+		};
+
 		vm.launch = function (recordId) {
 			$state.go('launch', { examId: recordId });
 		};
@@ -73,6 +88,10 @@ angular.module('examApp')
 			deleteQuestion(record.id, record);
 		});
 
+		vm.deleteUser = function(record){
+		   deleteUserExam(record.name, record.id);
+		};
+
 		vm.cancel = function () {
 			$state.go('main');
 		};
@@ -81,7 +100,6 @@ angular.module('examApp')
 			if (vm.frm.$invalid) {
 				return;
 			}
-
 			api.connectApi(vm, 'Saving...', api.saveExam.bind(api, vm.exam, vm.isNew), function (result) {
 				$state.go('exam', { examId: result[0].id });
 			});
@@ -115,10 +133,24 @@ angular.module('examApp')
 			});
 		}
 
+		function deleteUserExam(recordName, recordId){
+			
+			api.connectApi(vm, 'Deleting...', api.deleteUserExam.bind(api, recordId), function (result) {
+				loadUsersForExam($stateParams.examId);
+				notification.info('Delete', recordName + ' deleted successfully');
+			});
+		}
+
 		function deleteExam(examId) {
 			api.connectApi(vm, 'Deleting...', api.deleteExam.bind(api, examId), function (result) {
 				notification.info('Exam', vm.exam.name + ' deleted successfully');
 				$state.go('main');
+			});
+		}
+
+		function loadUsersForExam(){
+			api.connectApi(vm, 'Loading...', api.getUsersForExam.bind(api, vm.exam.id), function (result) {
+				vm.users = result;
 			});
 		}
 

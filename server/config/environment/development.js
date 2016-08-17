@@ -13,7 +13,11 @@ module.exports = {
     host: '127.0.0.1',
     user : 'root',
     password: '',
-    database: 'ritz'
+    database: 'examination'
+  },
+
+  log: {
+    logLevel : 'info' 
   },
   seedDB: false
 };

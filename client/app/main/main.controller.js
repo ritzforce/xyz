@@ -36,7 +36,7 @@ angular.module('examApp')
 
 	
 		vm.hidePager = function(){
-			if(vm.total < PAGE_SIZE){
+			if(vm.total <= PAGE_SIZE){
 				return true;
 			}
 			return false;
@@ -94,7 +94,7 @@ angular.module('examApp')
 					vm.categories = result;
 				})
 				.catch(function (err) {
-					console.log(err);
+					api.formatError(vm, err);
 				})
 				.finally(function () {
 					vm.isLoading = false;

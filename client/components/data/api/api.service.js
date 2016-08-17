@@ -109,6 +109,8 @@ angular.module('examApp')
 			vm.error = err.data;
 		}
 
+		this.formatError = formatError;
+
 		this.delete = function(url){
 			return $http.delete(url).then(function(response){
 				return response.data;
@@ -316,6 +318,31 @@ angular.module('examApp')
 
 		this.deleteExam = function (examId) {
 			return this.delete('/api/exams/' + examId);
+		};
+
+		/********************************USER EXAM*******************************************/
+		this.getUsersForExam = function(examId) {
+			return this.getAll('/api/userExams/exam/' + examId);
+		};
+
+		this.getNewUsersForExam = function(examId){
+			return this.getAll('/api/userExams/exam/new/' + examId);
+		};
+		
+		this.getExamsForUser = function(userId) {
+			return this.getAll('/api/userExams/user/' + userId);
+		};
+
+		this.getNewExamsForUser = function(userId){
+			return this.getAll('/api/userExams/user/new/' + userId);
+		};
+
+		this.deleteUserExam = function(recordId){
+			return this.delete('/api/userExams/' + recordId);
+		};
+
+		this.assignUsers = function(body){
+			return this.post('/api/userExams/assign', body);
 		};
 
 		/***************************************USER Id***********************************/

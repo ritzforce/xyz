@@ -16,7 +16,10 @@ angular.module('examApp').filter('formatAnswer', function () {
 			var allKeys = Object.keys(answer.selectedAnswer).sort();
 
 			allKeys.forEach(function (key) {
-				arr.push(key.toUpperCase());
+				
+				if(answer.selectedAnswer[key]) {
+					arr.push(key.toUpperCase());
+				}
 			});
 			return arr.join(', ');
 		}
@@ -276,7 +279,7 @@ angular.module('examApp')
 					}
 				}
 				else {
-					if (currentQuestion.selectedAnswer[answer.key] === true && currentQuestion[answer.key + 'Correct'] == 0) {
+					if (currentQuestion.selectedAnswer && currentQuestion.selectedAnswer[answer.key] === true && currentQuestion[answer.key + 'Correct'] == 0) {
 						answer.isIncorrect = true;
 					}
 				}

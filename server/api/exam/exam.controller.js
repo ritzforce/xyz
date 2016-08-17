@@ -16,7 +16,17 @@ var selectFields = ['id','name','active','code','description','category','maxMar
 
 exports.index = function (req, res) {
 	logger.debug('Entering examController.index');
-	apiUtils.index(req, res, 'exam', selectFields, 'name ASC');
+	if(req.user.role === 'admin') {
+		apiUtils.index(req, res, 'exam', selectFields, 'name ASC');
+	}
+	else {
+
+		var whereClause = [];
+		whereClause.push('active = true');
+		whereClause.push(' id IN ( SELECT examId from userexam where userId = ' + sqlHelper.escape(req.user.id) + ' )');
+
+		apiUtils.index(req, res, 'exam', selectFields, 'name ASC', whereClause);
+	}
 	logger.debug('Exiting examController.index');
 };
 

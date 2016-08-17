@@ -20,9 +20,9 @@
         <li class="list-group-item">
             <a ui-sref="massUpload" href="javascript:void(0)">Mass Upload</a>
         </li>
-        <li class="list-group-item">
+        <li class="list-group-item" >
             <a ui-sref="backup" href="javascript:void(0)">Backup Database</a>
-            <span class="{{backupClass}}" ng-if="showBackupDays" title="Days since the database was last backed up">{{lastBackup}}</span>
+            <span class="{{backupClass}}" ng-if="showBackupDays"  uib-tooltip="Days since the database was last backed up">{{lastBackup}}</span>
         </li>
     </ul>
 

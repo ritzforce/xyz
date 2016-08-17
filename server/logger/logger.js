@@ -4,19 +4,13 @@ var winston = require('winston');
 var path = require('path');
 var logger = new winston.Logger();
 
-//winston.handleExceptions(new winston.transports.File({ filename: './logs/exception.log' }))
-
-
-
 logger.configureForApp = function(config){
 	var pathToFolder = path.join(__dirname,'./../logs');
-	console.log(pathToFolder);
-
+	
     logger.configure({
-        level : config.log.level,
+        level : config.log.logLevel,
         transports : [
 			new (winston.transports.Console)({
-				level: 'debug',
 				colorize: true,
 				timestamp: false,
 				stringify: true,
@@ -32,7 +26,6 @@ logger.configureForApp = function(config){
 				tailable: true,
 				colorize: true,
 				stringify: true,
-				level: 'debug',
 				timestamp: function(){
 					return new Date().toISOString();	
 				},

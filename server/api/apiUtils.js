@@ -100,6 +100,7 @@ exports.createBulkLoad = function(tblName, record, callback){
 /***********************************************/
 exports.create = function (req, res, tblName, requestBody, selectFields, callback) {
 	logger.debug('Entering apiUtils.create with parameters with ', "table", tblName, "for select fields ", selectFields);
+	logger.debug('apiUtils.create with request Body', requestBody);
 
 	if (requestBody.createdDate) { delete requestBody.createdDate;} 
 	if (requestBody.lastModifiedDate) {delete requestBody.lastModifiedDate; }
@@ -107,6 +108,10 @@ exports.create = function (req, res, tblName, requestBody, selectFields, callbac
     getConnection(req, res, function (connection) {
 		connection.query('INSERT INTO ' + tblName + ' SET ?', requestBody, function(err,result){
 			
+			logger.debug('***After insertion');
+			logger.debug(err);
+			logger.debug(result);
+
 			if(err) {
 				handleError(res,err);
 				return;
