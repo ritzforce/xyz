@@ -372,12 +372,19 @@ angular.module('examApp')
 
 		function startTimer(){
 			vm.timer.countDownTimer = vm.exam.timeAllowed * 60;
+			vm.timer.warning = false;
 			formatTime();
 			vm.timer.reference = $interval(formatTime, 1000, vm.timer.countDownTimer);
 		}
 
 		function formatTime(){
 			vm.timer.countDownTimer--;
+
+			if(vm.timer.countDownTimer === 0) {
+				vm.moveToResult();
+				return;
+			}
+
 			var min = Math.floor(vm.timer.countDownTimer / 60);
 			var sec = (vm.timer.countDownTimer) % 60;
 
@@ -388,6 +395,12 @@ angular.module('examApp')
 				sec = '0' + sec;
 			}
 			vm.timer.formattedTime = min + ' min : ' + sec + ' sec';
+
+			if(min < 5){
+				vm.timer.warning = true;
+			}
+		
+
 		}
 
 		function loadExam(examId) {

@@ -84,11 +84,15 @@
                     <div class="checkbox" ng-repeat="answer in question.answerOptions">
                         <label>
                             <input type="checkbox" name="{{$parent.index}}" disabled
-                                ng-model="question.selectedAnswer[answer.key]"> 
-                            <span><b>{{ answer.key | uppercase }}. </b></span> <span ng-bind-html="answer.value" /> 
-
-                            &nbsp; <span class="btn btn-success btn-xs" ng-show="answer.isCorrect"><b><i  class="fa fa-check"></i> Correct</b></span>
-                            &nbsp; <span class="btn btn-danger btn-xs" ng-show="answer.isIncorrect"><b><i  class="fa fa-times"></i> Wrong</b></span>
+                                ng-model="question.selectedAnswer[answer.key]" /> 
+                            <span><b>{{ answer.key | uppercase }}. </b></span> <span ng-bind-html="answer.value"></span> 
+                             
+                            <span style="margin-left:5px;" class="btn btn-success btn-xs" ng-show="answer.isCorrect">
+                                <b><i  class="fa fa-check"></i> Correct</b>
+                            </span>
+                            <span style="margin-left:5px;" class="btn btn-danger btn-xs" ng-show="answer.isIncorrect">
+                                <b><i  class="fa fa-times"></i> Wrong</b>
+                            </span>
 
                         </label>
                     </div>
@@ -101,10 +105,14 @@
                     <div class="radio" ng-repeat="answer in question.answerOptions">
                         <label>
                             <input type="radio" ng-model="question.selectedAnswer" value="{{answer.key}}" name="{{$parent.index}}" disabled> 
-                            <span><b>{{ answer.key | uppercase }}. </b></span> <span ng-bind-html="answer.value" /> 
+                            <span><b>{{ answer.key | uppercase }}. </b></span> <span ng-bind-html="answer.value"></span> 
                             
-                            &nbsp; <span class="btn btn-success btn-xs" ng-show="answer.isCorrect"><b><i  class="fa fa-check"></i> Correct</b></span>
-                            &nbsp; <span class="btn btn-danger btn-xs" ng-show="answer.isIncorrect"><b><i  class="fa fa-times"></i> Wrong</b></span>
+                            <span style="margin-left:5px;" class="btn btn-success btn-xs" ng-show="answer.isCorrect">
+                                <b><i  class="fa fa-check"></i> Correct</b> 
+                            </span>
+                            <span style="margin-left:5px;" class="btn btn-danger btn-xs" ng-show="answer.isIncorrect">
+                                <b><i  class="fa fa-times"></i> Wrong</b> 
+                            </span>
 
                         </label>
                     </div>

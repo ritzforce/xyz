@@ -21,6 +21,12 @@ module.exports = {
     database: process.env.SQL_DATABASE
   },
 
+  loggly: {
+     inputToken: process.env.LOGGLY_INPUT_TOKEN,
+     subdomain: process.env.LOGGLY_SUB_DOMAIN,
+     tags: process.env.LOGGLY_TAGS 
+  },
+
   log: {
     logLevel : process.env.LOG_LEVEL || 'debug' 
   },

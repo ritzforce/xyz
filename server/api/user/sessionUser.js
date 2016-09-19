@@ -51,8 +51,14 @@ User.prototype.findOne = function(user, callback){
    userController.findByEmail(user.email, function(err, result){
        if(err){
            callback(err,null);
+           return;
        }
-       if(result.length === 0){
+       if(!result){
+           callback(result ,null);
+           return;
+       }
+
+       if(result && result.length === 0){
            return callback(null,null);
        }
        var currentUser = objectAssign(that,result[0]);

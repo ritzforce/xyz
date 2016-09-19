@@ -260,7 +260,9 @@ exports.fireRawQuery = function(query,callback) {
 
 	sqlHelper.getConnection(function (err, connection) {
 		if(err){
-			connection.release();
+			if(connection){
+				connection.release();
+			}
 			return callback(err,null);
 		}
 

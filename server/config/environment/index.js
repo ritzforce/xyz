@@ -37,11 +37,17 @@ var all = {
     host: '127.0.0.1',
     user : 'root',
     password: '',
-    database: 'sandboxexamination'
+    database: 'examination'
   },
   
   log: {
     logLevel : 'info' 
+  },
+
+  loggly: {
+     inputToken: process.env.LOGGLY_INPUT_TOKEN || '605e23bc-d981-42ec-9b19-a76e8ffeb977',
+     subdomain: process.env.LOGGLY_SUB_DOMAIN || 'ritzportal',
+     tags: process.env.LOGGLY_TAGS || 'alpha101' 
   },
 
   // MongoDB connection options

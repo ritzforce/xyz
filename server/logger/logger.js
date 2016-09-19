@@ -2,7 +2,9 @@
 
 var winston = require('winston');
 var path = require('path');
-var logger = new winston.Logger();
+require('winston-loggly-bulk');
+
+var logger = new winston.Logger({ exitOnError: false });
 
 logger.configureForApp = function(config){
 	var pathToFolder = path.join(__dirname,'./../logs');
@@ -10,12 +12,19 @@ logger.configureForApp = function(config){
     logger.configure({
         level : config.log.logLevel,
         transports : [
+			new (winston.transports.Loggly)({
+				inputToken: config.loggly.inputToken,
+				subdomain: config.loggly.subdomain,
+				tags: [config.loggly.tags],
+				json: true,
+			}),
 			new (winston.transports.Console)({
 				colorize: true,
 				timestamp: false,
 				stringify: true,
-			}),
-			new (winston.transports.File)({
+			})
+
+			/*,new (winston.transports.File)({
 				name: 'debug-file',
 				filename: path.join(pathToFolder,'debug.log'),
 				maxsize: 5242880,
@@ -26,6 +35,7 @@ logger.configureForApp = function(config){
 				tailable: true,
 				colorize: true,
 				stringify: true,
+				level: 'error',
 				timestamp: function(){
 					return new Date().toISOString();	
 				},
@@ -44,7 +54,7 @@ logger.configureForApp = function(config){
 				tailable: true,
 				colorize: true,
 				level: 'error'
-			})
+			})*/
   		]
     });
 }
