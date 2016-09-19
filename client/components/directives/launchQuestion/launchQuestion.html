@@ -1,18 +1,64 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-       <i class="fa fa-arrows-alt" aria-hidden="true"></i> Question <b>{{vm.currentQuestionIndex + 1}}</b> of <b>{{vm.allQuestions.length}}</b>
+        <i class="fa fa-arrows-alt" aria-hidden="true"></i> Question <b>{{vm.currentQuestionIndex + 1}}</b> of <b>{{vm.allQuestions.length}}</b>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" drc>
         <div class="row">
-           <div class="col-xs-12">
-               <uib-progressbar  type="warning" value="vm.currentQuestionIndex + 1" title="Progress" max="vm.allQuestions.length" />
-           </div>
+
+            <div class="col-xs-12">
+                <uib-accordion>
+                    <div uib-accordion-group class="panel-info" is-open="vm.open">
+                        <uib-accordion-heading>
+                            <div class="pull-left">
+                                <i class="glyphicon" ng-class="{'glyphicon-triangle-bottom': vm.open, 'glyphicon-triangle-right': !vm.open}"></i>
+                            </div>
+                            <span>&nbsp;All Questions</span>
+
+                    
+                            <div class="pull-right" ng-class="{'text-danger':vm.timer.warning,'text-success':!vm.timer.warning}">
+                                Time Remaining <b>{{vm.timer.formattedTime}}</b>
+                            </div>
+                            
+                            <span class="text-danger pull-right" ng-show="vm.timer.warning" style="margin-right:10px">
+                                <i class="fa fa-spinner fa-pulse"></i>&nbsp;
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    <b> Hurry up !! the exam will end soon</b>
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            </span>   
+                         
+
+                        
+                        </uib-accordion-heading>
+
+                        <div class="row">
+                            <div class="col-xs-1" style="padding-right:0px;font-size:85%;" ng-repeat="answer in vm.allAnswers">
+                                <b> 
+                                    <a href="javascript:void(0)" ng-click="vm.jumpToQuestion($index)">{{$index + 1}}.</a> 
+                                </b>
+                                <a  href="javascript:void(0)"  ng-click="vm.jumpToQuestion($index)">
+                                    {{answer | formatAnswer}}
+                                </a><span ng-show="answer.markForReview">*</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </uib-accordion>
+            </div>
+
+            <div class="col-xs-12">
+                <uib-progressbar type="warning" value="vm.currentQuestionIndex + 1" title="Progress" max="vm.allQuestions.length" />
+            </div>
+
+            <div class="col-xs-12">
+                &nbsp;
+            </div>
+
             <div class="col-xs-12">
                 <label class="control-label text-primary"> Question {{vm.currentQuestionIndex + 1}}.</label>
             </div>
 
             <div class="col-xs-12">
-                {{vm.currentQuestion.questionText}}
+                <span ng-bind-html="vm.currentQuestion.questionText | formatQuestion"></span>
             </div>
 
             <div class="col-xs-12">
@@ -37,7 +83,7 @@
                 <label class="control-label text-primary">Answers</label>
             </div>
 
-           
+
             <div class="col-xs-12" ng-hide="vm.isRadio()">
                 <div style="margin-left:10px">
                     <div class="checkbox" ng-repeat="answer in vm.answerOptions">
@@ -45,7 +91,7 @@
                     <input type="checkbox"
                         name = "answer"
                         ng-model="vm.currentAnswer.selectedAnswer[answer.key]"> 
-                            {{answer.value}}
+                         <span><b>{{ $index | prepend }}</b></span>    <span ng-bind-html="answer.value" /> 
                 </label>
                     </div>
                 </div>
@@ -59,7 +105,7 @@
                         name = "answer"
                         value = "{{answer.key}}"
                         ng-model="vm.currentAnswer.radioAnswer"> 
-                            {{answer.value}}
+                          <span><b>{{ $index | prepend }}</b></span>   <span ng-bind-html="answer.value" /> 
                 </label>
                     </div>
                 </div>
@@ -73,9 +119,8 @@
                 <button ng-show="vm.isPrevious()" ng-click="vm.movePrevious()" class="btn btn-warning"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Previous</button>
             </div>
             <div class="col-xs-3 pull-right">
-                <button  ng-click="vm.moveNext()" class="btn btn-warning">Next <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
-                &nbsp;
-                <button  ng-click="vm.moveToReview()" class="btn btn-warning">Finish <i class="fa fa-stop-circle" aria-hidden="true"></i></button>
+                <button ng-click="vm.moveNext()" class="btn btn-warning">Next <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>                &nbsp;
+                <button ng-click="vm.moveToReview()" class="btn btn-warning">Finish <i class="fa fa-stop-circle" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>

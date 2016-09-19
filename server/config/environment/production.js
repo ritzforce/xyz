@@ -13,14 +13,22 @@ module.exports = {
             process.env.PORT ||
             8080,
 
-  // MongoDB connection options
-  mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://admin:admin@ds011482.mlab.com:11482/examstore'
+  sql: {
+    maxLimit: 100,
+    host: process.env.SQL_HOST,
+    user : process.env.SQL_USER,
+    password: process.env.SQL_PASSWORD,
+    database: process.env.SQL_DATABASE
   },
 
- 
+  loggly: {
+     inputToken: process.env.LOGGLY_INPUT_TOKEN,
+     subdomain: process.env.LOGGLY_SUB_DOMAIN,
+     tags: process.env.LOGGLY_TAGS 
+  },
+
+  log: {
+    logLevel : process.env.LOG_LEVEL || 'debug' 
+  },
 
 };

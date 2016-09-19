@@ -11,6 +11,8 @@ var router = express.Router();
 router.post('/', auth.isAuthenticated(), controller.upsert);
 //router.put('/:id', controller.update);
 //router.patch('/:id', controller.update);
+router.delete('/paper/:paperId', auth.isAuthenticated(), controller.purgePaper);
 router.delete('/:id', auth.isAuthenticated(), controller.destroy);
+
 
 module.exports = router;

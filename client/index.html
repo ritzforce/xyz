@@ -2,114 +2,140 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <base href="/">
-    <title>XYZ Exam App</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(client) app/vendor.css -->
-      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-      <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
-   
-      <!-- bower:css -->
-      <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
-      <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,client}) app/app.css -->
-    <link rel="stylesheet" href="app/app.css">
-      <!-- injector:css -->
-      <link rel="stylesheet" href="app/account/login/login.css">
-      <link rel="stylesheet" href="app/admin/admin.css">
-      <link rel="stylesheet" href="app/app.css">
-      <link rel="stylesheet" href="app/exam/exam.css">
-      <link rel="stylesheet" href="app/launch/launch.css">
-      <link rel="stylesheet" href="app/main/main.css">
-      <link rel="stylesheet" href="components/directives/adminSideMenu/adminSideMenu.css">
-      <link rel="stylesheet" href="components/directives/examDetail/examDetail.css">
-      <link rel="stylesheet" href="components/directives/examList/examList.css">
-      <link rel="stylesheet" href="components/directives/launchQuestion/launchQuestion.css">
-      <link rel="stylesheet" href="components/directives/launchResult/launchResult.css">
-      <link rel="stylesheet" href="components/directives/launchReview/launchReview.css">
-      <link rel="stylesheet" href="components/directives/questionList/questionList.css">
-      <link rel="stylesheet" href="components/directives/quizQuestion/quizQuestion.css">
-      <link rel="stylesheet" href="components/directives/selectImage/selectImage.css">
-      <link rel="stylesheet" href="components/directives/userlist/userlist.css">
-      <link rel="stylesheet" href="components/modal/modal.css">
-      <!-- endinjector -->
-    <!-- endbuild -->
-  </head>
-  <body ng-app="examApp">
-    <!--[if lt IE 7]>
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <base href="/">
+  <title>Sharma Infotech Exam Center</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(client) app/vendor.css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,client}) app/app.css -->
+  <link rel="stylesheet" href="app/app.css">
+  <!-- injector:css -->
+  <link rel="stylesheet" href="app/admin/admin.css">
+  <link rel="stylesheet" href="app/app.css">
+  <link rel="stylesheet" href="app/assignuser/assignuser.css">
+  <link rel="stylesheet" href="app/backup/backup.css">
+  <link rel="stylesheet" href="app/exam/exam.css">
+  <link rel="stylesheet" href="app/launch/launch.css">
+  <link rel="stylesheet" href="app/main/main.css">
+  <link rel="stylesheet" href="app/massUpload/massUpload.css">
+  <link rel="stylesheet" href="components/directives/adminSideMenu/adminSideMenu.css">
+  <link rel="stylesheet" href="components/directives/examDetail/examDetail.css">
+  <link rel="stylesheet" href="components/directives/examList/examList.css">
+  <link rel="stylesheet" href="components/directives/import/import.css">
+  <link rel="stylesheet" href="components/directives/launchCorrectAnswer/launchCorrectAnswer.css">
+  <link rel="stylesheet" href="components/directives/launchQuestion/launchQuestion.css">
+  <link rel="stylesheet" href="components/directives/launchResult/launchResult.css">
+  <link rel="stylesheet" href="components/directives/launchReview/launchReview.css">
+  <link rel="stylesheet" href="components/directives/list/list.css">
+  <link rel="stylesheet" href="components/directives/questionList/questionList.css">
+  <link rel="stylesheet" href="components/directives/quizQuestion/quizQuestion.css">
+  <link rel="stylesheet" href="components/directives/selectImage/selectImage.css">
+  <link rel="stylesheet" href="components/directives/userlist/userlist.css">
+  <link rel="stylesheet" href="components/modal/modal.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
+</head>
+
+<body ng-app="examApp">
+  <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div ng-include="'components/navbar/navbar.html'"></div>
-    <!-- Add your site or application content here -->
-    <div ui-view=""></div>
-    <div ng-include="'components/navbar/footer.html'"></div>
+  <div ng-include="'components/navbar/navbar.html'"></div>
+  <!-- Add your site or application content here -->
+  <div ui-view=""></div>
+  <div ng-include="'components/navbar/footer.html'"></div>
 
-    <!--[if lt IE 9]>
+  <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <!-- build:js({client,node_modules}) app/vendor.js -->
-      <!-- bower:js -->
-      <script src="bower_components/jquery/dist/jquery.js"></script>
-      <script src="bower_components/angular/angular.js"></script>
-      <script src="bower_components/angular-resource/angular-resource.js"></script>
-      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-      <script src="bower_components/lodash/lodash.js"></script>
-      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-      <script src="bower_components/toastr/toastr.js"></script>
-      <!-- endbower -->
-      
-    <!-- endbuild -->
+  <!-- build:js({client,node_modules}) app/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/toastr/toastr.js"></script>
+  <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+  <script src="bower_components/ng-file-upload-shim/ng-file-upload-shim.js"></script>
+  <!-- endbower -->
 
-        <!-- build:js({.tmp,client}) app/app.js -->
-        <script src="app/app.js"></script>
-          <!-- injector:js -->
-          <script src="app/account/account.js"></script>
-          <script src="app/account/login/login.controller.js"></script>
-          <script src="app/account/settings/settings.controller.js"></script>
-          <script src="app/account/signup/signup.controller.js"></script>
-          <script src="app/account/users/user.controller.js"></script>
-          <script src="app/account/users/userProfile.controller.js"></script>
-          <script src="app/admin/admin.controller.js"></script>
-          <script src="app/admin/admin.js"></script>
-          <script src="app/exam/exam.controller.js"></script>
-          <script src="app/exam/exam.js"></script>
-          <script src="app/exam/question.controller.js"></script>
-          <script src="app/launch/launch.controller.js"></script>
-          <script src="app/launch/launch.js"></script>
-          <script src="app/main/main.controller.js"></script>
-          <script src="app/main/main.js"></script>
-          <script src="components/auth/auth.service.js"></script>
-          <script src="components/auth/user.service.js"></script>
-          <script src="components/data/api/api.service.js"></script>
-          <script src="components/data/mockData/mockData.service.js"></script>
-          <script src="components/directives/adminSideMenu/adminSideMenu.directive.js"></script>
-          <script src="components/directives/categoryList/categoryList.directive.js"></script>
-          <script src="components/directives/examDetail/examDetail.directive.js"></script>
-          <script src="components/directives/examList/examList.directive.js"></script>
-          <script src="components/directives/launchPrep/launchPrep.directive.js"></script>
-          <script src="components/directives/launchQuestion/launchQuestion.directive.js"></script>
-          <script src="components/directives/launchResult/launchResult.directive.js"></script>
-          <script src="components/directives/launchReview/launchReview.directive.js"></script>
-          <script src="components/directives/questionList/questionList.directive.js"></script>
-          <script src="components/directives/quizQuestion/quizQuestion.directive.js"></script>
-          <script src="components/directives/selectImage/selectImage.directive.js"></script>
-          <script src="components/directives/userlist/userlist.directive.js"></script>
-          <script src="components/modal/modal.service.js"></script>
-          <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-          <script src="components/navbar/navbar.controller.js"></script>
-          <script src="components/notification/notification.service.js"></script>
-          <!-- endinjector -->
-        <!-- endbuild -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp,client}) app/app.js -->
+  <script src="app/app.js"></script>
+  <!-- injector:js -->
+  <script src="app/account/account.js"></script>
+  <script src="app/account/login/login.controller.js"></script>
+  <script src="app/account/settings/settings.controller.js"></script>
+  <script src="app/account/signup/signup.controller.js"></script>
+  <script src="app/account/users/user.controller.js"></script>
+  <script src="app/account/users/userEdit.controller.js"></script>
+  <script src="app/account/users/userProfile.controller.js"></script>
+  <script src="app/admin/admin.controller.js"></script>
+  <script src="app/admin/admin.js"></script>
+  <script src="app/assignuser/assignuser.controller.js"></script>
+  <script src="app/assignuser/assignuser.js"></script>
+  <script src="app/backup/backup.controller.js"></script>
+  <script src="app/backup/backup.js"></script>
+  <script src="app/category/category.controller.js"></script>
+  <script src="app/category/category.js"></script>
+  <script src="app/exam/exam.controller.js"></script>
+  <script src="app/exam/exam.js"></script>
+  <script src="app/exam/question.controller.js"></script>
+  <script src="app/launch/launch.controller.js"></script>
+  <script src="app/launch/launch.js"></script>
+  <script src="app/main/main.controller.js"></script>
+  <script src="app/main/main.js"></script>
+  <script src="app/massUpload/massUpload.controller.js"></script>
+  <script src="app/massUpload/massUpload.js"></script>
+  <script src="components/auth/auth.service.js"></script>
+  <script src="components/auth/user.service.js"></script>
+  <script src="components/data/api/api.service.js"></script>
+  <script src="components/data/mockData/mockData.service.js"></script>
+  <script src="components/directives/adminSideMenu/adminSideMenu.directive.js"></script>
+  <script src="components/directives/categoryList/categoryList.directive.js"></script>
+  <script src="components/directives/drc/drc.directive.js"></script>
+  <script src="components/directives/examDetail/examDetail.directive.js"></script>
+  <script src="components/directives/examList/examList.directive.js"></script>
+  <script src="components/directives/import/import.directive.js"></script>
+  <script src="components/directives/launchCorrectAnswer/launchCorrectAnswer.directive.js"></script>
+  <script src="components/directives/launchPrep/launchPrep.directive.js"></script>
+  <script src="components/directives/launchQuestion/launchQuestion.directive.js"></script>
+  <script src="components/directives/launchResult/launchResult.directive.js"></script>
+  <script src="components/directives/launchReview/launchReview.directive.js"></script>
+  <script src="components/directives/list/list.directive.js"></script>
+  <script src="components/directives/questionList/questionList.directive.js"></script>
+  <script src="components/directives/quizQuestion/quizQuestion.directive.js"></script>
+  <script src="components/directives/selectImage/selectImage.directive.js"></script>
+  <script src="components/directives/userlist/userlist.directive.js"></script>
+  <script src="components/modal/modal.service.js"></script>
+  <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+  <script src="components/navbar/navbar.controller.js"></script>
+  <script src="components/notification/notification.service.js"></script>
+  <!-- endinjector -->
+  <!-- endbuild -->
+
 </body>
+
 </html>

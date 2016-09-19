@@ -11,6 +11,11 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 
+var logger = require('./logger/logger');
+console.log('**LOGGER***',logger);
+
+logger.configureForApp(config);
+
 // Connect to database
 //mongoose.connect(config.mongo.uri, config.mongo.options);
 

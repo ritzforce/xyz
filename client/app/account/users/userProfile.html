@@ -6,16 +6,22 @@
             <h3 class="sub-header"><i class="fa fa-user"></i> Profile</h3>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <b>Details</b>
+                    <div class="pull-left">
+                        <b>Details</b>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-warning" href="javascript:void(0)" ng-click="vm.resetPassword()">Reset Password</a>
+                    </div>
+
                 </div>
                 <div class="panel-body">
-                    <table  class="table table-condensed">
+                    <table class="table table-condensed">
                         <tr>
-                            <td align="right"><b>Name</b></td>
-                             <td>{{vm.user.name}}</td>
+                            <td width="40%" align="right"><b>Name</b></td>
+                            <td>{{vm.user.name}}</td>
                         </tr>
                         <tr>
-                            <td align="right"><b>Email</b></td>
+                            <td width="40%" align="right"><b>Email</b></td>
                             <td>{{vm.user.email}}</td>
                         </tr>
                     </table>
@@ -25,8 +31,25 @@
 
     </div>
 
-    <div class="row">
+    <div class="row" ng-if="vm.isAdmin() && vm.user.role == 'user'">
         <div class="col-xs-10 col-xs-offset-1 ">
+            <h3 class="sub-header"><i class="glyphicon glyphicon-lock"></i> Assigned Exams </h3> 
+
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <button ng-click="vm.assignExam()" type="submit" class="btn btn-warning">Add Exam</button>
+                </div>
+                <div class="panel-body">
+                     <list records="vm.exams" showdelete="true" del="vm.deleteUserExam" name-field="name" fields="['name','code','category']"
+                                 filter-text='Filter By Exam name or Code' header-fields="['Name','Code','Category']"></list>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+
+    <div class="row">        <div class="col-xs-10 col-xs-offset-1 ">
             <h3 class="sub-header"><i class="fa fa-list"></i> Completed Exams</h3>
 
             <div class="panel panel-default">
@@ -37,18 +60,26 @@
                                 <th>Exam</th>
                                 <th>Max Marks</th>
                                 <th>Pass Percentage</th>
+                                <th>Date Completed</th>
                                 <th>Score</th>
                                 <th>Score Percent</th>
+                                <th>Time Taken</th>
                                 <th>Result</th>
-                                <tr>
+                            </tr>
                         </thead>
                         <tbody>
+                            <tr ng-if="vm.user.exams.length === 0">
+                                <td colspan="8">No records to display</td>
+                            </tr>
+
                             <tr ng-repeat="exam in vm.user.exams">
                                 <td>{{exam.name}}</td>
                                 <td align="center">{{exam.maxMarks}}</td>
                                 <td align="center">{{exam.passPercent}}%</td>
+                                <td align="center">{{exam.lastModifiedDate | date }}</td>
                                 <td align="center">{{exam.computedScore}}</td>
                                 <td align="center">{{exam.percent}}%</td>
+                                <td align="center">{{exam.timeTaken}} Min(s)</td>
                                 <td>
                                     <span ng-show="exam.result == 0" class="text text-danger"><i class="fa fa-times" aria-hidden="true"></i> <b>Fail</b></span>
                                     <span ng-hide="exam.result == 0" class="text text-success"><i class="fa fa-check" aria-hidden="true"></i> <b>Pass</b></span>

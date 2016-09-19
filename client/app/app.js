@@ -5,7 +5,8 @@ angular.module('examApp', [
 	'ngResource',
 	'ngSanitize',
 	'ui.router',
-	'ui.bootstrap'
+	'ui.bootstrap',
+	'ngFileUpload'
 ])
 	.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 		$urlRouterProvider
@@ -15,7 +16,7 @@ angular.module('examApp', [
 		$httpProvider.interceptors.push('authInterceptor');
 	})
 
-	.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+	.factory('authInterceptor', function ($rootScope,$log, $q, $cookieStore, $location) {
 		return {
 			// Add authorization token to headers
 			request: function (config) {
@@ -41,21 +42,23 @@ angular.module('examApp', [
 		};
 	})
 
-	.run(function ($rootScope, $location, Auth) {
+	.run(function ($rootScope,$log, $location, Auth) {
 		// Redirect to login if route requires auth and you're not logged in
 		$rootScope.$on('$stateChangeStart', function (event, next) {
-			console.log('***Here***');
-			console.log('***next**');
-			console.log(next);
-
 			
-			Auth.isLoggedInAsync(function (loggedIn) {
+			if(next.admin && !Auth.isAdmin()){
+				$location.path('/');
+			}
 
+			Auth.isLoggedIn(function (loggedIn) {
 				if (next.anonymous) {
 					return;
 				}
 				if (!loggedIn) {
 					$location.path('/login');
+				}
+				if(next.admin && !Auth.isAdmin()){
+					$location.path('/');
 				}
 			});
 		});

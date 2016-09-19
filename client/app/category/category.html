@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10" ng-cloak="true">
+
+            <! -- Edit / Create Mode -->
+            <div class="row" ng-show="vm.editMode">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-tags" aria-hidden="true"></i> {{vm.headerText}}</h3>
+                </div>
+
+                <div class="col-xs-12">
+
+                    <uib-alert type="danger" class="text-center" ng-show="vm.error">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                        <span>{{vm.error}}</span>
+                    </uib-alert>
+
+
+                    <form class="form-horizontal" name="vm.frm" novalidate>
+                        <div class="form-group" ng-class="{'has-error': vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted )}">
+                            <label for="name" class="col-sm-2 control-label control-required">Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" maxlength="80" name="name" required ng-model="vm.category.name" class="form-control" id="txtCategoryName" placeholder="Name"
+                                />
+                                <span class="help-block" ng-show="vm.frm.name.$invalid && (vm.frm.name.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.name.$error.required">Category Name is required</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button ng-click="vm.save()" ng-disabled="vm.isLoading" type="submit" class="btn btn-warning">Save</button>                                &nbsp;
+                                <button ng-click="vm.cancel()" ng-disabled="vm.isLoading" class="btn btn-default">Cancel</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- All Category Mode --->
+            <div class="row" ng-hide='vm.editMode'>
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-tags" aria-hidden="true"></i> All Category</h3>
+                </div>
+                <div class="col-xs-12">
+                    <uib-alert type="danger" class="text-center" ng-show="vm.error">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+                        <span>{{vm.error}}</span>
+                    </uib-alert>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center">
+                            <button class="btn btn-warning" ng-click="vm.addCategory()">New Category</button>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Action</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="category in vm.allCategory">
+                                        <td>
+                                            <a href="javascript:void(0)" ui-sref="categoryEdit({categoryId: category.id})">Edit</a>                                            | <a href="javascript:void(0)" ng-click="vm.delete(category.name,category)">Delete</a></td>
+                                        <td>{{category.name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>

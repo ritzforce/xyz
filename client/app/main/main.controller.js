@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('MainCtrl', function ($scope, $http, $log, $filter, api, Auth) {
-		$scope.awesomeThings = [];
-
+	.controller('MainCtrl', function ($state, $http, $log, $filter, api, Auth) {
+	
 		var vm = this;
 		var PAGE_SIZE = 10;
 
@@ -26,15 +25,18 @@ angular.module('examApp')
 
 		//--Initialize 
 		function init() {
-			loadAllExam();
+			if(!Auth.isLoggedIn()){
+				$state.go('login');
+				return;
+			}
 			getCategories();
+			loadAllExam();
 			vm.isAdmin = Auth.isAdmin;
 		}
 
-		
-
+	
 		vm.hidePager = function(){
-			if(vm.total < PAGE_SIZE){
+			if(vm.total <= PAGE_SIZE){
 				return true;
 			}
 			return false;
@@ -71,21 +73,17 @@ angular.module('examApp')
 
 		/******************************************AJAX **************************************/
 		function loadAllExam(){
-			vm.isLoading = true;
+			api.connectApi(vm,'Loading Exams...',api.getAllExams.bind(api), function(result){
+				vm.masterListExam = filterResults(result);
+				reGenerateChunks(vm.masterListExam);
+			});	
+		}
 
-			api.getAllExams()
-			.then(function(result){
-				//Contains all data in chunked format
-				vm.masterListExam = result;
-				reGenerateChunks(result);
-				
-			})
-			.catch(function(err){
-				console.log(err);
-			})
-			.finally(function(){
-				vm.isLoading = false;
-			});			
+		function filterResults(results){
+			if(vm.isAdmin()){
+				return results;
+			}
+			return _.filter(results, 'active' );
 		}
 
 		function getCategories() {
@@ -96,7 +94,7 @@ angular.module('examApp')
 					vm.categories = result;
 				})
 				.catch(function (err) {
-					console.log(err);
+					api.formatError(vm, err);
 				})
 				.finally(function () {
 					vm.isLoading = false;

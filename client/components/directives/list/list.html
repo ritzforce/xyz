@@ -1,0 +1,47 @@
+<div class="panel-body">
+    <div class="pull-left">
+        <i>{{vm.titleText}}</i>
+    </div>
+    <div class="pull-right">
+        <input type="text" ng-model="vm.search"
+         placeholder="{{vm.filterText}}" class="form-control" />
+    </div>
+
+    <table class="table table-condensed" style="text-align:left;">
+        <thead>
+            <tr>
+                <th width="10%">
+                    <span>
+                        <input type="checkbox" ng-if="vm.showcheckbox" ng-model="vm.masterSelected" ng-click="vm.setAll()" />
+                    </span>  
+                    Action
+                </th>
+                <th ng-repeat="headerField in vm.headerFields">
+                    {{headerField}}
+                </th>
+                <th width="10%">Active</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-if="vm.records.length === 0">
+                <td colspan="4">No records to display</td>
+            </tr>
+            <tr ng-repeat="record in vm.records | filter: vm.search">
+                <td width="10%" >
+                    <span ng-if="vm.showcheckbox">
+                        <input type="checkbox" ng-model="record.isSelected"/>
+                    </span>
+                    <a href="javascript:void(0)" ng-if="vm.showdelete" ng-click="vm.delete(record[vm.nameField], record)">Delete</a>
+                </td>
+                <td ng-repeat="field in vm.fields">
+                    {{record[field]}}
+                </td>
+                <td>
+                    <span ng-show="record.active" class="text-success">Active</span>
+                    <span ng-hide="record.active" class="text-danger">Inactive</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

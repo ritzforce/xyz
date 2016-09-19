@@ -2,19 +2,21 @@ var sqlHelper = require('./../../config/sqlHelper');
 var SqlUtils = require('./../sqlUtils');
 var apiUtils = require('./../apiUtils');
 
+var logger = require('./../../logger/logger');
+
 /***********************************************/
 /* Get list of Questions, show All Questions to Admin
 /***********************************************/
 
 var selectFields = ['id', 'paperId', 'questionId', 'correct', 'answer', 'createdDate', 'lastModifiedDate'];
-
 var TBL_NAME = 'paperanswer';
 
-
 exports.index = function (req, res) {
+	logger.debug('Entering paperAnswer.index with exam Id', req.params.examId);
 	var examId = sqlHelper.escape(req.params.examId);
-
 	apiUtils.index(req, res, TBL_NAME, selectFields, 'name ASC', ['examId = ' + examId]);
+
+	logger.debug('Exiting paperAnswer.index');
 };
 
 
@@ -29,6 +31,8 @@ exports.show = function (req, res) {
 /* Create one Paper Answer record, based on input, provided by the 
 /***********************************************/
 exports.upsert = function (req, res) {
+	logger.debug('Entering paperAnswer.upsert with request Body', req.body);
+
 	var requestBody = req.body;
 
 	var sqlUtils = new SqlUtils(TBL_NAME, 1000);
@@ -36,31 +40,23 @@ exports.upsert = function (req, res) {
 	sqlUtils.appendWhereClauses('paperId = ' + sqlHelper.escape(requestBody.paperId));
 	sqlUtils.appendWhereClauses('questionId = ' + sqlHelper.escape(requestBody.questionId));
 
-	console.log('****FIRST QUERY*****');
-	console.log(sqlUtils.getSelectQuery());
-
 	apiUtils.select(req, res, sqlUtils.getSelectQuery(),function(result){
-		console.log('***FIRST RESULT');
-		console.log(result);
+		logger.info('paperAnswer.upsert result', result);
 		//No record exists, need to create a new one
 		queryQuestion(req, res, result, requestBody);
 	});
 };
 
 function queryQuestion(req, res, result, requestBody){
-	console.log('***INSIDE QUERY QUESTION*****');
-
+	logger.debug('Entering paperAnswer.queryQuestion with request Body', req.body);
 
 	var selectQuery = 	"select CONCAT(IF(aCorrect,'a',''), IF(bCorrect,'b',''), IF(cCorrect,'c',''), " +
 						"IF(dCorrect,'d',''), IF(eCorrect,'e',''), " +
      					"IF(fCorrect,'f','')) AS answer FROM Question WHERE id = " + sqlHelper.escape(requestBody.questionId); 
 
-	console.log('****SECOND QUERY****');
-	console.log(selectQuery);
-
+	
 	apiUtils.select(req, res, selectQuery, function(questionResultArr){
-		console.log('****SECOND RESULT*******');
-		console.log(questionResultArr);
+		logger.info(' paperAnswer.queryQuestion Result', questionResultArr);
 
 		var questionResult = questionResultArr[0];
 		if(questionResult.answer.toLowerCase() === requestBody.answer.toLowerCase()) {
@@ -69,9 +65,7 @@ function queryQuestion(req, res, result, requestBody){
 		else {
 			requestBody.correct = false;
 		}
-		console.log('***REQUEST BODY*****FINALLY***');
-		console.log(requestBody);
-
+		logger.info('Update paperAnswer.queryQuestion with request Body', requestBody);
 		if(result != null && result.length > 0){
 			req.params.id = result[0].id;
 			apiUtils.update(req,res, TBL_NAME, requestBody, ['id']);
@@ -88,6 +82,15 @@ function queryQuestion(req, res, result, requestBody){
 exports.update = function (req, res) {
 	apiUtils.update(req, res, TBL_NAME, req.body, selectFields);
 };
+
+exports.purgePaper = function(req, res){
+	logger.debug('Entering paperAnswer.purgePaper with paperId', req.params.paperId);
+
+	var destroyBody = {
+		paperId: req.params.paperId,
+	};
+	apiUtils.destroyBulk(req, res, TBL_NAME, destroyBody);
+}
 
 /********************************************/
 /* Deletes a Paper from the DB.

@@ -40,15 +40,15 @@ var all = {
     database: 'examination'
   },
   
-  /*
-  sql: {
-    maxLimit: 100,
-    host: 'sql6.freemysqlhosting.net',
-    user : 'sql6128368',
-    password: 'AwjJ8Z8QmK',
-    database: 'sql6128368'
+  log: {
+    logLevel : 'info' 
   },
-  */
+
+  loggly: {
+     inputToken: process.env.LOGGLY_INPUT_TOKEN || '605e23bc-d981-42ec-9b19-a76e8ffeb977',
+     subdomain: process.env.LOGGLY_SUB_DOMAIN || 'ritzportal',
+     tags: process.env.LOGGLY_TAGS || 'alpha101' 
+  },
 
   // MongoDB connection options
   mongo: {
@@ -63,12 +63,6 @@ var all = {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
-  },
-
-  twitter: {
-    clientID:     process.env.TWITTER_ID || 'id',
-    clientSecret: process.env.TWITTER_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
   },
 
   google: {
