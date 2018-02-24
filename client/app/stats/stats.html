@@ -1,0 +1,142 @@
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<admin-side-menu></admin-side-menu>
+				<root-side-menu ng-show="vm.isSuperAdmin()"></root-side-menu>
+			</div>
+
+			<div class="col-sm-9 col-md-10">
+				<div class="row">
+					<div class="col-xs-12">
+						<h3 class="sub-header"><i class="fa fa-tachometer" aria-hidden="true"></i> Stats</h3>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="panel panel-warning">
+							<div class="panel-heading">
+								<b>Summary</b>
+							</div>
+
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="panel panel-info text-center">
+											<!-- Default panel contents -->
+											<div class="panel-heading">
+												<i class="fa fa-university"></i>Total Exams
+											</div>
+												<div class="text largeText">
+													<var>{{vm.stats.summary[0].count}}</var>
+												</div>
+										</div>	
+									</div>
+
+									<div class="col-sm-4">
+										<div class="panel panel-info text-center">
+											<!-- Default panel contents -->
+											<div class="panel-heading">
+												<i class="fa fa-user"></i> Total Users
+											</div>
+												
+												<div class="text largeText">
+													<var>{{vm.stats.summary[1].count}}</var>
+												</div>
+										</div>	
+									</div>
+
+									<div class="col-sm-4">
+										<div class="panel panel-info text-center">
+											<!-- Default panel contents -->
+											<div class="panel-heading">
+												<i class="fa fa-university"></i> 
+												Total Papers
+											</div>
+												<div class="text largeText">
+													<var>{{vm.stats.summary[2].count}}</var>
+												</div>
+										</div>	
+									</div>
+
+								</div>
+
+								<hr/>
+
+								<div class="row">
+									<div class="col-sm-6 text-center">
+										<div class="panel panel-info">
+											<!-- Default panel contents -->
+											<div class="panel-heading">
+												<i class="fa fa-university"></i> 
+												Top Exams
+											</div>
+
+
+											<!-- Table -->
+											<table class="table table-striped">
+												<thead class="text-center">
+													<th class="text-center">Sl No</th>
+													<th class="text-center">Name</th>
+													<th class="text-center">Count</th>
+												</thead>
+												<tbody>
+												<tr ng-repeat="exam in vm.stats.exam5">
+														<td>
+														   {{$index + 1}}
+														</td>
+														<td>
+															{{exam.exam}}
+														</td>
+														<td>
+															{{exam.count}}
+														</td>
+													</tr>
+												</tbody>	
+											</table>
+										</div>
+									</div>
+
+									<div class="col-sm-6 text-center">
+										<div class="panel panel-info">
+											<!-- Default panel contents -->
+											<div class="panel-heading">
+												<i class="fa fa-user"></i> 
+												Top Users
+											</div>
+
+
+											<!-- Table -->
+											<table class="table table-striped">
+												<thead class="text-center">
+													<th class="text-center">Sl No</th>
+													<th class="text-center">Name</th>
+													<th class="text-center">Count</th>
+												</thead>
+												<tbody>
+													<tr ng-repeat="user in vm.stats.user5">
+														<td>
+														   {{$index + 1}}
+														</td>
+														<td>
+															{{user.user}}
+														</td>
+														<td>
+															{{user.count}}
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>

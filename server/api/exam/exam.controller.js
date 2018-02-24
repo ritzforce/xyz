@@ -5,6 +5,7 @@ var sqlHelper = require('./../../config/sqlHelper');
 var SqlUtils = require('./../sqlUtils');
 var apiUtils = require('./../apiUtils');
 
+
 var logger = require('./../../logger/logger');
 
 /***********************************************/
@@ -16,14 +17,14 @@ var selectFields = ['id','name','active','code','description','category','maxMar
 
 exports.index = function (req, res) {
 	logger.debug('Entering examController.index');
-	if(req.user.role === 'admin') {
+	if(req.user.role === 'admin' || req.user.role === 'superadmin') {
 		apiUtils.index(req, res, 'exam', selectFields, 'name ASC');
 	}
 	else {
 
 		var whereClause = [];
 		whereClause.push('active = true');
-		whereClause.push(' id IN ( SELECT examId from userexam where userId = ' + sqlHelper.escape(req.user.id) + ' )');
+		whereClause.push(' id IN ( SELECT examId from ' + apiUtils.prefixCode(req, 'userExam') +  ' where userId = ' + sqlHelper.escape(req.user.id) + ' )');
 
 		apiUtils.index(req, res, 'exam', selectFields, 'name ASC', whereClause);
 	}

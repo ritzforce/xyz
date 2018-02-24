@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <admin-side-menu></admin-side-menu>
+            <root-side-menu ng-show="vm.isSuperAdmin()"></root-side-menu>
         </div>
 
         <div class="col-sm-9 col-md-10">
@@ -25,6 +26,10 @@
                         <li role="presentation" ng-class="{active: vm.currentTab == 'user'}">
                             <a href="javascript:void(0)" ng-click="vm.setTab('user')" aria-controls="user" role="tab">Users</a>
                         </li>
+                         <li role="presentation" ng-show="vm.isSuperAdmin()" ng-class="{active: vm.currentTab == 'shareInstitute'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('shareInstitute')" aria-controls="share with Institute" role="tab">Share </a>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -65,6 +70,21 @@
                             <question-list questions="vm.questions"></question-list>
 
                         </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" 
+                     ng-class="{active: vm.currentTab == 'shareInstitute'}"
+                     id="shareInstitute">
+                      
+                        <div class="panel panel-default text-center">
+                            <div class="panel-heading">
+                                <button ng-click="vm.shareExam()" type="submit" class="btn btn-warning">Share With Institute</button>
+                            </div>
+                            <list title-text="Institute With this Exam is shared" showdelete="true" 
+                            delete-text="Unshare" showcheckbox="false" records="vm.institutes" del="vm.deleteShareExam" name-field="name" fields="['name','code','description']"
+                                 filter-text='Filter By Exam name or code' header-fields="['Name','Code','Description']"></list>
+                        </div>
+
                     </div>
                     
                     <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'user'}" id="user">

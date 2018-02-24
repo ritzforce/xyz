@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+            <root-side-menu></root-side-menu>
+        </div>
+
+        <div class="col-sm-9 col-md-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header" ng-if="vm.exam.id">
+                        <i class="fa fa-university" aria-hidden="true"></i> {{vm.exam.name}} - Assign Institutes
+                    </h3>
+                    <h3 class="sub-header" ng-if="vm.institute.id">
+                        <i class="fa fa-money" aria-hidden="true"></i> {{vm.institute.name}} - Assign Exams
+                    </h3>
+                
+                </div>
+
+                <div class="col-xs-12" ng-if="vm.error">
+                    <uib-alert type="danger" class="text-center">
+                        <span class="glyphicon glyphicon glyphicon-remove-sign"></span> 
+                        <span>{{vm.error}}</span>
+                    </uib-alert>
+                </div> 
+               
+            </div>
+
+            
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-default text-center" ng-if="vm.exam.id">
+                        <div class="panel-heading">
+                            <button ng-click="vm.shareInstitutes()" type="submit" class="btn btn-warning">Share With Institutes </button>
+                            <button ng-click="vm.cancel()" class="btn btn-default">Cancel</button>
+                           
+                        </div>
+                        <list title-text="Unassigned Institutes for this exam ( Institutes that haven't been activated previously are displayed )" showdelete="false" showcheckbox="true" records="vm.institutes" name-field="name" fields="['name','code','description']" filter-text='Filter By name or code'
+                            header-fields="['Name','Code','Description']"></list>
+                    </div>
+
+                    <div class="panel panel-default text-center" ng-if="vm.institute.id">
+                        <div class="panel-heading">
+                            <button ng-click="vm.shareExams()" type="submit" class="btn btn-warning">Share Exams</button>
+                            <button ng-click="vm.cancel()" class="btn btn-default">Cancel</button>
+                        </div>
+                        <list title-text="Share exams with the Institute" showdelete="false" showcheckbox="true" records="vm.exams" name-field="name" fields="['name','code','category']" filter-text='Filter By Exam name or Code'
+                            header-fields="['Name','Code','Category']"></list>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

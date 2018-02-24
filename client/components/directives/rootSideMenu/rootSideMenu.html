@@ -1,0 +1,19 @@
+<div class="panel panel-warning">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <i class="glyphicon glyphicon-dashboard"></i> Root Panel
+    </div>
+
+    <ul class="list-group data-category">
+       
+        <li class="list-group-item">
+            <a ui-sref="institutes" href="javascript:void(0)">Manage Institutes</a>
+        </li>
+
+        <li class="list-group-item" >
+            <a ui-sref="backup" href="javascript:void(0)">Backup Database</a>
+            <span class="{{backupClass}}" ng-if="showBackupDays"  uib-tooltip="Days since the database was last backed up">{{lastBackup}}</span>
+        </li>
+    </ul>
+
+</div>

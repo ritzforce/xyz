@@ -1,14 +1,12 @@
-<footer class="footer">
+<footer class="footer" ng-controller="NavbarCtrl as vm">
 	<div class="container">
 		<p>&copy; All Rights Reserved |
-			<a href="http://sharmainfotech.org" target="_blank">Sharma Infotech Exam Center</a> |
+			<a href="http://sharmainfotech.org" target="_blank">Sharma Infotech Exam App</a> |
 			<a href="https://github.com/ritzforce/xyz/issues" target="_blank">Report Issues</a>
 		</p>
 		<p>
 			<small>
-				D-13, Bapu Nagar Senthi, Road No. 8, Chittorgarh(Raj.)
-				B-13, S.K. Plaza, Maharana Pratap Setu Marg, Near Head Post Office, Chittorgarh (Raj.) <br/>
-				Call Us: 9950072039, 7821932915 | Email To: <a href="mailto:rscitsharma@gmail.com">rscitsharma@gmail.com</a>
+				<span ng-bind-html="vm.contactAddress()" /> 
       		</small>
 		</p>
 	</div>

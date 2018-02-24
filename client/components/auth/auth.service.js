@@ -3,7 +3,15 @@
 angular.module('examApp')
 	.factory('Auth', function Auth($log, $window, $location, $rootScope, $http, User, api, $cookieStore, $q) {
 		var currentUser = {};
+		var currentInstitute = {};
 		
+		function loadCurrentInsitute() {
+			return api.getMyInstitute().then(function(result) {
+				currentInstitute = result;
+				$window.localStorage.setItem('currentInstitute', JSON.stringify(result));
+			});
+		}
+
 		function loadCurrentUserFromDatabase() {			
 			return api.getMe().then(function(user){
 				if(user === null){
@@ -11,6 +19,8 @@ angular.module('examApp')
 				}
 				currentUser = user;
 				return user;
+
+
 			})
 			.catch(function(err){
 				$log.error(err);
@@ -26,22 +36,26 @@ angular.module('examApp')
 			login: function(user){
 				var deferred = $q.defer();
 				var that = this;
+				var dbUser_local = null;
 
 				$http.post('/auth/local',{
 					email: user.email,
-					password: user.password
+					password: user.password,
+					code: user.code
 				})
 				.then(function(response){
-
 					var data = response.data;
 					$cookieStore.put('token', data.token);
-					
 				})
 				.then(function(){
 					return loadCurrentUserFromDatabase();
 				})
-				.then(function(dbUser){
-					deferred.resolve(dbUser);
+				.then(function(dbUser) {
+					dbUser_local = dbUser;
+					return loadCurrentInsitute();	
+				})
+				.then(function(){
+					deferred.resolve(dbUser_local);
 				})
 				.catch(function (err) {
 					$log.error(err);
@@ -160,6 +174,18 @@ angular.module('examApp')
 				return currentUser;
 			},
 
+			getCurrentInstitute: function() {
+				//Current object is empty
+				if(!currentInstitute || Object.keys(currentInstitute).length == 0) {
+					//Check if the localStorage has a previous institute value
+					var val = $window.localStorage.getItem('currentInstitute');
+					if (val) {
+						return JSON.parse(val);
+					}
+				}
+				return currentInstitute;
+			},
+
 			/**
 			 * Check if a user is logged in
 			 *
@@ -192,7 +218,15 @@ angular.module('examApp')
 			 * @return {Boolean}
 			 */
 			isAdmin: function () {
+				if (currentUser.role === 'superadmin') {
+					return true;
+				}
+
 				return currentUser.role === 'admin';
+			},
+			
+			isSuperAdmin: function() {
+				return currentUser.role === 'superadmin';
 			},
 
 			/**

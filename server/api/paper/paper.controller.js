@@ -15,7 +15,7 @@ var TBL_NAME = 'paper';
 
 exports.correctAnswersForReview = function(req, res){
 	logger.debug('Entering correct Answers For Review');
-	var query = generateQueryForCorrectAnswerReview(req.params.paperId);
+	var query = generateQueryForCorrectAnswerReview(req, req.params.paperId);
 
 	apiUtils.select(req, res, query, function(result){
 		logger.debug('Exit correct Answers For Review', result);
@@ -23,7 +23,7 @@ exports.correctAnswersForReview = function(req, res){
 	});
 }
 
-function generateQueryForCorrectAnswerReview(paperId){
+function generateQueryForCorrectAnswerReview(req, paperId){
 	var queryArr = [];
 	
 	queryArr.push(' SELECT * FROM ' );
@@ -31,25 +31,27 @@ function generateQueryForCorrectAnswerReview(paperId){
 	queryArr.push(' question.a, question.b, question.c, question.d, question.e, ');
 	queryArr.push(' question.aCorrect, question.bCorrect, question.cCorrect, question.dCorrect, question.eCorrect, ');
 	queryArr.push(' aCorrect + bCorrect + cCorrect + dCorrect + eCorrect + fCorrect As length  ');
-	queryArr.push(' from exam JOIN question ON (question.examId = exam.id)   ');
-	queryArr.push(' JOIN paper ON (paper.examId = exam.id)  ');
+	queryArr.push(' from ' + apiUtils.prefixCode(req, 'exam') + ' JOIN ' );
+	queryArr.push(  apiUtils.prefixCode(req, 'question') + ' ON (question.examId = exam.id)   ');
+	queryArr.push(' JOIN ' + apiUtils.prefixCode(req, 'paper') + ' ON (paper.examId = exam.id)  ');
 	queryArr.push(' WHERE paper.id = ' + sqlHelper.escape(paperId) + ')');
-	queryArr.push(' AS Q LEFT JOIN paperAnswer ON (pid = paperAnswer.paperId ');
+	queryArr.push(' AS Q LEFT JOIN '  + apiUtils.prefixCode(req,'paperAnswer') + ' ON (pid = paperAnswer.paperId ');
 	queryArr.push(' AND qId = questionId ) ');  
 
 	return queryArr.join(' ');
 }
-
 
 exports.result = function (req, res) {
 	logger.debug('Entering paperController.result with paperId ', req.params.paperId);
 	getPaperDetails(req, res, req.params.paperId);
 }
 
-exports.getPapersForUser = function(userId,callback){
+exports.getPapersForUser = function(req, userId,callback){
 	var queryArr =  [];
 	queryArr.push(' select paper.id,exam.passPercent, examId, exam.name, exam.maxMarks, result, percent, status, paper.timeTaken, paper.lastModifiedDate ');
-	queryArr.push(' FROM exam,paper ');
+	queryArr.push(' FROM ');
+	queryArr.push( apiUtils.prefixCode(req, 'exam') + ',');
+	queryArr.push( apiUtils.prefixCode(req, 'paper'));
 	queryArr.push(' WHERE exam.id = paper.examId ');
 	queryArr.push(' AND userId = ' + sqlHelper.escape(userId));
 	queryArr.push(' ORDER BY  paper.lastModifiedDate  DESC, exam.name ASC ');
@@ -62,7 +64,10 @@ function getPaperDetails(req, res, paperId) {
 	logger.debug('Entering paperController.getPaperDetails with paperId ', paperId);
 	var queryArr = [];
 
-	queryArr.push('select examId, paperId,count(*) As correctAnswer from paper, paperAnswer ');
+	
+	queryArr.push('select examId, paperId,count(*) As correctAnswer from ');
+	queryArr.push( apiUtils.prefixCode(req, 'paper') + ', ');
+	queryArr.push( apiUtils.prefixCode(req, 'paperAnswer') );
 	queryArr.push(' WHERE paper.id = paperAnswer.paperid ');
 	queryArr.push(' AND correct = true ');
 	queryArr.push(' AND paperId = ' + paperId);
@@ -101,7 +106,9 @@ function updatePaperResult(req, res, paperId, correctPercent, result) {
 function getExamDetails(req, res, paperResult) {
 	logger.debug('Entering paperController.getExamDetails with paperResult', paperResult);
 
-	var query = 'SELECT maxMarks,passPercent,count(*) As questionCount FROM exam, question' +
+	var query = 'SELECT maxMarks,passPercent,count(*) As questionCount FROM ' + 
+		apiUtils.prefixCode(req,'exam') + ',' +
+		apiUtils.prefixCode(req,'question') +
 		' WHERE question.examId = exam.id ' +
 		' AND exam.id = ' + sqlHelper.escape(paperResult.examId) +
 		' AND question.active = true ' +

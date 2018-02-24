@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('UserEditCtrl', function ($state, $stateParams, $location,  $log, api, notification) {
+	.controller('UserEditCtrl', function ($state, $stateParams, $location,  $log, api, notification, Auth) {
 		var vm = this;
 		vm.user = {active: 1};
 		vm.editMode = null;
@@ -21,6 +21,7 @@ angular.module('examApp')
 				vm.headerText = 'New user';
 				vm.editMode = false;
 			}
+			vm.isSuperAdmin = Auth.isSuperAdmin;
 		}
 
 		function getUser(userId) {

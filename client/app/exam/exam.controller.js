@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('ExamCtrl', function ($scope, $location, $state, $stateParams, $log, Modal, api, notification) {
+	.controller('ExamCtrl', function ($scope, $location, $state, $stateParams, $log, Auth, Modal, api, notification) {
 
 		var vm = this;
 		vm.exam = {};
@@ -11,6 +11,7 @@ angular.module('examApp')
 		vm.saveError = null;
 		vm.users = null;
 
+		vm.currentUser = null;
 		vm.questions = null;
 		vm.isLoading = false;
 
@@ -21,6 +22,11 @@ angular.module('examApp')
 			}
 			if(vm.currentTab === 'user'){
 				vm.loadUsersForExam();
+			}
+			if(vm.currentTab === 'shareInstitute') {
+				if (vm.isSuperAdmin()) {
+					vm.loadInstitutesForExam();
+				}
 			}
 			return;
 		};
@@ -39,11 +45,22 @@ angular.module('examApp')
 			loadQuestionsFromApi($stateParams.examId);
 		};
 
+		vm.isSuperAdmin = function() {
+			return Auth.isSuperAdmin();
+		}
+
+		vm.loadInstitutesForExam = function() {
+			loadInstitutesForExam(vm.exam.id);
+		}
+
 		init();
 
 		function init() {
-			getCategories();
 
+			vm.isSuperAdmin = Auth.isSuperAdmin;
+			
+			getCategories();
+			
 			if (!$stateParams.examId) {
 				vm.isNew = true;
 				vm.exam = api.getExamModel();
@@ -79,6 +96,10 @@ angular.module('examApp')
 		vm.launch = function (recordId) {
 			$state.go('launch', { examId: recordId });
 		};
+
+		vm.shareExam = function() {
+			$state.go('shareInstitute', {examId : vm.exam.id, examName: vm.exam.name});
+		}
 
 		vm.delete = Modal.confirm.delete(function (record) {
 			deleteExam(record.id);
@@ -151,6 +172,12 @@ angular.module('examApp')
 		function loadUsersForExam(){
 			api.connectApi(vm, 'Loading...', api.getUsersForExam.bind(api, vm.exam.id), function (result) {
 				vm.users = result;
+			});
+		}
+
+		function loadInstitutesForExam(examId) {
+			api.connectApi(vm, 'Loading...', api.getInstitutesForExam.bind(api, examId), function (result) {
+				vm.institutes = result;
 			});
 		}
 

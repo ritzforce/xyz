@@ -51,7 +51,7 @@ angular.module('examApp').filter('prepend', function () {
 //Main Controller for the Logic
 //=================================================================//
 angular.module('examApp')
-	.controller('LaunchCtrl', function ($log, $state, $stateParams, $filter, $interval, api, Auth) {
+	.controller('LaunchCtrl', function ($log, $state, $stateParams, $filter, $interval, api, Auth, Modal) {
 		var vm = this;
 		var questionOptions = ['a', 'b', 'c', 'd', 'e', 'f'];
 
@@ -144,6 +144,12 @@ angular.module('examApp')
 		};
 
 		vm.moveToResult = function () {
+			Modal.confirm.question(function(){
+				vm.moveToResultConfirmed();
+			})("end exam", vm.exam.name);
+		};
+		
+		vm.moveToResultConfirmed = function () {
 			vm.launchStep = 3;
 			stopTimer();
 			getResult(vm.paper.id);

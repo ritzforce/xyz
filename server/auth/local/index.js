@@ -9,6 +9,7 @@ var router = express.Router();
 
 router.post('/', function (req, res, next) {
 	logger.debug('Entering login');
+	logger.debug(req.body);
 
 	passport.authenticate('local',{session: false}, function (err, user, info) {
 		var error = err || info;
@@ -18,7 +19,7 @@ router.post('/', function (req, res, next) {
 		logger.info('***authentication successful*****');
 		logger.info(user);
 		
-		var token = auth.signToken(user.id);
+		var token = auth.signToken(user.id, req.body.code, req.body.mobile);
 		
 		res.json({ token: token });
 

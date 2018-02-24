@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('BackupCtrl', function ($log, $window, api, notification) {
+	.controller('BackupCtrl', function ($log, $window, api, notification, Auth) {
 		var vm = this;
 		vm.fileName = '';
 
 		vm.message = '';
 		vm.icon = '';
 
-		init();
+		if (Auth.isSuperAdmin()) {
+			init();
+		}
 
 		function init(){
 			api.lastBackup().then(function(lastBackUp){

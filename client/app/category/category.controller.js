@@ -1,16 +1,20 @@
 'use strict';
 
 angular.module('examApp')
-  .controller('CategoryCtrl', function ($state, $stateParams, $log, $location, api,notification, Modal) {
+  .controller('CategoryCtrl', function ($state, $stateParams, $log, $location, api,notification, Modal, Auth) {
     var vm = this;
 	vm.allCategory = [];
 	vm.category = {};
 	vm.editMode = null;
 	vm.headerText = null;
 	vm.error = '';
+	vm.old_code = null;
 
 	init();
 	function init() {
+
+		vm.isSuperAdmin = Auth.isSuperAdmin;
+		
 		var currentPath = $location.path();
 		//edit or new mode
 		if(currentPath.indexOf('/e') > -1) {
@@ -38,7 +42,7 @@ angular.module('examApp')
 		api.connectApi(vm,'Loading...',api.getCategory.bind(api,categoryId), function(result){
 			vm.category = result;
 			vm.headerText = 'Edit Category - ' + vm.category.name;
-			vm.oldText = vm.category.name;
+			vm.old_code = vm.category.name;
 		});
 	}
 
@@ -48,6 +52,13 @@ angular.module('examApp')
 	};
 
 	vm.save = function(){
+		if(vm.old_code) {
+			vm.category.old_code = vm.old_code;
+		}
+		else {
+			delete vm.category.old_code;
+		}
+
 		api.connectApi(vm,'Saving..',api.saveCategory.bind(api,vm.category), function(result){
 			$state.go('category');	
 		});

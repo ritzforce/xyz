@@ -30,14 +30,14 @@ var all = {
   },
 
   // List of user roles
-  userRoles: ['guest', 'user', 'admin'],
+  userRoles: ['guest', 'user', 'admin','superadmin'],
 
   sql: {
     maxLimit: 100,
-    host: '127.0.0.1',
+    host: 'localhost',
     user : 'root',
-    password: '',
-    database: 'examination'
+    password: 'root',
+    database: 'Insti'
   },
   
   log: {

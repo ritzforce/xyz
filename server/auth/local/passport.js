@@ -9,13 +9,15 @@ exports.setup = function (User, config) {
 
 	passport.use(new LocalStrategy({
 		usernameField: 'email',
-		passwordField: 'password' // this is the virtual field on the model
+		passwordField: 'password', // this is the virtual field on the model
+		passReqToCallback: true
     },
-		function (email, password, done) {
+		function (req, email, password, done) {
 			logger.info('Entering login function with email ', email);
 
 			User.findOne({
-				email: email.toLowerCase()
+				email: email.toLowerCase(),
+				code: req.body.code
 			}, function (err, user) {
 				if(err){
 					logger.error(err);

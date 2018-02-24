@@ -7,6 +7,7 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/exam/launch/:examId', auth.isAuthenticated() ,controller.launch);
+router.get('/exam/mobile/:examId', auth.isAuthenticated(), controller.mobilelaunch);
 router.get('/exam/:examId',  auth.isAuthenticated(), controller.index);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', auth.hasRole('admin'), controller.create);

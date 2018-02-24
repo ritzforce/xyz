@@ -1,0 +1,99 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="page-header" ng-show="vm.showPasswordScreen()">
+				<h3 style="padding-left:20px;">{{vm.settings.passwordTitle}}</h3>
+			</div>
+			<div class="col-xs-12">
+				<uib-alert type="danger" class="text-center" ng-show="vm.error">
+					<span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+					<span>{{vm.error}}</span>
+				</uib-alert>
+			</div>
+
+			<div class="col-xs-12" ng-hide="vm.institute.isTableCreated">
+			  <i>( Default password is Institute code, Default admin user is admin@admin.com )</i>
+			  <br/>
+			  &nbsp;
+			</div>
+
+			<form class="form-horizontal" name="vm.frm" novalidate ng-show="vm.showPasswordScreen()">
+				<div class="form-group">
+					<label for="Admin User" class="col-sm-2 control-label">
+						Admin Username
+					</label>
+					<div class="col-sm-4">
+						<p class="form-control-static">{{vm.settings.adminUser.email}}</p>
+					</div>
+				</div>
+
+			 	<div class="form-group" ng-class="{'has-error': vm.frm.password.$invalid && (vm.frm.password.$dirty || vm.frm.$submitted )}">
+						
+						<label for="password" class="col-sm-2 control-label control-required">Password</label>
+						<div class="col-sm-4">
+							<input type="password" maxlength="255" name="password" ng-minlength="3" required ng-model="vm.settings.password" class="form-control" id="txtPassword"
+								placeholder="Password" />
+							<span class="help-block" ng-show="vm.frm.password.$invalid && (vm.frm.password.$dirty || vm.frm.$submitted)">
+                                <span ng-show="vm.frm.password.$error.required">Password is required</span>
+								<span ng-show="vm.frm.password.$minlength.required">Password must be at least 3 characters.</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': (vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.settings.isConfirmPassword)}">
+						<label for="confirmPassword" class="col-sm-2 control-label control-required">Confirm Password</label>
+						<div class="col-sm-4">
+							<input type="password" maxlength="255" required name="confirmPassword" ng-model="vm.settings.confirmPassword" class="form-control" id="txtConfirmPassword"
+								placeholder="Confirm Password" />
+							<span class="help-block" ng-show="(vm.frm.confirmPassword.$invalid && vm.frm.$submitted || !vm.isConfirmPassword)">
+								    <span ng-hide="vm.settings.isConfirmPassword">Passwords do not match</span>
+							<span ng-show="vm.frm.confirmPassword.$error.required">Please confirm the password again</span>
+							</span>
+						</div>
+					</div>
+			 </form>
+			 <div class="row">
+			 	<div class="col-xs-10 col-xs-offset-2">
+	        		<button ng-click="vm.activate()" ng-hide="vm.institute.isTableCreated" type="submit" class="btn btn-warning">Activate</button>
+
+	        		<button ng-click="vm.resetAdminPassword()" ng-show="vm.institute.isTableCreated && vm.institute.active" type="submit" class="btn btn-warning">Reset Admin Password</button>
+	        	</div>
+	        </div>
+	    </div>
+	    <div>
+	    	&nbsp;<br/> 
+	    </div>
+	    
+    </div>
+
+    <div class="row" ng-show="vm.institute.isTableCreated">
+    	<div class="col-xs-12">
+    		
+    		<div class="page-header">
+				<h3 style="padding-left:20px;">Activation Settings</h3>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-10 col-xs-offset-2" ng-show="vm.institute.isTableCreated">
+					Deactivating the institute will prevent all users (including admin), from loggin.
+				</div>
+			</div>
+			
+			<div class="row">	
+			 	<div class="col-xs-10 col-xs-offset-2">
+					<button ng-click="vm.deactivate()" ng-show="vm.institute.active" type="submit" class="btn btn-danger">Deactivate</button>
+					<button ng-click="vm.reactivate()" ng-show="vm.institute.isTableCreated && !vm.institute.active" type="submit" class="btn btn-danger">Reactivate</button>
+				</div>
+			</div>	
+
+			<div class="row">
+			 	<div class="col-xs-10 col-xs-offset-2">
+					&nbsp;
+				</div>
+			</div>		
+
+    	</div>
+        
+    </div>
+                           
+</div>

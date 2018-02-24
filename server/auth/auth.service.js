@@ -33,15 +33,31 @@ function isAuthenticated() {
 		.use(function (req, res, next) {
 			var user = new User();
 			logger.info('*****USER ATTACHED TO REQUEST****', req.user.id);
+			logger.info('******USER CODE ATTACHED TO REQUEST****', req.user.code);
 
-			user.findById(req.user.id, function (err, user) {
+			let userCode = req.user.code;
+
+
+			user.findById(req.user.id, req.user.code, function (err, user) {
 				if (err) return next(err);
 				if (!user) return res.send(401);
 
 				req.user = user;
+				req.user.code = userCode.toLowerCase();
+
+				logger.info("*****USER OBJECT*******", JSON.stringify(req.user));
+
 				next();
 			});
 		});
+}
+
+function isSuperAdminRole(req) {
+	if(!req.user) {
+		return false;
+	}
+	var user = req.user;
+	return (user.role === 'superadmin');
 }
 
 function isAdminRole(req){
@@ -49,7 +65,7 @@ function isAdminRole(req){
 		return false;
 	}
 	var user = req.user;
-	return (user.role === 'admin');
+	return (user.role === 'admin' || user.role === 'superadmin');
 }
 
 /**
@@ -73,9 +89,16 @@ function hasRole(roleRequired) {
 /**
  * Returns a jwt token signed by the app secret
  */
-function signToken(id) {
-	logger.info('Sign Token ' + id);
-	return jwt.sign({ id: id }, config.secrets.session, { expiresInMinutes: 60 * 5 });
+function signToken(id, code, mobile) {
+	logger.info('Sign Token =>' + id + ", Sign Code=>" + code);
+	var timeoutInMinutes = 60 * 5;
+	if(mobile) {
+		timeoutInMinutes = 60 * 24 * 10;
+	}
+	logger.info("timeoutInMinutes ", timeoutInMinutes);
+
+	return jwt.sign({ id: id, code: code}, config.secrets.session, 
+		{ expiresInMinutes: timeoutInMinutes });
 }
 
 /**

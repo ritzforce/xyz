@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('examApp')
-	.controller('UserCtrl', function ($state, $log, api, notification, Modal) {
+	.controller('UserCtrl', function ($state, $log, api, notification, Modal, Auth) {
 		var vm = this;
 		vm.isLoading = false;
 		vm.allUsers = null;
@@ -10,6 +10,7 @@ angular.module('examApp')
 
 		function init() {
 			getUsers();
+			vm.isSuperAdmin = Auth.isSuperAdmin;
 		}
 
 		vm.delete = Modal.confirm.delete(function (record) {

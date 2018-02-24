@@ -85,6 +85,9 @@ angular.module('examApp')
 				return success(result);
 			})
 			.catch(function(err){
+				console.log('***Error*****');
+				console.log(err);
+
 				$log.error(err);
 				formatError(vm, err);
 				if(failure){
@@ -158,6 +161,10 @@ angular.module('examApp')
 			});
 		};
 
+		this.getAdminUser = function(code) {
+			return this.get('/api/users/adminUser/' + code);
+		}
+
 		this.getUser = function(userId){
 			return this.get('/api/users/' + userId);
 		};
@@ -165,6 +172,10 @@ angular.module('examApp')
 		this.deleteUser = function(recordId){
 			return this.delete('/api/users/' + recordId);
 		};
+
+		this.signUp = function(user) {
+			return this.post('/api/users/signup', user);
+		}
 
 		this.saveUser = function(user){
 			if(user.id){
@@ -344,6 +355,101 @@ angular.module('examApp')
 		this.assignUsers = function(body){
 			return this.post('/api/userExams/assign', body);
 		};
+
+		/***********************************Institutes****************************************************/
+		this.getInstitutes = function () {
+			return this.getAll('/api/institutes');
+		};
+
+		
+
+		this.getInstitute = function(instituteId) {
+			return this.get('/api/institutes/' + instituteId);
+		};
+
+		this.activateInstitute = function(instituteId, adminPassword) {
+			return this.post('/api/institutes/activate/' + instituteId, {
+				password: adminPassword
+			});
+		};
+
+		this.resetAdminPassword = function(instituteId, adminPassword) {
+			return this.post('/api/institutes/resetAdminPassword/' + instituteId, {
+				password: adminPassword
+			});
+		};
+
+		this.getMyInstitute = function() {
+			return this.get('/api/institutes/current/details');
+		}
+
+		this.getCurrentLogo = function(instituteId) {
+			return this.get('/api/institutes/logo/' + instituteId);
+		}
+
+		this.allStats = function(instituteId) {
+			return this.get('/api/institutes/allStats/' + instituteId);
+		};
+
+		this.stats = function(instituteId) {
+			return this.get('/api/institutes/stats/' + instituteId);
+		};
+
+		this.reactivateInstitute = function(instituteId) {
+			return this.post('/api/institutes/reactivate/' + instituteId, {});
+		};
+
+		this.deactivateInstitute = function(instituteId) {
+			return this.post('/api/institutes/deactivate/' + instituteId, {});
+		}
+
+		this.saveInstitute = function (institute){
+			var isNew = true;
+			if(institute.id){
+				isNew = false;
+			}
+
+			if (isNew) {
+				return $http.post('/api/institutes', institute).then(function (response) {
+					return response.data;
+				});
+			}
+			else {
+				return $http.put('/api/institutes/' + institute.id, institute).then(function (response) {
+					return response.data;
+				});
+			}		
+		};
+
+		this.deleteInsitute = function(instituteId){
+			return this.delete('/api/institutes/' + instituteId);
+		};
+
+		/**************************************SHARE EXAM***********************************/
+
+		this.getExamsForInstitutes = function(instituteId) {
+			return this.getAll('/api/shareExams/institute/' + instituteId);
+		};
+
+		this.getNewExamsForInstitutes = function(instituteId){
+			return this.getAll('/api/shareExams/institute/new/' + instituteId);
+		};
+
+		this.getInstitutesForExam = function(examId) {
+			return this.getAll('/api/shareExams/exam/' + examId);
+		}
+
+		this.getNewInstitutesForExam = function(examId){
+			return this.getAll('/api/shareExams/exam/new/' + examId);
+		}
+
+		this.shareExams = function(body) {
+			return this.post('/api/shareExams/assign', body);
+		}
+
+		this.deleteShareExam = function(recordId) {
+			return this.delete('/api/shareExams/' + recordId);
+		}
 
 		/***************************************USER Id***********************************/
 		this.resetPassword = function(userId, password){

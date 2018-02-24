@@ -1,0 +1,82 @@
+<div class="form-horizontal">
+
+<table class="table table-condensed">
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Name</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.name}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Code</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.code}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Active</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">
+                <span ng-show="vm.institute.active" class="text-success">Active</span>
+                <span ng-hide="vm.institute.active" class="text-danger">Inactive</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Phone</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.phone}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Email</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.email}}</p>
+        </td>
+    </tr>
+     <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Address</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.address}}</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label  class="control-label">Description</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.description}}</p>
+        </td>
+    </tr>
+ 
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Created Date</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.createdDate | date}}</p>
+        </td>
+    </tr>   
+    <tr>
+        <td align="right" class="col-xs-3">
+           <label class="control-label">Last Modified Date</label>
+        </td>   
+        <td align="left"> 
+            <p class="form-control-static">{{vm.institute.lastModifiedDate | date}}</p>
+        </td>
+    </tr>   
+</table>
+</div>

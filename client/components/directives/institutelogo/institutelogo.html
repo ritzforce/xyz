@@ -1,0 +1,60 @@
+<div> 
+   <form name="myForm" class="form-horizontal">	
+
+   <div class="form-group" style="padding-top: 10px;">
+   	   <label class="col-sm-2 control-label">Current Logo</label> 
+       <div class="col-sm-6 text-left">
+          <img ng-src="{{currentLogo}}" />
+       </div>
+   </div>
+
+   <div class="form-group">
+   		<label class="col-sm-2 control-label control-required">New Logo</label>
+   		<div class="col-sm-4" style="padding-top:10px;">
+   			 <input type="file" ngf-select ng-model="picFile" name="file"    
+             accept="image/*" ngf-max-size="100KB"  ngf-max-height="200" ngf-max-width="250" required
+             ngf-model-invalid="errorFile">
+      		<span class="help-block">Max Logo size is 100KB (250px Width * 50px Height)</span>    
+   		</div>
+   	</div>
+    <div class="form-group">
+       <img ng-src="{{existingLogo}}" />
+    </div>
+
+   	<div class="form-group">
+   		<label class="col-sm-2 control-label">Preview</label>
+   		<div class="col-sm-4">
+   			<img ng-show="myForm.file.$valid" ngf-thumbnail="picFile" height="51px" width="250px" class="thumb">
+   			<button ng-click="picFile = null" ng-show="picFile">Remove</button>
+   		</div>
+	</div>
+	
+   	<div class="form-group has-error">
+   		<div class="col-sm-4 col-sm-offset-2 ">
+			  <span class="help-block">
+				 
+	   			  <i ng-show="myForm.file.$error.maxSize">File too large 
+	          		{{errorFile.size / 1000|number:1}}KB: max 10KB</i> <br/>
+	          	    <span class="help" ng-show="myForm.file.$error.maxHeight">
+						  Height too large, Max Height is 51px</i> <br/>
+					</span>
+					<span>
+	          	    	<i ng-show="myForm.file.$error.maxWidth">Width too large, Max Width is 250px</i>	
+          			</span>    	
+   		</div>
+   	</div>
+   	<div class="form-group has-error">
+   		<div class="col-sm-4 col-sm-offset-2">
+          <span class="help" ng-show="errorMsg">Failure {{errorMsg}}</span>
+   		</div> 
+   	</div>
+
+   	<div class="form-group">
+   		<div class="col-sm-4 col-sm-offset-2">
+   			<button ng-click="uploadFiles(picFile)" type="submit" class="btn btn-warning">Upload</button>
+   		</div>
+   	</div>
+
+   
+    </form>  
+</div>

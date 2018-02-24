@@ -15,6 +15,9 @@ exports.index = function (req, res, tblName, selectFields, orderByFields, whereB
 	            "orderBy clause", orderByFields, 
 	            "where Clause", whereByClause);
 
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 	var sqlUtils = new SqlUtils(tblName, 1000);
 
 	//Get the sql connection, and fire query
@@ -48,6 +51,9 @@ exports.index = function (req, res, tblName, selectFields, orderByFields, whereB
 exports.show = function (req, res, tblName, selectFields) {
 	logger.debug('Entering apiUtils.show with parameters with ', "table", tblName, "for select fields ", selectFields);
 
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 	//Get the sql connection, and fire query
 	getConnection(req, res, function (connection) {	
 		var selectQuery = getRecordByIdQuery(tblName, selectFields, connection.escape(req.params.id));
@@ -66,9 +72,12 @@ exports.show = function (req, res, tblName, selectFields) {
 };
 
 
-exports.createBulkLoad = function(tblName, record, callback){
+exports.createBulkLoad = function(req, tblName, record, callback){
 	logger.debug('Entering apiUtils.create with bulk load option', record);
 	
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 	sqlHelper.getConnection(function (err, connection) {
 
 		if(err){
@@ -101,6 +110,10 @@ exports.createBulkLoad = function(tblName, record, callback){
 exports.create = function (req, res, tblName, requestBody, selectFields, callback) {
 	logger.debug('Entering apiUtils.create with parameters with ', "table", tblName, "for select fields ", selectFields);
 	logger.debug('apiUtils.create with request Body', requestBody);
+
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 
 	if (requestBody.createdDate) { delete requestBody.createdDate;} 
 	if (requestBody.lastModifiedDate) {delete requestBody.lastModifiedDate; }
@@ -149,6 +162,9 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 	              "for select fields ", selectFields,
 				  "with request body", requestBody);
 
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 	if (requestBody.id) { delete requestBody.id; }
 	if (requestBody.createdDate) { delete requestBody.createdDate;} 
 	if (requestBody.lastModifiedDate) {delete requestBody.lastModifiedDate; }
@@ -190,6 +206,9 @@ exports.update = function (req, res, tblName, requestBody, selectFields) {
 exports.destroyBulk = function(req, res, tblName, requestBody){
 	logger.debug('Entering apiUtils.destroyBulk with tblName', tblName, ' & request body', requestBody);
 	
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 	getConnection(req, res, function (connection) {
         var deleteQuery = 'DELETE FROM ' + tblName + ' WHERE ?'; 
 		connection.query(deleteQuery, requestBody, function(err, result){
@@ -216,6 +235,9 @@ exports.destroy = function (req, res, tblName, requestBody) {
 
 	if (requestBody.id) { delete requestBody.id; }
 	
+	tblName = getAlteredTableName(req.user, tblName);
+	logger.debug('ALTERED TABLE NAME', tblName);
+
 	getConnection(req, res, function (connection) {
         var deleteQuery = 'DELETE FROM ' + tblName + ' WHERE ?'; 
 		connection.query(deleteQuery, {id :req.params.id}, function(err, result){
@@ -233,6 +255,27 @@ exports.destroy = function (req, res, tblName, requestBody) {
 		});
 	});
 };
+
+/************************************************ */
+/*Fire Adhoc Insert, update, delete query
+/*************************************************/
+exports.action = function(query, body, callback) {
+	logger.debug('Entering apiUtils.actoion with query', query);
+	sqlHelper.getConnection(function (err, connection){
+		if (err) {
+			callback(err, null);
+			return;
+		}
+		connection.query(query, body, function(err, result) {
+			if(err) {
+				callback(err, null);
+				return;
+			}
+			return callback(null, result);
+		});
+
+	});
+}
 
 /************************************************ */
 /*Fire Adhoc Select query
@@ -278,11 +321,30 @@ exports.fireRawQuery = function(query,callback) {
 	});
 }
 
+exports.getRecordById = function(tblName, selectFields, id, callback) {
+	let query =  getRecordByIdQuery(tblName, selectFields, id);
+	exports.fireRawQuery(query, callback);
+}
+
 exports.handleError = function(res, err){
 	handleError(res, err);
 }
+exports.prefixCode = function(req, tblName) {
+	return getAlteredTableName(req.user, tblName) + ' AS ' + tblName ;
+}
 
 /******************************Private Functions************************************/
+
+function getAlteredTableName(user, tblName) {
+	
+	// Table Name has not prefixed with institute code, lets add that
+	if (tblName.indexOf("_") == -1) {
+		if (user && user.code) {
+			return user.code.toLowerCase() + "_" + tblName;
+		}
+	}
+	return tblName;
+}
 
 function getRecordByIdQuery(tblName,selectFields,id){
 	var sqlUtils = new SqlUtils(tblName,5);

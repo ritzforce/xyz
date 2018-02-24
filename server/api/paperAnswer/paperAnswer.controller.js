@@ -9,7 +9,7 @@ var logger = require('./../../logger/logger');
 /***********************************************/
 
 var selectFields = ['id', 'paperId', 'questionId', 'correct', 'answer', 'createdDate', 'lastModifiedDate'];
-var TBL_NAME = 'paperanswer';
+var TBL_NAME = 'paperAnswer';
 
 exports.index = function (req, res) {
 	logger.debug('Entering paperAnswer.index with exam Id', req.params.examId);
@@ -35,7 +35,7 @@ exports.upsert = function (req, res) {
 
 	var requestBody = req.body;
 
-	var sqlUtils = new SqlUtils(TBL_NAME, 1000);
+	var sqlUtils = new SqlUtils(apiUtils.prefixCode(req,TBL_NAME), 1000);
 	sqlUtils.appendSelectFields('id');
 	sqlUtils.appendWhereClauses('paperId = ' + sqlHelper.escape(requestBody.paperId));
 	sqlUtils.appendWhereClauses('questionId = ' + sqlHelper.escape(requestBody.questionId));
@@ -52,7 +52,8 @@ function queryQuestion(req, res, result, requestBody){
 
 	var selectQuery = 	"select CONCAT(IF(aCorrect,'a',''), IF(bCorrect,'b',''), IF(cCorrect,'c',''), " +
 						"IF(dCorrect,'d',''), IF(eCorrect,'e',''), " +
-     					"IF(fCorrect,'f','')) AS answer FROM Question WHERE id = " + sqlHelper.escape(requestBody.questionId); 
+     					"IF(fCorrect,'f','')) AS answer FROM " + apiUtils.prefixCode(req,'question');
+     selectQuery   +=   " WHERE id = " + sqlHelper.escape(requestBody.questionId); 
 
 	
 	apiUtils.select(req, res, selectQuery, function(questionResultArr){

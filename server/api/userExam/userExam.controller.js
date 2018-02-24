@@ -9,7 +9,7 @@ var logger = require('./../../logger/logger');
 
 var selectFields = ['id', 'userId', 'examId'];
 
-var TBL_NAME = 'userexam';
+var TBL_NAME = 'userExam';
 
 /*
 // Get list of user Exams
@@ -22,7 +22,8 @@ exports.index = function (req, res) {
 
 exports.indexByExam = function (req, res) {
 	logger.debug('Entering userExam.controller.indexByExam with ExamID = ' + req.params.examId);
-	var query = 'SELECT userexam.id, user.email, user.name, user.active FROM USER INNER JOIN USEREXAM ON user.id = userExam.userId '
+	var query = 'SELECT userExam.id, user.email, user.name, user.active FROM ' +  apiUtils.prefixCode(req, 'user');
+	query +=  ' INNER JOIN ' + apiUtils.prefixCode(req,'userExam') + ' ON user.id = userExam.userId '
 	query += ' WHERE userExam.examId = ' + sqlHelper.escape(req.params.examId);
 
 	apiUtils.select(req, res, query, function (result) {
@@ -35,8 +36,9 @@ exports.indexByExam = function (req, res) {
 
 exports.indexByExamNew = function(req, res){
 	logger.debug('Entering userExam.controller.indexByExamNew with ExamID = ' + req.params.examId);
-	var query = 'SELECT user.id, user.email, user.name, user.active FROM USER WHERE Id NOT IN '
-	query += ' (SELECT userId FROM userexam WHERE ExamId = ' + sqlHelper.escape(req.params.examId)  + ')';
+	var query = 'SELECT user.id, user.email, user.name, user.active FROM ' + apiUtils.prefixCode(req, 'user');
+	query += ' WHERE Id NOT IN '
+	query += ' (SELECT userId FROM ' + apiUtils.prefixCode(req,'userExam')  + ' WHERE ExamId = ' + sqlHelper.escape(req.params.examId)  + ')';
 	query += ' AND role = \'user\' ';
 
 	apiUtils.select(req, res, query, function (result) {
@@ -50,7 +52,8 @@ exports.indexByExamNew = function(req, res){
 
 exports.indexByUser = function (req, res) {
 	logger.debug('Entering userExam.controller.indexByUser with userId' + req.params.userId);
-	var query = 'SELECT userexam.id, exam.name, exam.code, exam.category, exam.active FROM Exam INNER JOIN USEREXAM ON exam.id = userExam.examId '
+	var query = 'SELECT userExam.id, exam.name, exam.code, exam.category, exam.active FROM ' + apiUtils.prefixCode(req, 'exam') ;
+	query += ' INNER JOIN ' + apiUtils.prefixCode(req, 'userExam')  + ' ON exam.id = userExam.examId '
 	query += ' WHERE userExam.userId = ' + sqlHelper.escape(req.params.userId);
 
 	apiUtils.select(req, res, query, function (result) {
@@ -63,8 +66,9 @@ exports.indexByUser = function (req, res) {
 
 exports.indexByUserNew = function (req, res) {
 	logger.debug('Entering userExam.controller.indexByUserNew with userId' + req.params.userId);
-	var query = 'SELECT id, name, code, category, active FROM Exam WHERE id NOT IN '
-	query += ' (SELECT ExamId FROM UserExam WHERE userId = ' + sqlHelper.escape(req.params.userId) + ')';
+	var query = 'SELECT id, name, code, category, active FROM ' +  apiUtils.prefixCode(req, 'exam') ; 
+	query += ' WHERE id NOT IN '
+	query += ' (SELECT ExamId FROM ' + apiUtils.prefixCode(req, 'userExam') + ' WHERE userId = ' + sqlHelper.escape(req.params.userId) + ')';
 	
 	apiUtils.select(req, res, query, function (result) {
 		logger.debug('Results for indexByUserNew query', result);
@@ -95,7 +99,7 @@ exports.addUserExamAssignments = function (req, res) {
 
 	for(var i = 0; i < userIdArray.length;i++){
 		for(var j = 0; j < examIdArray.length; j++){
-			apiUtils.createBulkLoad(TBL_NAME, {userId: userIdArray[i], examId: examIdArray[j]}, function(err, record){
+			apiUtils.createBulkLoad(req, TBL_NAME, {userId: userIdArray[i], examId: examIdArray[j]}, function(err, record){
 				if(record.success){
 					successCount++;
 				}	

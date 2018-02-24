@@ -7,6 +7,7 @@ var userController = require('./user.controller');
 function User(){
     this.email = '';
     this.password = '';
+    this.code = '';
 }
 
 /************************************Utility Functions******************************/
@@ -22,15 +23,16 @@ User.prototype.authenticate = function(enteredPassword) {
    return false;
 }
 
+
 User.prototype.encryptPassword = function(password) {
 	if (!password || !this.salt) return '';
 	var localSalt = new Buffer(this.salt, 'base64');
 	return crypto.pbkdf2Sync(password, localSalt, 10000, 64).toString('base64');
 }
 
-User.prototype.findById = function(userId,callback){
+User.prototype.findById = function(userId, code, callback){
     var that = this;
-    userController.findById(userId, function(err, result){
+    userController.findById(userId, code, function(err, result){
        if(err){
            return callback(err,null);
        }
@@ -48,7 +50,7 @@ User.prototype.findById = function(userId,callback){
 
 User.prototype.findOne = function(user, callback){
    var that = this;
-   userController.findByEmail(user.email, function(err, result){
+   userController.findByEmail(user.email, user.code, function(err, result){
        if(err){
            callback(err,null);
            return;

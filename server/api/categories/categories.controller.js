@@ -36,10 +36,28 @@ exports.create = function(req, res) {
 
 // Updates an existing categories in the DB.
 exports.update = function(req, res) {
-	logger.debug('Entering update an existing category');
-	apiUtils.update(req, res, TBL_NAME, req.body, selectFields);
-	logger.debug('Exit update an existing category');
+	logger.debug('===>Entering update an existing category===>', req.body);
+    let oldCode = req.body.old_code;
+    var body = req.body;
 
+    delete body.old_code;
+    logger.debug('*****Category Code****');
+    logger.debug(body);
+
+    var query = "UPDATE " + apiUtils.prefixCode(req, 'exam');
+ 
+    query += " SET Category = " + sqlHelper.escape(body.name);
+    query += " WHERE Category = " + sqlHelper.escape(oldCode);
+
+    apiUtils.action(query,{}, function(err, result) {
+    	logger.debug('Action Query Update Completed');
+    	if (err) {
+    		apiUtils.handleError(err, res);
+    		return;
+    	}
+    	apiUtils.update(req, res, TBL_NAME, body, selectFields);
+    });
+	logger.debug('Exit update an existing category');
 };
 
 // Deletes a categories from the DB.

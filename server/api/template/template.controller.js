@@ -58,7 +58,7 @@ exports.upload = function(req, res){
 
 exports.lastBackup = function(req, res){
 	logger.debug('Entering template.lastBackup');
-	apiUtils.select(req, res, 'SELECT DATEDIFF(CURDATE(),DATE) AS date FROM Backup ORDER BY DATE ASC LIMIT 1', function(result){
+	apiUtils.select(req, res, 'SELECT DATEDIFF(CURDATE(),DATE) AS date FROM ' + apiUtils.prefixCode(req, 'backup') + ' ORDER BY DATE ASC LIMIT 1', function(result){
 		if(result.length === 0){
 			return res.json({'days': -1});
 		}
@@ -108,12 +108,12 @@ function parseFile(req, res, filePath){
 		if(err){
 			return handleError(res, err);
 		}
-		processRecords(res, req.params.templateType, result);
+		processRecords(req, res, req.params.templateType, result);
 	});
 	logger.debug('Exiting parseFile method');
 }
 
-function processRecords(res, tblName, lstRecord){
+function processRecords(req, res, tblName, lstRecord){
 	logger.debug('Entering template.processRecords for tblName ', tblName, ' with records size', lstRecord.length);	
 	
 	var processedCount = 0;
@@ -123,11 +123,12 @@ function processRecords(res, tblName, lstRecord){
 	var fileName = tblName + new Date().getTime().toString() + '.csv';
 
 	logger.info('Auto generated file Name for saving the records', fileName);
+	
 
 	for(var i = 0; i < lstRecord.length;i++){
 		var currentRecord = lstRecord[i];
 		
-		apiUtils.createBulkLoad(tblName, currentRecord, function(err, record){
+		apiUtils.createBulkLoad(req, tblName, currentRecord, function(err, record){
 			processedCount++;
 			if(record.success){
 				successCount++;
@@ -180,6 +181,16 @@ function checkAllDone(lstRecord){
 	  return false;
   }
   return true;
+}
+
+function getConnection(callback) {
+	multiSqlHelper.getConnection(function (err, connection) {
+		if (err) {
+			callback(err, null);
+			return;
+		}
+		callback(null, connection);
+	});
 }
 
 // Creates a new template in the DB.

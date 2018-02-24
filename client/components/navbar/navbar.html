@@ -9,20 +9,15 @@
 				<span class="icon-bar"></span>
       		</button>
 			<a href="/" class="navbar-brand" style="padding:0px;padding-right:10px;">
-				<img src="assets/images/logo1.jpg" />
-			</a>
-			<a href="/" class="navbar-brand">
-				<span class="text-primary">Sharma Infotech</span>
+				<img ng-src="{{vm.logo()}}" height="50px" width="250px" />
 			</a>
 		</div>
 
 		<div collapse="vm.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
 			<ul class="nav navbar-nav">
-
 				<li>
-					<p style="margin-top:10px;font-size:60%;">
-						D-13, Bapu Nagar Senthi, Road No. 8, Chittorgarh(Raj.) <br/> B-13, S.K. Plaza, Maharana Pratap Setu Marg, Near Head
-						Post Office, Chittorgarh (Raj.) <br/> Call Us: 9950072039, 7821932915 | Email To: <a href="mailto:rscitsharma@gmail.com">rscitsharma@gmail.com</a>
+					<p style="margin-top:2px;font-size:75%;">
+						<span ng-bind-html="vm.contactAddress()" />
 					</p>
 				</li>
 			</ul>

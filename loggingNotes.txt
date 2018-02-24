@@ -1,0 +1,17 @@
+1. figure out which version of yo was used check the grunt file
+2. In our case it was generator-angular-fullstack 2.0.13
+3. yo angular-fullstack:controller user
+
+
+1. Deleting a record from list view doesn't work. $state.reload() is not working
+2. Check Institute code is not duplicate
+
+==Build steps
+1. grunt build --force
+2. It will deploy to gamma901.herokuapp.com
+3. Its connected to github repo multixyz
+4. Auto deploy has been disabled so you have to manually deploy
+5. Bluemix Account => 	rit.esh.sales.force@gmail.com
+
+
+sharma12900

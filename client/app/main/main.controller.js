@@ -15,6 +15,7 @@ angular.module('examApp')
 		vm.activeExams = [];
 		vm.categoryName = '';
 		vm.isAdmin = null;
+		vm.isSuperAdmin = null;
 		
 		vm.searchBoxText = '';
 
@@ -32,9 +33,13 @@ angular.module('examApp')
 			getCategories();
 			loadAllExam();
 			vm.isAdmin = Auth.isAdmin;
+			vm.isSuperAdmin = Auth.isSuperAdmin;
 		}
 
-	
+		vm.isSuperAdmin = function() {
+			return Auth.isSuperAdmin();
+		}
+
 		vm.hidePager = function(){
 			if(vm.total <= PAGE_SIZE){
 				return true;

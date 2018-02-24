@@ -14,10 +14,17 @@ angular.module('examApp')
 				filterText: '@',
 				nameField: '@',
 				titleText: '@',
-				del: '&'
+				del: '&',
+				deleteText: '@'
 			},
 			bindToController: true,
 			controllerAs: 'vm',
+			compile: function(element, attrs) {
+				//Assign default values
+				if(!attrs.deleteText) {
+					attrs.deleteText = "Delete";
+				}
+			},
 			controller: function ($scope, $log, Modal) {
 				var vm = this;
 				vm.masterSelected = false;

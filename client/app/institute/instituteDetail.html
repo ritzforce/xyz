@@ -1,0 +1,114 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <admin-side-menu></admin-side-menu>
+            <root-side-menu></root-side-menu>
+        </div>
+
+ 		<div class="col-sm-9 col-md-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="sub-header"><i class="fa fa-money" aria-hidden="true"></i> {{vm.institute.name}}</h3>
+                </div>
+            </div>
+          
+
+        	<div class="row">
+                <div class="col-xs-12">
+                    
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'detail'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('detail')" aria-controls="detail" role="tab">Detail</a>
+                        </li>
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'logo'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('logo')" aria-controls="Set Logo" role="tab">Logo</a>
+                        </li>
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'sharedExam'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('sharedExam')" aria-controls="Shared Exam" role="tab">Shared Exam</a>
+                        </li>
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'stats'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('stats')" aria-controls="Stats" role="tab">Stats</a>
+                        </li>
+                        <li role="presentation" ng-class="{active: vm.currentTab == 'settings'}">
+                            <a href="javascript:void(0)" ng-click="vm.setTab('settings')" aria-controls="Settings" role="tab">Settings</a>
+                        </li>
+                    </ul>
+                </div>
+        	</div> 
+
+	      	<div class="row">
+	            <div class="col-xs-12" ng-show="vm.error">
+	                <uib-alert type="danger" class="text-center">
+	                    <span class="glyphicon glyphicon glyphicon-remove-sign"></span>
+	                    <span>{{vm.error}}</span>
+	                </uib-alert>
+	            </div>
+	        </div>
+
+	    	<div class="row">
+               
+                <div class="tab-content col-xs-12" style="margin-top:10px">
+                    
+                    <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'detail'}" id="detail">
+
+                        <div class="panel panel-default text-center">
+                            <div class="panel-heading">
+                                <button ng-click="vm.edit()" type="submit" class="btn btn-warning">Edit</button> &nbsp;
+                            </div>
+                            <div class="panel-body">
+                                <institute-detail institute="vm.institute"></institute-detail>
+                            </div>
+                        </div>
+
+                    </div>
+
+                      <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'logo'}" id="detail">
+                         <div class="panel panel-default text-center">
+                              <div class="panel-heading">
+                                 <b>Upload Logo</b>
+                              </div>
+                              <div>
+                                
+                                 <institutelogo instituteid="{{vm.institute.id}}" current-logo="{{vm.logo}}"
+                                 upload-url="{{vm.uploadUrl}}">
+                                     
+                                 </institutelogo>
+                              </div>
+                         </div>
+                      </div>
+
+                    <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'sharedExam'}" id="question">
+                      
+                           
+                        <div class="panel panel-default text-center">
+                            <div class="panel-heading">
+                                <button ng-click="vm.shareExam()" type="submit" class="btn btn-warning">Share Exam</button>
+                            </div>
+                            <list title-text="Exams assigned to the Institute" showdelete="true" showcheckbox="false" records="vm.sharedExams" del="vm.deleteShareExam" name-field="name" fields="['name','code','category']"
+                                 filter-text='Filter By Exam name or code' header-fields="['Name','Code','Category']"></list>
+                        </div>
+
+                    </div>
+
+                     <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'stats'}" id="stats">
+                        <div class="panel panel-default text-center">
+                           <all-stats></all-stats>
+                        </div>
+
+                    </div>
+                    
+                    <div role="tabpanel" class="tab-pane" ng-class="{active: vm.currentTab == 'settings'}" id="user">
+                        <div class="panel panel-default text-left">
+                            <div class="panel-heading">
+                                <b>Institute Settings</b>
+                            </div>
+                            <institute-settings></institute-settings>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>    
+
+    </div>
+</div>        

@@ -5,7 +5,7 @@ angular.module('examApp')
 
 		var vm = this;
 
-		vm.user = { email: '', password: '' };
+		vm.user = { email: '', password: '', code: '' };
 		vm.error = null;
 		vm.isLoading = false;
 
@@ -25,14 +25,16 @@ angular.module('examApp')
 			vm.isLoading = true;
 			Auth.login({
 				email: vm.user.email,
-				password: vm.user.password
+				password: vm.user.password,
+				code: vm.user.code
+
 			}).then(function (response) {
 				$location.path('/');
 			})
 			.catch(function (err) {
 				//$log.error(err);
 				if (err.status == 401) {
-					vm.error = 'Invalid Login.The username or password is incorrect';
+					vm.error = 'Invalid Login.The username or password or institute code is incorrect';
 				}
 			})
 			.finally(function () {

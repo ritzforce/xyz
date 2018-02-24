@@ -19,10 +19,11 @@ angular.module('examApp')
 			var newUser = {	
 				name: vm.user.name,
 				email: vm.user.email,
-				password: vm.user.password
+				password: vm.user.password,
+				code: vm.user.code
 			};
 
-			api.connectApi(vm, 'Creating User...', api.saveUser.bind(api, newUser),function(response){
+			api.connectApi(vm, 'Creating User...', api.signUp.bind(api, newUser),function(response){
 				vm.success = true;
 				vm.user = {};
 			});
